@@ -19,6 +19,40 @@
     <script src="js/bootstrap.min.js"></script>
     <!-- <script src="js/jquery.nicescroll.min.js"></script> -->
     <script src="js/lodash.js"></script>
+      <script src="js/util.js"></script>
+      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Time', 'Reading'],
+          [ 75617,      3360],
+          [ 75622,    416],
+          [  75636,     255],
+          [  75645,      0],
+          [  75689,      417],
+          [  75693,    255]
+        ]);
+
+        var options = {
+          title: 'Sensor Reading',
+          hAxis: {title: 'Time'},
+          vAxis: {title: 'Reading'},
+          legend: 'none',
+
+          width: 600,
+          height: 300
+
+        };
+
+
+        var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+
+        chart.draw(data, options);
+      }
+    </script>
     <style>
       #map {
         height: 400px;
@@ -27,8 +61,66 @@
     </style>
   </head>
   <body>
-    <h3>My Google Maps Demo</h3>
-    <div id="map"></div>
+    <section class="header">
+      <div class="nav-container">
+      <h3>Flood Sensor Network</h3>
+    </div>
+    </section>
+    <section id="banner">
+    </section>
+    <section id="main">
+      <div class="container">
+        <div class="row" id="sum" style="background-color:#efefef;margin:10px 1px;">
+            <h2 style="text-align:center;">Network Status</h2>
+              Total number of nodes: <span class="badge badge-default">2</span>
+              Total number of alarms: <span class="badge badge-default">0</span>
+        </div>
+        <div class="row">
+          <div class="col-md-8">
+            <div id="map"></div>
+          </div>
+          <div class="col-md-4">
+            <h3 style="text-align:center;">Node List</h3>
+            <div id="accordion" role="tablist" aria-multiselectable="true">
+  <div class="card">
+    <div class="card-header" role="tab" id="headingOne">
+      <h5 class="mb-0">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Sensor Node #1
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse " role="tabpanel" aria-labelledby="headingOne">
+      <div class="card-block">
+Lat: Lon: Elv:      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" role="tab" id="headingTwo">
+      <h5 class="mb-0">
+        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Sensor Node #2
+        </a>
+      </h5>
+    </div>
+    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+      <div class="card-block">
+        Lat: Lon: Elv:
+      </div>
+    </div>
+  </div>
+
+</div>
+          </div>
+      </div>
+
+    </section>
+    <section class="footer">
+      <div class="container">
+        copyright 2017 Evigia System Inc.
+      </div>
+    </section>
     <div class="modal fade" tabindex="-1" role="dialog" id="nodeoverlay">
       <div class="modal-dialog">
             <div class="modal-content">
@@ -40,10 +132,159 @@
                 <div class="modal-body">
 
                   <div class="brd-d7 mar-bot10">
-                    <h4 class="pad-bot20"> Fictional Use Case</h4>
-                    <h3 class="pad-bot20">Adding Knowledge</h3>
+                    <h3 class="pad-bot20">Sensor Node </h3>
+                  <h4 > id: SR01 </h4>
+
                   </div>
-                    <p class="align-left line-ht28" >Tammy is the CEO of the “Heart Health Association”, which leads the development of several predictive analytics and heart care toolkits. Thanks to Knowledge Grid, it has been easy to create, manage, and update a collection of digital knowledge objects that carry their most recent findings in computer-processable form. This makes it convenient to share their knowledge, understand how it is used in the real world, and generate new revenue.</p>
+                  <div id="exTab1">
+                  <ul  class="nav nav-pills">
+                  			<li >
+                          <a  href="#1a" data-toggle="tab">Profile</a>
+                  			</li>
+                  			<li class="active"><a href="#2a" data-toggle="tab">Data Plot</a>
+                  			</li>
+                  			<li><a href="#3a" data-toggle="tab">Configuration</a>
+                  			</li>
+
+                  		</ul>
+
+                  			<div class="tab-content clearfix">
+                  			  <div class="tab-pane" id="1a">
+                            <div id="snprofile" style="height: 400px;width: 400px;"> </div>
+                  				</div>
+                  				<div class="tab-pane active" id="2a">
+                            <div id="chart_div" style="height: 400px;width: 400px;"></div>
+
+                  				</div>
+                          <div class="tab-pane" id="3a">
+                            <div classs="row">
+                            		<div class="col-md-12 text-center write-preview"  >
+                                    <div id="configtable" style="height: 350px;width: 90%;margin:0 auto;">
+                                      <form>
+                                      <table class="table-striped">
+                                        <tbody>
+
+                                          <tr  class=" stent vis">
+                                            <td class="pad-left10 diabetes-data">
+                                              <label for="HBVDNAlevel">Ambient Temperature Channel Name</label>
+                                            </td>
+                                            <td>
+															                <input type="text" name="HBVDNAlevel">
+						                                </td>
+                                          </tr>
+                                          <tr  class=" stent vis">
+                                            <td class="pad-left10 diabetes-data">
+                                              <label for="HBVDNAlevel">Ambient Pressure Channel Name</label>
+                                            </td>
+                                            <td>
+                                              <input type="text" name="HBVDNAlevel">
+						                                </td>
+                                          </tr>
+                                          <tr  class=" stent vis">
+                                            <td class="pad-left10 diabetes-data">
+                                              <label for="HBVDNAlevel">Water Temperature Channel Name</label>
+                                            </td>
+                                            <td>
+                                              <input type="text" name="HBVDNAlevel">
+                                            </td>
+                                          </tr>
+                                          <tr  class=" stent vis">
+                                            <td class="pad-left10 diabetes-data">
+                                              <label for="HBVDNAlevel">Water Pressure Channel Name</label>
+                                            </td>
+                                            <td>
+                                              <input type="text" name="HBVDNAlevel">
+                                            </td>
+                                          </tr>
+                                          <tr  class=" stent vis">
+                                            <td class="pad-left10 diabetes-data">
+                                              <label for="HBVDNAlevel">Water Level Channel Name</label>
+                                            </td>
+                                            <td>
+                                              <input type="text" name="HBVDNAlevel">
+                                            </td>
+                                          </tr>
+                                          <tr  class=" stent vis">
+                                            <td class="pad-left10 diabetes-data">
+                                              <label for="HBVDNAlevel">Water Level Enabled</label>
+                                            </td>
+                                            <td>
+                                              <label class="radio-inline"><input type="radio" name="optradio">Yes</label>
+<label class="radio-inline"><input type="radio" name="optradio">No</label>
+                                            </td>
+                                          </tr>
+                                          <tr  class=" stent vis">
+                                            <td class="pad-left10 diabetes-data">
+                                              <label for="HBVDNAlevel">Type A Water Level Channel Name</label>
+                                            </td>
+                                            <td>
+                                              <input type="text" name="HBVDNAlevel">
+                                            </td>
+                                          </tr>
+                                          <tr  class=" stent vis">
+                                            <td class="pad-left10 diabetes-data">
+                                              <label for="HBVDNAlevel">Type A Water Level Enabled</label>
+                                            </td>
+                                            <td>
+                                              <label class="radio-inline"><input type="radio" name="optradio">Yes</label>
+<label class="radio-inline"><input type="radio" name="optradio">No</label>
+                                            </td>
+                                          </tr>
+                                          <tr  class=" stent vis">
+                                            <td class="pad-left10 diabetes-data">
+                                              <label for="HBVDNAlevel">Type A Water Contact Channel Name</label>
+                                            </td>
+                                            <td>
+                                              <input type="text" name="HBVDNAlevel">
+                                            </td>
+                                          </tr>
+                                          <tr  class=" stent vis">
+                                            <td class="pad-left10 diabetes-data">
+                                              <label for="HBVDNAlevel">Type A Water Contact Enabled</label>
+                                            </td>
+                                            <td>
+                                              <label class="radio-inline"><input type="radio" name="optradio">Yes</label>
+<label class="radio-inline"><input type="radio" name="optradio">No</label>
+                                            </td>
+                                          </tr>
+                                          <tr  class=" stent vis">
+                                            <td class="pad-left10 diabetes-data">
+                                              <label for="HBVDNAlevel">Type A Water Contact High Moisture Threshold</label>
+                                            </td>
+                                            <td>
+                                              <input type="number" name="HBVDNAlevel">
+                                            </td>
+                                          </tr>
+                                          <tr  class=" stent vis">
+                                            <td class="pad-left10 diabetes-data">
+                                              <label for="HBVDNAlevel">Type A Water Contact Saturation Threshold</label>
+                                            </td>
+                                            <td>
+                                              <input type="number" name="HBVDNAlevel">
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                  	  </table>
+                                      <button type="button" class="btn btn-primary" id="write-data-bleed" onclick="send()">Update Node Configuration</button>
+
+                                    </form>
+                            				</div>
+                                    <div id="write-status-bleed" class="text-center hidden"> Success </div>
+                            		</div>
+                            </div>
+                  				</div>
+                  			</div>
+                    </div>
+
+
+
+
+
+
+
+
+
+
                 </div>
 
         </div>
@@ -54,103 +295,7 @@
 
 
     <script>
-    function overlayShow(id) {
-      console.log("Marker Clicked: "+id);
-      $("#nodeoverlay").modal('show');
-    }
-      function initMap() {
-        var uluru = {lat: 42.290669, lng: -83.727823};
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 16,
-          center: uluru
-        });
-        var marker = new google.maps.Marker({
-          position: uluru,
-          map: map
-        });
-        var marker1 = new google.maps.Marker({
-          position:{lat: 42.290169, lng: -83.72823},
-          map: map
-        });
-          // var clickHandler = new ClickEventHandler(map, uluru);
-          marker.addListener('click', function() {
-                 map.setZoom(18);
-                 map.setCenter(marker.getPosition());
-                 overlayShow("#0");
-               });
-               marker1.addListener('click', function() {
-                      map.setZoom(18);
-                      map.setCenter(marker1.getPosition());
-                      overlayShow("#1");
-                    });
 
-      }
-
-
-  // /**
-  //  * @constructor
-  //  */
-  // var ClickEventHandler = function(map, origin) {
-  //   this.origin = origin;
-  //   this.map = map;
-  //   this.directionsService = new google.maps.DirectionsService;
-  //   this.directionsDisplay = new google.maps.DirectionsRenderer;
-  //   this.directionsDisplay.setMap(map);
-  //   this.placesService = new google.maps.places.PlacesService(map);
-  //   this.infowindow = new google.maps.InfoWindow;
-  //   this.infowindowContent = document.getElementById('infowindow-content');
-  //   this.infowindow.setContent(this.infowindowContent);
-  //
-  //   // Listen for clicks on the map.
-  //   this.map.addListener('click', this.handleClick.bind(this));
-  // };
-  //
-  // ClickEventHandler.prototype.handleClick = function(event) {
-  //   console.log('You clicked on: ' + event.latLng);
-  //   // If the event has a placeId, use it.
-  //   if (event.placeId) {
-  //     console.log('You clicked on place:' + event.placeId);
-  //
-  //     // Calling e.stop() on the event prevents the default info window from
-  //     // showing.
-  //     // If you call stop here when there is no placeId you will prevent some
-  //     // other map click event handlers from receiving the event.
-  //     event.stop();
-  //     this.calculateAndDisplayRoute(event.placeId);
-  //     this.getPlaceInformation(event.placeId);
-  //   }
-  // };
-  //
-  // ClickEventHandler.prototype.calculateAndDisplayRoute = function(placeId) {
-  //   var me = this;
-  //   this.directionsService.route({
-  //     origin: this.origin,
-  //     destination: {placeId: placeId},
-  //     travelMode: 'WALKING'
-  //   }, function(response, status) {
-  //     if (status === 'OK') {
-  //       me.directionsDisplay.setDirections(response);
-  //     } else {
-  //       window.alert('Directions request failed due to ' + status);
-  //     }
-  //   });
-  // };
-  //
-  // ClickEventHandler.prototype.getPlaceInformation = function(placeId) {
-  //   var me = this;
-  //   this.placesService.getDetails({placeId: placeId}, function(place, status) {
-  //     if (status === 'OK') {
-  //       me.infowindow.close();
-  //       me.infowindow.setPosition(place.geometry.location);
-  //       me.infowindowContent.children['place-icon'].src = place.icon;
-  //       me.infowindowContent.children['place-name'].textContent = place.name;
-  //       me.infowindowContent.children['place-id'].textContent = place.place_id;
-  //       me.infowindowContent.children['place-address'].textContent =
-  //           place.formatted_address;
-  //       me.infowindow.open(me.map);
-  //     }
-  //   });
-  // };
 
     </script>
     <script async defer

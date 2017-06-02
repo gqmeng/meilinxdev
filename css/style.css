@@ -370,8 +370,62 @@ right: -15px;
 /*===========================
   --- Sections ----
 =========================== */
-section#section-tech p, section#section-story p {
-	line-height: 2em;
+section.header {
+	height: 60px;
+	background-color: blue;
+}
+section.header h3 {
+	color:#fff;
+	font-weight:700;
+	letter-spacing: 0.08em;
+	line-height: 2.5em;
+}
+section#banner {
+	background:linear-gradient(90deg, #02b47a, #FFFFFF);
+	height: 90px;
+}
+div#sum {
+	height: 100px;
+}
+section.footer {
+	line-height:1.2em;
+	background-color: blue;
+	color: #fff;
+}
+.modal-dialog {
+	width: 900px;
+}
+.tab-pane {
+		height: 400px;
+		background-color: #fff;
+	}
+	#exTab1 .nav-pills, #exTab2 .nav-pills {
+		height: 30px;
+		opacity: 0;
+		transition: opacity 0.8s linear;
+	}
+	#exTab1 .nav-pills:hover, #exTab2 .nav-pills:hover{
+		opacity: 1;
+	}
+	input {
+		margin:1px 0px;
+	}
+	tr {
+		text-align:left;
+	}
+	#exTab1 .nav-pills > li>a, #exTab2 .nav-pills > li>a {
+		height: 26px;
+		padding: 2px 10px;
+  border-radius: 2px;
+}
+.table-striped
+{
+	width: 100%;
+	margin: 16px auto 1px;
+}
+section .container, section .nav-container {
+	max-width: 1024px;
+	margin:0 auto;
 }
 .container.pad-top0 {
 	padding-top: 0px;
@@ -494,8 +548,8 @@ section > .container{
 	list-style: none;
 }
 .nav li, .nav-m li{
-	height: 60px;
-	line-height: 60px;
+	height: 30px;
+	line-height: 30px;
 	vertical-align: middle;
 }
 .nav li.dropdown {
@@ -763,7 +817,7 @@ h3.customheading {
 }
 .modal-body {
     position: relative;
-    padding: 30px 50px;
+    padding: 10px 30px;
 }
 
 /*Sidebar navigation*/
