@@ -1,34 +1,145 @@
 function overlayShow(id) {
 	console.log("Marker Clicked: "+id);
 	$("#nodeoverlay").modal('show');
+	$("#node_id").text(id);
 }
+
 	function initMap() {
-		var uluru = {lat: 42.290669, lng: -83.727823};
+		var greendot='http://maps.google.com/mapfiles/ms/icons/green-dot.png';
+		var reddot='http://maps.google.com/mapfiles/ms/icons/red-dot.png';
+		var cameradot ='http://maps.google.com/mapfiles/ms/icons/blue.png'
+		var gatewaydot ='http://maps.google.com/mapfiles/ms/icons/purple.png'
+		var arrDestinations = [
+		{
+			lat: 42.289714,
+			lon: -83.730221,
+			id:"SR01",
+			title: "Sensor Node #1",
+			type: "snode",
+			alert: false,
+			description: ""
+		},
+		{
+			lat: 42.289781,
+			lon: -83.730076,
+			id:"SR11",
+			title: "Sensor Node #11",
+			type: "snode",
+			alert: false,
+			description: ""
+		},
+		{
+			lat: 42.289837,
+			lon: -83.729956,
+			id:"SR12",
+			title: "Sensor Node #12",
+			type: "snode",
+			alert: false,
+			description: ""
+		},
+		{
+			lat: 42.289837,
+			lon:-83.730291,
+			id:"SR02",
+			title: "Sensor Node #2",
+			type: "snode",
+			alert: true,
+			description: "Flood Alert Warning"
+		},
+		{
+			lat: 42.289678,
+			lon: -83.730538,
+			id:"VR01",
+			title: "Video Node #1",
+			type: "vnode",
+			alert: false,
+			description: ""
+		},
+		{
+			lat: 42.289916,
+			lon: -83.730076,
+			id:"GW01",
+			title: "Gateway #1",
+			type: "gateway",
+			alert: false,
+			description: ""
+		}
+	];
+		var uluru = {lat: 42.289916, lng: -83.730076};
 		var map = new google.maps.Map(document.getElementById('map'), {
-			zoom: 16,
+			zoom: 19,
 			center: uluru
 		});
-		var marker = new google.maps.Marker({
-			position: uluru,
-			map: map
-		});
-		var marker1 = new google.maps.Marker({
-			position:{lat: 42.290169, lng: -83.72823},
-			map: map
-		});
-			// var clickHandler = new ClickEventHandler(map, uluru);
-			marker.addListener('click', function() {
-						 map.setZoom(18);
-						 map.setCenter(marker.getPosition());
-						 overlayShow("#0");
-					 });
-					 marker1.addListener('click', function() {
-									map.setZoom(18);
-									map.setCenter(marker1.getPosition());
-									overlayShow("#1");
-								});
 
+		// var marker = new google.maps.Marker({
+		// 	position: uluru,
+		// 	map: map
+		// });
+		// var marker1 = new google.maps.Marker({
+		// 	position:{lat: 42.290169, lng: -83.72823},
+		// 	map: map
+		// });
+		var infowindow =  new google.maps.InfoWindow({
+		content: ''
+	});
+	for (i = 0; i < arrDestinations.length; i++) {
+	// create a marker
+	var micon =null;
+	if(arrDestinations[i].type=="snode"){
+		if(arrDestinations[i].alert){
+			micon = reddot;
+		}else {
+			micon=greendot;
+		}
 	}
+	if(arrDestinations[i].type=="vnode"){
+		micon=cameradot;
+	}
+	if(arrDestinations[i].type=="gateway"){
+		micon=gatewaydot;
+	}
+	var marker = new google.maps.Marker({
+		title: arrDestinations[i].title +" "+arrDestinations[i].description,
+		icon:micon,
+		position: new google.maps.LatLng(arrDestinations[i].lat, arrDestinations[i].lon),
+		map: map
+	});
+	showOverlay(marker, arrDestinations[i].id);
+
+	// // add an event listener for this marker
+	// bindInfoWindow(marker, map, infowindow, "<p>" + arrDestinations[i].description + "</p>");
+}
+}
+function showOverlay(marker, id){
+	marker.addListener('click', function() {
+				 marker.map.setZoom(19);
+				 marker.map.setCenter(marker.getPosition());
+				 overlayShow(id);
+			 });
+}
+// function bindInfoWindow(marker, map, infowindow, html) {
+// 	google.maps.event.addListener(marker, 'mouseover', function() {
+// 		infowindow.setContent(html);
+// 		infowindow.open(map, marker);
+// 	});
+// 	google.maps.event.addListener(marker, 'mouseout', function() {
+// 		infowindow.setContent("");
+// 		infowindow.close();
+// 	});
+// }
+			// // var clickHandler = new ClickEventHandler(map, uluru);
+			// marker.addListener('click', function() {
+			// 			 map.setZoom(18);
+			// 			 map.setCenter(marker.getPosition());
+			// 			 overlayShow("#0");
+			// 		 });
+			// 		 marker1.addListener('click', function() {
+			// 						map.setZoom(18);
+			// 						map.setCenter(marker1.getPosition());
+			// 						overlayShow("#1");
+			// 					});
+
+
 
 
 // /**
