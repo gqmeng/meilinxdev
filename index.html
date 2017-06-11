@@ -59,7 +59,9 @@
 <body>
   <section class="header">
     <div class="container">
-      <h3><span style="font-size:28px; font-weight: 600; color:#00274c;margin-right:15px;">Evigia   </span>Flood Sensor Network</h3>
+      <h3>
+        <!-- <img src="./img/logo.png" height="48px;" style="margin-right:25px;"> -->
+        Evigia Flood Sensor Network</h3>
     </div>
   </section>
 
@@ -68,30 +70,37 @@
 
         <div class="row">
 
-          <div class="col-md-3 pad-right0 pad-left0" id="nlist">
-            <h3 style="text-align:left;">List</h3>
+          <div class="col-md-3 pad-right15 pad-left15 bg-grey" id="nlist">
+            <h3 style="text-align:center;line-height:2em;margin-bottom:20px;">Area under monitoring</h3>
             <div id="accordion" role="tablist" aria-multiselectable="true">
               <div class="card">
-                <div class="card-header" role="tab" id="headingOne">
+                <div class="card-header alert-danger" role="tab" id="headingOne">
                   <h5 class="mb-0">
+                    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                      Gateway #1
+                      Sensor Node Group A
                     </a>
                   </h5>
                 </div>
 
                 <div id="collapseOne" class="collapse " role="tabpanel" aria-labelledby="headingOne">
                   <div class="card-block">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ipsum massa, molestie eget imperdiet eget, ultrices vel ipsum. Proin massa massa, consectetur in placerat sed, malesuada ultrices urna. In ullamcorper nisl vitae dui lacinia, id laoreet est commodo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec tempor sapien a lectus fringilla, eu ultrices metus suscipit. Aliquam ex odio, posuere at pellentesque eget, aliquam a augue. Duis scelerisque pharetra sapien a congue. Mauris auctor arcu non pellentesque blandit.
+                    <ul>
+                      <li class="alert-success pad-left15"><img src="./img/green-dot.png" height="18px;"> Sensor Node #1</li>
+                    <li class="alert-danger pad-left15"><img src="./img/red-dot.png" height="18px;"> Sensor Node #2</li>
+                          <li class="alert-success pad-left15"><img src="./img/green-dot.png" height="18px;"> Sensor Node #11</li>
+                                <li class="alert-success pad-left15"><img src="./img/green-dot.png" height="18px;"> Sensor Node #12</li>
+                    </ul>
                 </div>
               </div>
             </div>
 
   <div class="card">
-    <div class="card-header" role="tab" id="headingOne">
-      <h5 class="mb-0 pad-left10">
+    <div class="card-header alert-success" role="tab" id="headingOne">
+      <h5 class="mb-0">
+        <img src="./img/purple.png" height="20px;">
         <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseOne">
-          Sensor Node #1
+          Gateway #1
         </a>
       </h5>
     </div>
@@ -102,55 +111,15 @@
     </div>
   </div>
 </div>
-  <div class="card">
-    <div class="card-header" role="tab" id="headingTwo">
-      <h5 class="mb-0 pad-left10">
-        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseTwo">
-          Sensor Node #2
-        </a>
-      </h5>
-    </div>
-    <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
-      <div class="card-block">
 
-                Integer blandit aliquam euismod. Mauris condimentum leo non nulla elementum iaculis. Suspendisse eu dictum sem. In hac habitasse platea dictumst. Donec condimentum justo vitae nulla hendrerit pulvinar. Suspendisse sapien enim, dignissim a quam at, placerat dictum felis. Nullam maximus, nulla vitae porta condimentum, massa arcu fermentum nunc, eget pellentesque lectus diam et tellus. Aenean accumsan neque et nunc accumsan lobortis. Ut vel venenatis augue. Praesent sit amet ligula bibendum, tincidunt dolor at, lobortis arcu. Nam nunc sem, vulputate in massa quis, facilisis ornare neque. Phasellus eros arcu, iaculis a nulla ac, facilisis mollis felis. Praesent ullamcorper feugiat turpis vitae pretium. Pellentesque tincidunt at nulla nec aliquam. Integer eget volutpat lectus. Suspendisse vitae vulputate arcu, in facilisis massa.
- </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header" role="tab" id="headingOne">
-        <h5 class="mb-0 pad-left10">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseOne">
-            Sensor Node #11
-          </a>
-        </h5>
-      </div>
 
-      <div id="collapseFour" class="collapse " role="tabpanel" aria-labelledby="headingOne">
-        <div class="card-block">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ipsum massa, molestie eget imperdiet eget, ultrices vel ipsum. Proin massa massa, consectetur in placerat sed, malesuada ultrices urna. In ullamcorper nisl vitae dui lacinia, id laoreet est commodo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec tempor sapien a lectus fringilla, eu ultrices metus suscipit. Aliquam ex odio, posuere at pellentesque eget, aliquam a augue. Duis scelerisque pharetra sapien a congue. Mauris auctor arcu non pellentesque blandit.
-      </div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-header" role="tab" id="headingOne">
-      <h5 class="mb-0 pad-left10">
-        <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="true" aria-controls="collapseOne">
-          Sensor Node #12
-        </a>
-      </h5>
-    </div>
 
-    <div id="collapseFive" class="collapse " role="tabpanel" aria-labelledby="headingOne">
-      <div class="card-block">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ipsum massa, molestie eget imperdiet eget, ultrices vel ipsum. Proin massa massa, consectetur in placerat sed, malesuada ultrices urna. In ullamcorper nisl vitae dui lacinia, id laoreet est commodo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec tempor sapien a lectus fringilla, eu ultrices metus suscipit. Aliquam ex odio, posuere at pellentesque eget, aliquam a augue. Duis scelerisque pharetra sapien a congue. Mauris auctor arcu non pellentesque blandit.
-    </div>
-  </div>
-</div>
 <div class="card">
-  <div class="card-header" role="tab" id="headingOne">
-    <h5 class="mb-0 pad-left10">
+  <div class="card-header alert-success" role="tab" id="headingOne">
+    <h5 class="mb-0 ">
+        <img src="./img/blue.png" height="20px;">
       <a data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="true" aria-controls="collapseOne">
+
         Video Node #1
       </a>
     </h5>
@@ -165,7 +134,7 @@
   </div>
 
           </div>
-          <div class="col-md-8 pad-right10 pad-left10">
+          <div class="col-md-9">
             <div id="map"></div>
           </div>
 
@@ -174,13 +143,14 @@
 
     </section>
     <section id="banner">
-      <marquee behavior="scroll" direction="left">
+      <!-- <marquee behavior="scroll" direction="left">
         <span style="color:green;">2017-06-06-13:53:00 Network up.</span>
         <span style="color:green">  2017-06-06-13:55:12 All nodes report normal operation.</span>
-        <span style="color:red">  2017-06-06-15:07:03 Sensor Node #2 Flood Alert Warning!!!</span></marquee>
+        <span style="color:red">  2017-06-06-15:07:03 Sensor Node #2 Flood Alert Warning!!!</span>
+      </marquee> -->
     </section>
     <section class="footer">
-      <div class="container">
+      <div class="container" style="text-align:center;">
         Copyright&copy;2017  Evigia Systems Inc.
       </div>
     </section>

@@ -99,7 +99,7 @@ function overlayShow(id) {
 		micon=gatewaydot;
 	}
 	var marker = new google.maps.Marker({
-		title: arrDestinations[i].title +" "+arrDestinations[i].description,
+		title: arrDestinations[i].title,
 		icon:micon,
 		position: new google.maps.LatLng(arrDestinations[i].lat, arrDestinations[i].lon),
 		map: map
@@ -107,7 +107,7 @@ function overlayShow(id) {
 	showOverlay(marker, arrDestinations[i].id);
 
 	// // add an event listener for this marker
-	// bindInfoWindow(marker, map, infowindow, "<p>" + arrDestinations[i].description + "</p>");
+	bindInfoWindow(marker, map, infowindow, "<span style='font-weight:600;'>" + arrDestinations[i].description + "!!!</span>");
 }
 }
 function showOverlay(marker, id){
@@ -117,16 +117,16 @@ function showOverlay(marker, id){
 				 overlayShow(id);
 			 });
 }
-// function bindInfoWindow(marker, map, infowindow, html) {
-// 	google.maps.event.addListener(marker, 'mouseover', function() {
-// 		infowindow.setContent(html);
-// 		infowindow.open(map, marker);
-// 	});
-// 	google.maps.event.addListener(marker, 'mouseout', function() {
-// 		infowindow.setContent("");
-// 		infowindow.close();
-// 	});
-// }
+function bindInfoWindow(marker, map, infowindow, html) {
+	google.maps.event.addListener(marker, 'mouseover', function() {
+		infowindow.setContent(html);
+		infowindow.open(map, marker);
+	});
+	google.maps.event.addListener(marker, 'mouseout', function() {
+		infowindow.setContent("");
+		infowindow.close();
+	});
+}
 			// // var clickHandler = new ClickEventHandler(map, uluru);
 			// marker.addListener('click', function() {
 			// 			 map.setZoom(18);

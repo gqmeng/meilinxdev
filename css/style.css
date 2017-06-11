@@ -200,7 +200,7 @@ right: -15px;
 =========================== */
 section.header {
 	height: 60px;
-	background:linear-gradient(90deg, blue, #FFFFFF);
+	background:linear-gradient(120deg, #2c2cef, #fff);
 }
 section.header h3 {
 	color:#fff;
@@ -218,22 +218,33 @@ section#banner {
 .card-header {
     padding: .75rem 1.25rem;
     margin-bottom: 0;
-    background-color: #f7f7f9;
+    /*background-color: #f7f7f9;*/
     border-bottom: 1px solid rgba(0,0,0,.125);
 }
 div#map {
 			height: 530px;
-			width: 100%;
+			width: 95%;
+			/*border:2px solid blue;*/
 		 }
-
+.mb-0 a {
+	font-weight: 600;
+}
+ul {
+	list-style: none;
+	margin-left: 0px;
+	padding-left:0px;
+}
+.card {
+	margin-bottom: 3px;
+}
 div#sum {
 	height: 100px;
 }
 div#nlist{
 	height:530px;
 	overflow-y:auto;
-	padding:5px 0px;
-	margin:0px 0px 0px 5px;
+	padding:10px 5px;
+	margin:0px 0px 0px 0px;
 }
 section.footer {
 	line-height:1.6em;
@@ -298,7 +309,7 @@ section.section {
 	background-color: #fff;
 }
 .bg-grey{
-		background-color: #e4e1df;
+		background-color: #f7f7f7;
 }
 .bg-darkgrey {
 	background-color:#555555;
