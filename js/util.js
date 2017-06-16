@@ -1,3 +1,21 @@
+
+
+$(document).ready(function(){
+	var mydata;
+	var self=this;
+	console.log("Retrieving initial data...");
+
+	$.getJSON("./json/stubdata.json", function(data){
+		 this.mydata=$.extend(true, {},data);
+//		 setTimeout(showPage, 3000);
+		 console.log(this.mydata);
+	 },
+ function(response){
+	 console.log("Error=>"+response);
+ });
+});
+
+
 function overlayShow(id) {
 	console.log("Marker Clicked: "+id);
 	$("#nodeoverlay").modal('show');

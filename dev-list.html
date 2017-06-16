@@ -9,11 +9,15 @@
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
       integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
       crossorigin="anonymous">
+      <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
       <script src="https://unpkg.com/vue"></script>
     </head>
     <body>
       <script type="text/x-template" id="item-template">
-        <li :class="model.displayClass">
+        <li :class="model.displayClass" v-on:mouseover="showSummary">
           <div
             :class="{bold: isFolder}"
             @click="toggle"
@@ -27,7 +31,7 @@
             <item
               class="item"
               v-for="model in model.children"
-              :model="model">
+              :model="model" :key="model.name">
             </item>
             <!-- <li class="add" @click="addChild">+</li> -->
           </ul>
@@ -35,12 +39,16 @@
       </script>
 
 <div id="demo">
-<ul id="demo">
+<ul id="demolist" v-if="dataReady">
   <item
     class="item"
     :model="treeData">
   </item>
 </ul>
+
+<div id="summary">
+  <span></span>
+</div>
 </div>
 
     </body>
@@ -48,42 +56,23 @@
     // demo data
     var greendot='http://maps.google.com/mapfiles/ms/icons/green-dot.png';
     var reddot='http://maps.google.com/mapfiles/ms/icons/red-dot.png';
-    var cameradot ='http://maps.google.com/mapfiles/ms/icons/blue.png'
-    var gatewaydot ='http://maps.google.com/mapfiles/ms/icons/purple.png'
+    var cameradot ='http://maps.google.com/mapfiles/ms/icons/blue.png';
+    var gatewaydot ='http://maps.google.com/mapfiles/ms/icons/purple.png';
 
-var data = {
-  name: 'My Sensor Network',
-  children: [
-    {
-      name: 'Sensor Node Group 1',
-      children: [
-        { name: 'Sensor Node #1' ,
-          displayClass: 'alert-success level2 ',
-          entitytype: 'sensornode' },
-        { name: 'Sensor Node #2',
-          displayClass: 'alert-warning level2 ',
-        entitytype: 'sensornode' },
-        { name: 'Sensor Node #11' ,
-          displayClass: 'alert-success level2 ',
-        entitytype: 'sensornode' },
-        { name: 'Sensor Node #12' ,
-          displayClass: 'alert-success level2 ',
-        entitytype: 'sensornode' }
-      ],
-      displayClass: 'alert-warning level1 ',
-      entitytype: 'group'
-    },
-    { name: 'Gateway #1' ,
-      displayClass: 'alert-success level1 ',
-      entitytype: 'gateway'
-    },
-    { name: 'Video Node #1',
-      displayClass: 'alert-success level1',
-      entitytype: 'videonode' }
-  ],
-  displayClass: 'level0',
-  entitytype: 'network'
-}
+    function myFunction() {
+      console.log("Starting retrieving config data...");
+
+      $.getJSON("./json/resouces.json", function(data){
+         greendot = data.greendot;
+         reddot = data.reddot;
+         cameradot =data.cameradot;
+         gatewaydot=data.gatewaydot;
+       },
+     function(response){
+       console.log("Error=>"+response);
+     });
+
+    }
 
 // define the item component
 Vue.component('item', {
@@ -137,6 +126,10 @@ methods: {
     this.model.children.push({
       name: 'new stuff'
     })
+  },
+  showSummary:function() {
+    console.log("hover:"+this.model.title);
+    $("#summary>span").text(this.model.title);
   }
 }
 })
@@ -144,8 +137,20 @@ methods: {
 // boot up the demo
 var demo = new Vue({
 el: '#demo',
-data: {
-  treeData: data
+data: function(){
+  return {
+    treeData: {},
+    dataReady:false
+  }
+},
+beforeCreate: function(){
+  var self=this;
+  $.getJSON("./json/stubdata.json", function(data){
+    console.log(data);
+     $.extend(true,self.treeData,data);
+    console.log(self.treeData);
+    self.dataReady=true;
+  });
 }
 })
 </script>
