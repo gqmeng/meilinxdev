@@ -16,7 +16,7 @@
       <script src="https://unpkg.com/vue"></script>
     </head>
     <body>
-      <script type="text/x-template" id="item-template">
+      <template id="item-template">
         <li :class="model.displayClass" v-on:mouseover="showSummary">
           <div
             :class="{bold: isFolder}"
@@ -36,7 +36,7 @@
             <!-- <li class="add" @click="addChild">+</li> -->
           </ul>
         </li>
-      </script>
+      </template>
 
 <div id="demo">
 <ul id="demolist" v-if="dataReady">
