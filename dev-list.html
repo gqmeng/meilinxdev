@@ -14,10 +14,11 @@
         integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
         crossorigin="anonymous"></script>
       <script src="https://unpkg.com/vue"></script>
+      <script src="./js/lodash.js"></script>
     </head>
     <body>
       <template id="item-template">
-        <li :class="model.displayClass" v-on:mouseover="showSummary">
+        <li :class="model.displayClass" :id="model.id" v-on:mouseover="showSummary">
           <div
             :class="{bold: isFolder}"
             @click="toggle"
@@ -38,8 +39,8 @@
         </li>
       </template>
 
-<div id="demo">
-<ul id="demolist" v-if="dataReady">
+<div id="fsnapp" v-if="dataReady">
+<ul id="demolist" >
   <item
     class="item"
     :model="treeData">
@@ -51,9 +52,12 @@
 </div>
 </div>
 
+<div id="loader" v-else></div>
+
     </body>
     <script type="text/javascript">
     // demo data
+
     var greendot='http://maps.google.com/mapfiles/ms/icons/green-dot.png';
     var reddot='http://maps.google.com/mapfiles/ms/icons/red-dot.png';
     var cameradot ='http://maps.google.com/mapfiles/ms/icons/blue.png';
@@ -127,7 +131,8 @@ methods: {
       name: 'new stuff'
     })
   },
-  showSummary:function() {
+  showSummary:function(e) {
+    e.stopPropagation();
     console.log("hover:"+this.model.title);
     $("#summary>span").text(this.model.title);
   }
@@ -136,7 +141,7 @@ methods: {
 
 // boot up the demo
 var demo = new Vue({
-el: '#demo',
+el: '#fsnapp',
 data: function(){
   return {
     treeData: {},
@@ -150,6 +155,7 @@ beforeCreate: function(){
      $.extend(true,self.treeData,data);
     console.log(self.treeData);
     self.dataReady=true;
+    $("#summary>span").text(self.treeData.title);
   });
 }
 })
