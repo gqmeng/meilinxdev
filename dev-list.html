@@ -86,7 +86,7 @@ props: {
 },
 data: function () {
   return {
-    open: false
+    open: true
   }
 },
 computed: {
@@ -145,18 +145,37 @@ el: '#fsnapp',
 data: function(){
   return {
     treeData: {},
-    dataReady:false
+    dataReady: false,
+    snlistReady: false,
+    gwReady: false,
+    vnReady: false,
   }
 },
 beforeCreate: function(){
   var self=this;
+  $.when(
+    $.getJSON("./json/sensornodes.json",function(data){
+        console.log("Sensor Node list retrieved");
+                self.snlistReady=true;
+      }),
+    $.getJSON("./json/gateways.json",function(data){
+      console.log("Gateway retrieved");
+        self.gwReady=true;
+      }),
+  $.getJSON("./json/videonodes.json",function(data){
+      console.log("Video Nodes retrieved");
+        self.vnReady=true;
+    })
+).then(
   $.getJSON("./json/stubdata.json", function(data){
-    console.log(data);
+    // console.log(data);
      $.extend(true,self.treeData,data);
     console.log(self.treeData);
-    self.dataReady=true;
+
     $("#summary>span").text(self.treeData.title);
-  });
+    self.dataReady = true;
+  })
+);
 }
 })
 </script>

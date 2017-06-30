@@ -1,10 +1,10 @@
 {
-  "name""sensornode",
+  "name":"sensornode",
   "nodelist":[
   {
     "ID":"va",
     "Timstamp":100,
-    "Battery1":12,	
+    "Battery1":12,
     "Battery2":12,
     "Latitude":40.0,
     "Longitude":-85,
@@ -15,12 +15,12 @@
     "Temperature2":89,
     "TypeA":20,
     "Humidity1":80,
-    "Group":"a",
+    "Group":"a"
   },
-  {  
+  {
     "ID":"vb",
     "Timstamp":100,
-    "Battery1":12,	
+    "Battery1":12,
     "Battery2":12,
     "Latitude":40.0,
     "Longitude":-85,
@@ -35,4 +35,3 @@
   }
   ]
 }
-
