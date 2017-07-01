@@ -13,10 +13,6 @@ $(document).ready(function(){
  });
 });
 
-function retrieveNodeList(getlist){
-
-}
-
 function overlayShow(id) {
 	console.log("Marker Clicked: "+id);
 	$("#nodeoverlay").modal('show');
