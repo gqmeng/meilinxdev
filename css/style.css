@@ -261,12 +261,12 @@ section.footer {
 		height: 400px;
 		background-color: #fff;
 	}
-	#exTab1 .nav-pills, #exTab2 .nav-pills {
+	#exTab1 .nav-pills {
 		height: 30px;
 		opacity: 0;
 		transition: opacity 0.8s linear;
 	}
-	#exTab1 .nav-pills:hover, #exTab2 .nav-pills:hover{
+	#exTab1 .nav-pills:hover {
 		opacity: 1;
 	}
 	input {
@@ -275,7 +275,7 @@ section.footer {
 	tr {
 		text-align:left;
 	}
-	#exTab1 .nav-pills > li>a, #exTab2 .nav-pills > li>a {
+	#exTab1 .nav-pills > li>a {
 		height: 26px;
 		padding: 2px 10px;
   border-radius: 2px;
@@ -367,11 +367,11 @@ section.section {
 	background: transparent;
 	transition: width .5s ease, background-color .5s ease;
 }
-
+/*
 .nav li.active>a>span:after, .nav li:hover>a>span:after {
 	width: 100%;
 	background: #00274c;
-}
+}*/
 
 .modal-content {
 	border: none;
@@ -407,4 +407,49 @@ section span {
 button.close {
 	width:40px;
 	height:40px;
+}
+
+.item {
+  cursor: pointer;
+}
+.bold {
+  font-weight: bold;
+}
+
+ul#demolist{
+	padding-left: 0px;
+	line-height: 1.5em;
+	list-style: none;
+	height:320px;
+	overflow-y:auto;
+}
+ul#demolist>li {
+  padding-top:2px;
+  padding-bottom:0px;
+}
+ul#demolist>li span {
+  width: 30px;
+  text-align:center;
+}
+ul#demolist>li.level0 {
+    font-size: 18px;
+    padding-left 5px;
+		    font-weight: 500;
+}
+div#summary {
+	border:1px solid #b3b3b3;
+	height:150px;
+	overflow-y:auto;
+}
+ul#demolist>li.level1{
+      padding-left 15px;
+    font-size: 16px;
+    font-weight: 500;
+    margin:5px 0px;
+}
+ul#demolist>li.level2 {
+    padding-left 25px;
+    font-size: 14px;
+    font-weight:400;
+    margin:1px 0px;
 }

@@ -38,12 +38,12 @@
       "entitytype": "group",
       "title":"Sensor Node Group #1"
     },
-    { "name": "Gateway #1" ,
+    { "name": "Gateway-1" ,
       "displayClass": "alert-success level1 ",
       "lat": 42.289916,
 			"lon": -83.730076,
 			"id":"GW01",
-			"title": "Gateway #1",
+			"title": "Gateway-1:<br> Battery 1 - OK <br> Battery 2 - OK <br>",
       "entitytype": "gateway",
       "tooltip":"This is a Gateway"
     },

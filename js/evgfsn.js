@@ -1,8 +1,27 @@
+var greendot='http://maps.google.com/mapfiles/ms/icons/green-dot.png';
+var reddot='http://maps.google.com/mapfiles/ms/icons/red-dot.png';
+var cameradot ='http://maps.google.com/mapfiles/ms/icons/blue.png';
+var gatewaydot ='http://maps.google.com/mapfiles/ms/icons/purple.png';
+
 $(document).ready(function(){
 	var mydata;
 	var self=this;
 	console.log("Retrieving initial data...");
 
+	function myFunction() {
+		console.log("Starting retrieving config data...");
+
+		$.getJSON("./json/resouces.json", function(data){
+			 greendot = data.greendot;
+			 reddot = data.reddot;
+			 cameradot =data.cameradot;
+			 gatewaydot=data.gatewaydot;
+		 },
+	 function(response){
+		 console.log("Error=>"+response);
+	 });
+
+	}
 	$.getJSON("./json/stubdata.json", function(data){
 		 this.mydata=$.extend(true, {},data);
 //		 setTimeout(showPage, 3000);
@@ -11,7 +30,140 @@ $(document).ready(function(){
  function(response){
 	 console.log("Error=>"+response);
  });
+
+ google.charts.load('current', {'packages':['corechart']});
+ google.charts.setOnLoadCallback(drawChart);
+
+ function drawChart() {
+	 var data = google.visualization.arrayToDataTable([
+		 ['Time', 'Reading'],
+		 [ 75617,      3360],
+		 [ 75622,    416],
+		 [  75636,     255],
+		 [  75645,      0],
+		 [  75689,      417],
+		 [  75693,    255]
+	 ]);
+
+	 var options = {
+		 title: 'Sensor Reading',
+		 hAxis: {title: 'Time'},
+		 vAxis: {title: 'Reading'},
+		 legend: 'none',
+
+		 width: 600,
+		 height: 300
+
+	 };
+
+
+	 var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+
+	 chart.draw(data, options);
+ }
 });
+
+
+// define the item component
+Vue.component('item', {
+template: '#item-template',
+props: {
+  model: Object
+},
+data: function () {
+  return {
+    open: true
+  }
+},
+computed: {
+  isFolder: function () {
+    return this.model.children &&
+      this.model.children.length
+  },
+  micon:function(){
+    switch(this.model.entitytype){
+      case 'gateway':
+        return gatewaydot;
+      case 'videonode':
+        return cameradot;
+      case 'sensornode':
+        if(this.model.displayClass.includes('success')){
+          return greendot;
+        }else {
+          return reddot;
+        }
+      default:
+       return '';
+    }
+  }
+},
+methods: {
+  toggle: function () {
+    if (this.isFolder) {
+      this.open = !this.open
+    }else {
+      console.log("Clicked "+this.model.name);
+    }
+  },
+  changeType: function () {
+    if (!this.isFolder) {
+      Vue.set(this.model, 'children', [])
+      this.addChild()
+      this.open = true
+    }
+  },
+  addChild: function () {
+    this.model.children.push({
+      name: 'new stuff'
+    })
+  },
+  showSummary:function(e) {
+    e.stopPropagation();
+    console.log("hover:"+this.model.title);
+    $("#summary>span").text(this.model.title);
+  }
+}
+})
+
+// boot up the demo
+var demo = new Vue({
+el: '#fsnapp',
+data: function(){
+  return {
+    treeData: {},
+    dataReady: false,
+    snlistReady: false,
+    gwReady: false,
+    vnReady: false,
+  }
+},
+beforeCreate: function(){
+  var self=this;
+  $.when(
+    $.getJSON("./json/sensornodes.json",function(data){
+        console.log("Sensor Node list retrieved");
+                self.snlistReady=true;
+      }),
+    $.getJSON("./json/gateways.json",function(data){
+      console.log("Gateway retrieved");
+        self.gwReady=true;
+      }),
+  $.getJSON("./json/videonodes.json",function(data){
+      console.log("Video Nodes retrieved");
+        self.vnReady=true;
+    })
+).then(
+  $.getJSON("./json/stubdata.json", function(data){
+    // console.log(data);
+     $.extend(true,self.treeData,data);
+    console.log(self.treeData);
+
+    $("#summary>span").text(self.treeData.title);
+    self.dataReady = true;
+  })
+);
+}
+})
 
 function overlayShow(id) {
 	console.log("Marker Clicked: "+id);
