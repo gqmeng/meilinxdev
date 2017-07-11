@@ -23,9 +23,9 @@
           function myFunction() {
             console.log("Starting retrieving config data...");
 
-				    $.getJSON("./json/serverconfig.json", function(data){
-				       myurl = data.serverurl;
-		           mydb = data.database;
+				    $.getJSON("./json/mjpglist.json", function(data){
+				       myurl = data.name;
+		           mydb = data.filelist;
                setTimeout(showPage, 300);
                console.log( myurl+" "+mydb);
              },
@@ -37,7 +37,7 @@
 
           function showPage() {
             document.getElementById("loader").style.opacity = 0;
-            document.getElementById("videoplayback").style.opacity = 1;
+            document.getElementById("mjpeg_wrapper").style.opacity = 1;
             // motionjpeg("#motionjpeg");
           }
           // google.load('visualization', '1.1', {packages: ['corechart', 'controls']});
@@ -92,7 +92,7 @@
         from{ bottom:-100px; opacity:0 }
         to{ bottom:0; opacity:1 }
       }
-      #videoplayback {
+      #mjpeg_wrapper {
         position: relative;
         width:300px;
         height: 200px;
@@ -107,12 +107,12 @@
       }
       </style>
       </head>
-      <body>
+      <body onload="myFunction">
 <!--
       <div id="loader"></div>
  -->
 
-      <div id="mjpeg_wrapper" style="width:320px;">
+      <div id="mjpeg_wrapper" style="width:360px;padding:10px;background-color:#f3f3f3;">
         <!-- <img src="http://localhost:8000/img/v11.mjpg"> -->
         <!-- <img src="http://localhost:3000/img/v11.mjpeg"> -->
         <!-- <img id="motionjpeg" src="http://localhost:3000/img/v11.mjpeg" />

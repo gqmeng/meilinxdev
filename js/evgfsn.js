@@ -22,17 +22,8 @@ $(document).ready(function(){
 	 });
 
 	}
-	$.getJSON("./json/stubdata.json", function(data){
-		 this.mydata=$.extend(true, {},data);
-//		 setTimeout(showPage, 3000);
-		 console.log(this.mydata);
-	 },
- function(response){
-	 console.log("Error=>"+response);
- });
-
- google.charts.load('current', {'packages':['corechart']});
- google.charts.setOnLoadCallback(drawChart);
+ 	google.charts.load('current', {'packages':['corechart']});
+ 	google.charts.setOnLoadCallback(drawChart);
 
  function drawChart() {
 	 var data = google.visualization.arrayToDataTable([
@@ -50,21 +41,16 @@ $(document).ready(function(){
 		 hAxis: {title: 'Time'},
 		 vAxis: {title: 'Reading'},
 		 legend: 'none',
-
 		 width: 600,
 		 height: 300
-
 	 };
-
-
 	 var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
-
 	 chart.draw(data, options);
  }
 });
 
 
-// define the item component
+// define the item component for the tree data
 Vue.component('item', {
 template: '#item-template',
 props: {
@@ -131,6 +117,9 @@ el: '#fsnapp',
 data: function(){
   return {
     treeData: {},
+		snList:{},
+		vnList:{},
+		gwList:{},
     dataReady: false,
     snlistReady: false,
     gwReady: false,
@@ -141,23 +130,25 @@ beforeCreate: function(){
   var self=this;
   $.when(
     $.getJSON("./json/sensornodes.json",function(data){
-        console.log("Sensor Node list retrieved");
-                self.snlistReady=true;
+				$.extend(true, self.snList, data);
+        console.log("Sensor Node list retrieved"+ JSON.stringify(self.snList));
+        self.snlistReady=true;
       }),
     $.getJSON("./json/gateways.json",function(data){
-      console.log("Gateway retrieved");
-        self.gwReady=true;
+			$.extend(true, self.gwList, data);
+      console.log("Gateway retrieved"+self.gwList);
+      self.gwReady=true;
       }),
   $.getJSON("./json/videonodes.json",function(data){
-      console.log("Video Nodes retrieved");
-        self.vnReady=true;
+			$.extend(true, self.vnList, data);
+      console.log("Video Nodes retrieved"+self.vnList);
+      self.vnReady=true;
     })
 ).then(
   $.getJSON("./json/stubdata.json", function(data){
     // console.log(data);
      $.extend(true,self.treeData,data);
-    console.log(self.treeData);
-
+  	console.log(self.treeData);
     $("#summary>span").text(self.treeData.title);
     self.dataReady = true;
   })

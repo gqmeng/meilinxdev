@@ -112,7 +112,6 @@
                                       <form>
                                       <table class="table-striped">
                                         <tbody>
-
                                           <tr  class=" stent vis">
                                             <td class="pad-left10 diabetes-data">
                                               <label for="HBVDNAlevel">Ambient Temperature Channel Name</label>
@@ -236,7 +235,7 @@
         @click="toggle"
         @dblclick="changeType">
         <span v-if="isFolder" :class='open ? "glyphicon glyphicon-minus":"glyphicon glyphicon-plus"'></span>
-        <span v-else><img :src='micon' height="16px"></span>
+        <span v-else><img :src='micon' height="18px"></span>
         {{model.name}}
 
       </div>

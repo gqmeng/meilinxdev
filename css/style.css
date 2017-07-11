@@ -367,11 +367,6 @@ section.section {
 	background: transparent;
 	transition: width .5s ease, background-color .5s ease;
 }
-/*
-.nav li.active>a>span:after, .nav li:hover>a>span:after {
-	width: 100%;
-	background: #00274c;
-}*/
 
 .modal-content {
 	border: none;
@@ -424,16 +419,15 @@ ul#demolist{
 	overflow-y:auto;
 }
 ul#demolist>li {
-  padding-top:2px;
-  padding-bottom:0px;
+  padding-top:5px;
+  padding-bottom:5px;
 }
 ul#demolist>li span {
-  width: 30px;
   text-align:center;
 }
-ul#demolist>li.level0 {
-    font-size: 18px;
-    padding-left 5px;
+li.level0 {
+    font-size: 16px;
+    padding-left: 0px;
 		    font-weight: 500;
 }
 div#summary {
@@ -441,14 +435,14 @@ div#summary {
 	height:150px;
 	overflow-y:auto;
 }
-ul#demolist>li.level1{
-      padding-left 15px;
+li.level1{
+    padding-left: 10px;
     font-size: 16px;
     font-weight: 500;
     margin:5px 0px;
 }
-ul#demolist>li.level2 {
-    padding-left 25px;
+li.level2 {
+    padding-left: 25px;
     font-size: 14px;
     font-weight:400;
     margin:1px 0px;
