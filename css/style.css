@@ -419,8 +419,8 @@ ul#demolist{
 	overflow-y:auto;
 }
 ul#demolist>li {
-  padding-top:5px;
-  padding-bottom:5px;
+  padding:5px;
+
 }
 ul#demolist>li span {
   text-align:center;
@@ -446,4 +446,7 @@ li.level2 {
     font-size: 14px;
     font-weight:400;
     margin:1px 0px;
+}
+.highlight {
+	background-color: #fff;
 }
