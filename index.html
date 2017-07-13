@@ -116,7 +116,7 @@
   </div>
   </body>
   <template id="item-template">
-    <li :class="model.displayClass" :id="model.id" v-on:mouseover="showSummary">
+    <li :class="model.displayClass" :id="model.id" v-on:mouseover="hoverover" v-on:mouseout="hoverout">
       <div
         :class="{bold: isFolder}"
         @click="toggle"

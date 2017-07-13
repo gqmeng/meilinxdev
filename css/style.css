@@ -422,6 +422,9 @@ ul#demolist>li {
   padding:5px;
 
 }
+ul#demolist li:hover{
+	background-color:#fff;
+}
 ul#demolist>li span {
   text-align:center;
 }
@@ -450,3 +453,23 @@ li.level2 {
 .highlight {
 	background-color: #fff;
 }
+/* overwrite */
+/*.gm-style-iw {
+   width: 350px !important;
+   top: 15px !important; // move the infowindow 15px down
+   left: 0 !important;
+   background-color: #fff;
+   box-shadow: 0 1px 6px rgba(178, 178, 178, 0.6);
+   border: 1px solid rgba(72, 181, 233, 0.6);
+   border-radius: 2px 2px 0 0;
+}
+#iw-container  .iw-title {
+   font-family: 'Open Sans Condensed', sans-serif;
+   font-size: 22px;
+   font-weight: 400;
+   padding: 10px;
+   background-color: #48b5e9;
+   color: white;
+   margin: 1px;
+   border-radius: 2px 2px 0 0; /* In accordance with the rounding of the default infowindow corners. */
+}*/

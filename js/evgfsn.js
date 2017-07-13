@@ -122,6 +122,14 @@ data: function () {
     open: true
   }
 },
+created:function(){
+	var self=this;
+	eventBus.$on("listhighlight",function(id){
+	if(id==self.model.id){
+		self.showSummary();
+	}
+})
+},
 computed: {
   isFolder: function () {
     return this.model.children &&
@@ -164,16 +172,17 @@ methods: {
       name: 'new stuff'
     })
   },
-  showSummary:function(e) {
-    e.stopPropagation();
+	hoverover:function(e){
+		e.stopPropagation();
+		eventBus.$emit("maphighlight",this.model.id);
+	},
+	hoverout:function(e){
+		e.stopPropagation();
+		eventBus.$emit("maphighlight",null);
+	},
+  showSummary:function() {
     $("#summary>span").text(this.model.title);
-		for(var i=0;i<markers.length;i++){
-			var id=this.model.id;
-			    console.log("hover:"+this.model.title+" vs "+markers[i].id);
-			if(markers[i].id==id){
-				google.maps.event.trigger(markers[i], 'mouseover');
-			}
-		}
+
   }
 }
 })
@@ -193,13 +202,26 @@ data: function(){
     snlistReady: false,
     gwReady: false,
     vnReady: false,
+		markers:markers
   }
 },
 created:function(){
-	eventBus.$on("highlight",function(id){
-			$(".highlight").removeClass("highlight");
+	var self=this;
+	eventBus.$on("listhighlight",function(id){
+	  $(".highlight").removeClass("highlight");
 		if(id!=null){
-		$("#"+id).addClass("highlight");}
+			$("#"+id).addClass("highlight");
+		}
+
+	})
+	eventBus.$on("maphighlight",function(id){
+
+		for(var i=0;i<markers.length;i++){
+			console.log("hover:"+id+" vs "+self.markers[i].title);
+			if(self.markers[i].title==id){
+				google.maps.event.trigger(self.markers[i], 'mouseover');
+			}
+		}
 	})
 },
 beforeCreate: function(){
@@ -270,13 +292,32 @@ function bindInfoWindow(marker, map, infowindow, html, id) {
 	google.maps.event.addListener(marker, 'mouseover', function() {
 		infowindow.setContent(html);
 		infowindow.open(map, marker);
-		eventBus.$emit("highlight",id);
+		eventBus.$emit("listhighlight",id);
 	});
 	google.maps.event.addListener(marker, 'mouseout', function() {
 		infowindow.setContent("");
 		infowindow.close();
-			eventBus.$emit("highlight",null);
+			eventBus.$emit("listhighlight",null);
 	});
+	google.maps.event.addListener(infowindow, 'domready', function() {
+
+   // Reference to the DIV which receives the contents of the infowindow using jQuery
+   var iwOuter = $('.gm-style-iw');
+
+   /* The DIV we want to change is above the .gm-style-iw DIV.
+    * So, we use jQuery and create a iwBackground variable,
+    * and took advantage of the existing reference to .gm-style-iw for the previous DIV with .prev().
+    */
+  //  var iwBackground = iwOuter.prev();
+	 //
+  //  // Remove the background shadow DIV
+  //  iwBackground.children(':nth-child(2)').css({'display' : 'none'});
+	 //
+  //  // Remove the white background DIV
+  //  iwBackground.children(':nth-child(4)').css({'display' : 'none'});
+	 var iwCloseBtn = iwOuter.next();
+	 iwCloseBtn.css({'display': 'none'});
+});
 }
 
 function addMarker(dest) {
@@ -295,13 +336,13 @@ function addMarker(dest) {
 		micon=gatewaydot;
 	}
 	var marker = new google.maps.Marker({
-		title: dest.title,
+		title: dest.id,
 		icon:micon,
 		position: new google.maps.LatLng(dest.lat, dest.lon),
 		map: map
 	});
 	showOverlay(marker, dest.id);
-	bindInfoWindow(marker, map, infowindow, "<span style='font-weight:600;'>" + dest.description + "</span>",dest.id);
+	bindInfoWindow(marker, map, infowindow, "<span style='font-weight:600;'>" + dest.id+" - "+dest.description + "</span>",dest.id);
 	markers.push(marker);
 }
 
