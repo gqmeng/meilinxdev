@@ -118,12 +118,12 @@
   <template id="item-template">
     <li :class="model.displayClass" :id="model.id" v-on:mouseover="hoverover" v-on:mouseout="hoverout">
       <div
-        :class="{bold: isFolder}"
+        
         @click="toggle"
         @dblclick="changeType">
         <span v-if="isFolder" :class='open ? "glyphicon glyphicon-minus":"glyphicon glyphicon-plus"'></span>
         <span v-else><img :src='micon' height="18px"></span>
-        {{model.name}}
+        <span class='entryname'>{{model.name}}</span>
 
       </div>
       <ul v-show="open" v-if="isFolder">

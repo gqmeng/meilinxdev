@@ -125,6 +125,7 @@ data: function () {
 created:function(){
 	var self=this;
 	eventBus.$on("listhighlight",function(id){
+
 	if(id==self.model.id){
 		self.showSummary();
 	}
@@ -142,7 +143,7 @@ computed: {
       case 'videonode':
         return cameradot;
       case 'sensornode':
-        if(this.model.displayClass.includes('success')){
+        if(!this.model.alert){
           return greendot;
         }else {
           return reddot;
@@ -153,11 +154,13 @@ computed: {
   }
 },
 methods: {
-  toggle: function () {
+  toggle: function (e) {
     if (this.isFolder) {
       this.open = !this.open
     }else {
       console.log("Clicked "+this.model.name);
+			e.stopPropagation();
+			eventBus.$emit("mapMarkerClick",this.model.id);
     }
   },
   changeType: function () {
@@ -173,10 +176,13 @@ methods: {
     })
   },
 	hoverover:function(e){
+
 		e.stopPropagation();
 		eventBus.$emit("maphighlight",this.model.id);
+		this.showSummary();
 	},
 	hoverout:function(e){
+
 		e.stopPropagation();
 		eventBus.$emit("maphighlight",null);
 	},
@@ -212,14 +218,20 @@ created:function(){
 		if(id!=null){
 			$("#"+id).addClass("highlight");
 		}
-
 	})
 	eventBus.$on("maphighlight",function(id){
-
 		for(var i=0;i<markers.length;i++){
-			console.log("hover:"+id+" vs "+self.markers[i].title);
+			// console.log("hover:"+id+" vs "+self.markers[i].title);
 			if(self.markers[i].title==id){
 				google.maps.event.trigger(self.markers[i], 'mouseover');
+			}
+		}
+	})
+	eventBus.$on("mapMarkerClick",function(id){
+		for(var i=0;i<markers.length;i++){
+			// console.log("hover:"+id+" vs "+self.markers[i].title);
+			if(self.markers[i].title==id){
+				google.maps.event.trigger(self.markers[i], 'click');
 			}
 		}
 	})
@@ -243,6 +255,13 @@ beforeCreate: function(){
       self.vnReady=true;
     })
 ).then(
+	function(){
+	console.log(self.snList);
+		var result = self.snList.nodelist.group(function(item) {
+  	return item.Group;
+	});
+
+	console.log(result);
   $.getJSON("./json/stubdata.json", function(data){
     // console.log(data);
      $.extend(true,self.treeData,data);
@@ -254,6 +273,7 @@ beforeCreate: function(){
 		}
 		showMarkers();
 })
+}
 )
 },
 methods:{
@@ -262,6 +282,21 @@ methods:{
 	}
 }
 })
+
+Object.defineProperty(Array.prototype, 'group', {
+  enumerable: false,
+  value: function (key) {
+    var map = {};
+    this.forEach(function (e) {
+      var k = key(e);
+      map[k] = map[k] || [];
+      map[k].push(e);
+    });
+    return Object.keys(map).map(function (k) {
+      return {name: k, children: map[k]};
+    });
+  }
+});
 
 function overlayShow(id) {
 	console.log("Marker Clicked: "+id);
@@ -289,15 +324,17 @@ function showOverlay(marker, id){
 }
 
 function bindInfoWindow(marker, map, infowindow, html, id) {
-	google.maps.event.addListener(marker, 'mouseover', function() {
+	google.maps.event.addListener(marker, 'mouseover', function(e) {
 		infowindow.setContent(html);
 		infowindow.open(map, marker);
-		eventBus.$emit("listhighlight",id);
+		if(e){
+		eventBus.$emit("listhighlight",id);}
 	});
-	google.maps.event.addListener(marker, 'mouseout', function() {
+	google.maps.event.addListener(marker, 'mouseout', function(e) {
 		infowindow.setContent("");
 		infowindow.close();
-			eventBus.$emit("listhighlight",null);
+		if(e){
+		eventBus.$emit("listhighlight",null);}
 	});
 	google.maps.event.addListener(infowindow, 'domready', function() {
 
