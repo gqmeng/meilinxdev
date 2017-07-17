@@ -2,25 +2,24 @@
   "name":"videonode",
   "nodelist":[
   {
-    "ID":"va",
+    "ID":"VR01",
     "Timstamp":100,
-    "Battery1":12,	
+    "Battery1":12,
     "Battery2":12,
-    "Latitude":40.0,
-    "Longitude":-85,
+    "Latitude":42.289678,
+    "Longitude":-83.730538,
     "Alert":true,
     "Videofn":"11111"
   },
-  {  
+  {
     "ID":"vb",
     "Timstamp":100,
-    "Battery1":12,	
+    "Battery1":12,
     "Battery2":12,
-    "Latitude":40.0,
-    "Longitude":-85,
+    "Latitude":42.289678,
+    "Longitude":-83.730588,
     "Alert":true,
     "Videofn":"11111"
   }
   ]
 }
-

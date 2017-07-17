@@ -2,25 +2,25 @@
   "name":"gateway",
   "nodelist":[
   {
-    "ID":"ga",
+    "ID":"GW01",
     "Timstamp":100,
-    "Battery1":12,	
+    "Battery1":12,
     "Battery2":12,
-    "Latitude":40.0,
-    "Longitude":-85,
+    "Latitude":42.289916,
+    "Longitude":-83.730076,
     "Alert":true,
     "snnumber":4
-  },
-  {  
+  }
+  ,
+  {
     "ID":"gb",
     "Timstamp":100,
-    "Battery1":12,	
+    "Battery1":12,
     "Battery2":12,
-    "Latitude":40.0,
-    "Longitude":-85,
+    "Latitude":42.289919,
+    "Longitude":-83.7300,
     "Alert":true,
     "snnumber":4
   }
   ]
 }
-

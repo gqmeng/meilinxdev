@@ -24,7 +24,7 @@
     <!-- <script src="js/util.js"></script> -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="https://unpkg.com/vue"></script>
-
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDm34gZk1tuwBd-HzfXcDlHFj_9xGUhJWM"></script>
 
   </head>
 <body>
@@ -40,7 +40,7 @@
     <div class="container">
         <div class="row">
           <div class="col-md-3 col-sm-3 pad-right15 pad-left15 bg-grey" id="nlist">
-            <h3 style="text-align:center;line-height:1.2em;margin-bottom:5px;">Area under monitoring</h3>
+            <!-- <h3 style="text-align:center;line-height:1.2em;margin-bottom:5px;">Area under monitoring</h3> -->
             <div v-if="dataReady">
             <ul id="demolist" >
               <item
@@ -75,41 +75,43 @@
     </section>
     <div class="modal" tabindex="-1" role="dialog" id="nodeoverlay">
       <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span></button>
-                </div>
-                <div class="modal-body">
-
-                  <div class="brd-d7 mar-bot10">
-                    <h3 class="pad-bot20">Sensor Node </h3>
-                  <h4 > id: <span id="node_id">SR01</span> </h4>
-
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="brd-d7 mar-bot10">
+              <h3 class="pad-bot20">Sensor Node </h3>
+              <h4 > id: <span id="node_id">SR01</span> </h4>
+            </div>
+            <div id="exTab1">
+              <ul class="nav nav-pills">
+            		<li class="active">
+                  <a  href="#1a" data-toggle="tab">Status</a>
+          			</li>
+            		<li >
+                  <a href="#2a" data-toggle="tab">Data Plot</a>
+              	</li>
+            		<li>
+                  <a href="#3a" data-toggle="tab">Configuration</a>
+          			</li>
+          		</ul>
+        			<div class="tab-content clearfix">
+      			    <div class="tab-pane" id="1a">
+                  <div id="snprofile" style="height: 400px;width: 400px;">
                   </div>
-                  <div id="exTab1">
-                    <ul class="nav nav-pills">
-                  		<li>
-                          <a  href="#1a" data-toggle="tab">Profile</a>
-                  			</li>
-                  		<li class="active"><a href="#2a" data-toggle="tab">Data Plot</a>
-                  			</li>
-                  		<li><a href="#3a" data-toggle="tab">Configuration</a>
-                  			</li>
-                  		</ul>
-              			<div class="tab-content clearfix">
-                  			  <div class="tab-pane" id="1a">
-                            <div id="snprofile" style="height: 400px;width: 400px;"> </div>
-                  				</div>
-                  				<div class="tab-pane active" id="2a">
-                            <div id="chart_div" style="height: 400px;width: 400px;"></div>
-                  				</div>
-                          <div class="tab-pane" id="3a">
-                  				</div>
-                  			</div>
-                    </div>
                 </div>
+                <div class="tab-pane active" id="2a">
+                  <div id="chart_div" style="height: 400px;width: 400px;"></div>
+                	</div>
+                <div class="tab-pane" id="3a">
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -117,14 +119,10 @@
   </body>
   <template id="item-template">
     <li :class="model.displayClass" :id="model.id" v-on:mouseover="hoverover" v-on:mouseout="hoverout">
-      <div
-        
-        @click="toggle"
-        @dblclick="changeType">
-        <span v-if="isFolder" :class='open ? "glyphicon glyphicon-minus":"glyphicon glyphicon-plus"'></span>
+      <div  @dblclick="changeType">
+        <span v-if="isFolder" :class='open ? "glyphicon glyphicon-minus":"glyphicon glyphicon-plus"' @click="toggle"></span>
         <span v-else><img :src='micon' height="18px"></span>
-        <span class='entryname'>{{model.name}}</span>
-
+        <span class='entryname' @click.stop='openoverlay'>{{model.name}}</span>
       </div>
       <ul v-show="open" v-if="isFolder">
         <item
@@ -136,10 +134,5 @@
       </ul>
     </li>
   </template>
-
-
-      <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDm34gZk1tuwBd-HzfXcDlHFj_9xGUhJWM&callback=initMap">
-      </script>
-        <script src="js/evgfsn.js"></script>
+  <script src="js/evgfsn.js"></script>
 </html>

@@ -6,83 +6,27 @@ var markers=[];
 var map;
 var infowindow;
 var eventBus = new Vue();
-var arrDestinations = [
-{
-	lat: 42.289714,
-	lon: -83.730221,
-	id:"SR01",
-	title: "Sensor Node #1",
-	type: "snode",
-	alert: false,
-	description: "Normal"
-}
-,
-{
-	lat: 42.289781,
-	lon: -83.730076,
-	id:"SR11",
-	title: "Sensor Node #11",
-	type: "snode",
-	alert: false,
-	description: "Normal"
-},
-{
-	lat: 42.289837,
-	lon: -83.729956,
-	id:"SR12",
-	title: "Sensor Node #12",
-	type: "snode",
-	alert: false,
-	description: "Normal"
-},
-{
-	lat: 42.289837,
-	lon:-83.730291,
-	id:"SR02",
-	title: "Sensor Node #2",
-	type: "snode",
-	alert: true,
-	description: "Flood Alert Warning"
-},
-{
-	lat: 42.289678,
-	lon: -83.730538,
-	id:"VR01",
-	title: "Video Node #1",
-	type: "vnode",
-	alert: false,
-	description: "Normal"
-},
-{
-	lat: 42.289916,
-	lon: -83.730076,
-	id:"GW01",
-	title: "Gateway #1",
-	type: "gateway",
-	alert: false,
-	description: "Normal"
-}
-];
+var arrDestinations = [];
 
 $(document).ready(function(){
 	var mydata;
 	var self=this;
 	console.log("Retrieving initial data...");
 
-	function myFunction() {
-		console.log("Starting retrieving config data...");
-
-		$.getJSON("./json/resouces.json", function(data){
-			 greendot = data.greendot;
-			 reddot = data.reddot;
-			 cameradot =data.cameradot;
-			 gatewaydot=data.gatewaydot;
-		 },
-	 function(response){
-		 console.log("Error=>"+response);
-	 });
-
-	}
+	// function myFunction() {
+	// 	console.log("Starting retrieving config data...");
+	//
+	// 	$.getJSON("./json/resouces.json", function(data){
+	// 		 greendot = data.greendot;
+	// 		 reddot = data.reddot;
+	// 		 cameradot =data.cameradot;
+	// 		 gatewaydot=data.gatewaydot;
+	// 	 },
+	//  function(response){
+	// 	 console.log("Error=>"+response);
+	//  });
+	//
+	// }
  	google.charts.load('current', {'packages':['corechart']});
  	google.charts.setOnLoadCallback(drawChart);
 
@@ -113,172 +57,242 @@ $(document).ready(function(){
 
 // define the item component for the tree data
 Vue.component('item', {
-template: '#item-template',
-props: {
-  model: Object
-},
-data: function () {
-  return {
-    open: true
-  }
-},
-created:function(){
-	var self=this;
-	eventBus.$on("listhighlight",function(id){
-
-	if(id==self.model.id){
-		self.showSummary();
-	}
-})
-},
-computed: {
-  isFolder: function () {
-    return this.model.children &&
-      this.model.children.length
-  },
-  micon:function(){
-    switch(this.model.entitytype){
-      case 'gateway':
-        return gatewaydot;
-      case 'videonode':
-        return cameradot;
-      case 'sensornode':
-        if(!this.model.alert){
-          return greendot;
-        }else {
-          return reddot;
-        }
-      default:
-       return '';
-    }
-  }
-},
-methods: {
-  toggle: function (e) {
-    if (this.isFolder) {
-      this.open = !this.open
-    }else {
-      console.log("Clicked "+this.model.name);
+	template: '#item-template',
+	props: {
+  	model: Object
+	},
+	data: function () {
+  	return {
+    	open: true
+  	}
+	},
+	created:function(){
+		var self=this;
+		eventBus.$on("listhighlight",function(id){
+			if(id==self.model.id){
+				self.showSummary();
+			}
+		})
+	},
+	computed: {
+  	isFolder: function () {
+    	return this.model.children &&
+      	this.model.children.length
+  	},
+  	micon:function(){
+    	switch(this.model.entitytype){
+      	case 'gateway':
+        	return gatewaydot;
+      	case 'vnode':
+        	return cameradot;
+      	case 'snode':
+        	if(!this.model.alert){
+          	return greendot;
+        	}else {
+          	return reddot;
+        	}
+      	default:
+       		return '';
+    	}
+  	}
+	},
+	methods: {
+  	toggle: function (e) {
+    	if (this.isFolder) {
+      	this.open = !this.open
+    	}else {
+      	console.log("Clicked "+this.model.name);
+				e.stopPropagation();
+				eventBus.$emit("mapMarkerClick",this.model.id);
+    	}
+  	},
+		openoverlay: function (e) {
+			if (this.isFolder) {
+				console.log("Clicked "+this.model.name);
+				overlayShow(this.model.id);
+			}else {
+				console.log("Clicked "+this.model.name);
+				e.stopPropagation();
+				eventBus.$emit("mapMarkerClick",this.model.id);
+			}
+		},
+  	changeType: function () {
+    	if (!this.isFolder) {
+      	Vue.set(this.model, 'children', [])
+      	this.addChild()
+      	this.open = true
+    	}
+  	},
+  	addChild: function () {
+    	this.model.children.push({
+      	name: 'new stuff'
+    	})
+  	},
+		hoverover:function(e){
 			e.stopPropagation();
-			eventBus.$emit("mapMarkerClick",this.model.id);
-    }
-  },
-  changeType: function () {
-    if (!this.isFolder) {
-      Vue.set(this.model, 'children', [])
-      this.addChild()
-      this.open = true
-    }
-  },
-  addChild: function () {
-    this.model.children.push({
-      name: 'new stuff'
-    })
-  },
-	hoverover:function(e){
-
-		e.stopPropagation();
-		eventBus.$emit("maphighlight",this.model.id);
-		this.showSummary();
-	},
-	hoverout:function(e){
-
-		e.stopPropagation();
-		eventBus.$emit("maphighlight",null);
-	},
-  showSummary:function() {
-    $("#summary>span").text(this.model.title);
-
-  }
-}
+			eventBus.$emit("maphighlight",this.model.id);
+			this.showSummary();
+		},
+		hoverout:function(e){
+			e.stopPropagation();
+			eventBus.$emit("maphighlightover",this.model.id);
+		},
+  	showSummary:function() {
+    	$("#summary>span").text(this.model.name);
+  	}
+	}
 })
 
 // boot up the demo
 var demo = new Vue({
-el: '#fsnapp',
-data: function(){
-  return {
-		highlight:"",
-    treeData: {},
-		snList:{},
-		vnList:{},
-		gwList:{},
-		arrDestinations:arrDestinations,
-    dataReady: false,
-    snlistReady: false,
-    gwReady: false,
-    vnReady: false,
-		markers:markers
-  }
-},
-created:function(){
-	var self=this;
-	eventBus.$on("listhighlight",function(id){
-	  $(".highlight").removeClass("highlight");
-		if(id!=null){
-			$("#"+id).addClass("highlight");
-		}
-	})
-	eventBus.$on("maphighlight",function(id){
-		for(var i=0;i<markers.length;i++){
-			// console.log("hover:"+id+" vs "+self.markers[i].title);
-			if(self.markers[i].title==id){
-				google.maps.event.trigger(self.markers[i], 'mouseover');
+	el: '#fsnapp',
+	data: function(){
+  	return {
+			highlight:"",
+    	treeData: {  "name": "My Sensor Network",
+			  "id":"mynetwork",
+			  "children":[],
+				"displayClass": "level0",
+				"entitytype": "network",
+				"title": "Sensor Network"
+			},
+			snList:{},
+			vnList:{},
+			gwList:{},
+			arrDestinations:arrDestinations,
+    	dataReady: false,
+    	snReady: false,
+    	gwReady: false,
+    	vnReady: false,
+			markers:markers
+  	}
+	},
+	created:function(){
+		var self=this;
+				// initMap();
+				// showMarkers();
+		eventBus.$on("listhighlight",function(id){
+	  	$(".highlight").removeClass("highlight");
+			if(id!=null){
+				$("#"+id).addClass("highlight");
 			}
-		}
-	})
-	eventBus.$on("mapMarkerClick",function(id){
-		for(var i=0;i<markers.length;i++){
+		});
+		eventBus.$on("maphighlight",function(id){
+			for(var i=0;i<markers.length;i++){
 			// console.log("hover:"+id+" vs "+self.markers[i].title);
-			if(self.markers[i].title==id){
-				google.maps.event.trigger(self.markers[i], 'click');
+				if(self.markers[i].title==id){
+					google.maps.event.trigger(self.markers[i], 'mouseover');
+				}
 			}
-		}
-	})
-},
-beforeCreate: function(){
-  var self=this;
-  $.when(
-    $.getJSON("./json/sensornodes.json",function(data){
+		});
+		eventBus.$on("maphighlightover",function(id){
+			for(var i=0;i<markers.length;i++){
+			// console.log("hover:"+id+" vs "+self.markers[i].title);
+				if(self.markers[i].title==id){
+					google.maps.event.trigger(self.markers[i], 'mouseout');
+				}
+			}
+		});
+		eventBus.$on("mapMarkerClick",function(id){
+			for(var i=0;i<markers.length;i++){
+			// console.log("hover:"+id+" vs "+self.markers[i].title);
+				if(self.markers[i].title==id){
+					google.maps.event.trigger(self.markers[i], 'click');
+				}
+			}
+		})
+	},
+	beforeCreate: function(){
+  	var self=this;
+  	$.when(
+    	$.getJSON("./json/sensornodes.json",function(data){
 				$.extend(true, self.snList, data);
-        console.log("Sensor Node list retrieved"+ JSON.stringify(self.snList));
-        self.snlistReady=true;
+        // console.log("Sensor Node list retrieved"+ JSON.stringify(self.snList));
+        self.snReady=true;
       }),
     $.getJSON("./json/gateways.json",function(data){
 			$.extend(true, self.gwList, data);
-      console.log("Gateway retrieved"+self.gwList);
+      // console.log("Gateway retrieved"+self.gwList);
       self.gwReady=true;
       }),
   $.getJSON("./json/videonodes.json",function(data){
 			$.extend(true, self.vnList, data);
-      console.log("Video Nodes retrieved"+self.vnList);
+      // console.log("Video Nodes retrieved"+self.vnList);
       self.vnReady=true;
     })
 ).then(
 	function(){
-	console.log(self.snList);
-		var result = self.snList.nodelist.group(function(item) {
-  	return item.Group;
-	});
+		initMap();
+		// console.log(self.snList);
+		var groups = {};
+		for (var i = 0; i < self.snList.nodelist.length; i++) {
+  		var groupName = self.snList.nodelist[i].Group;
+  		if (!groups[groupName]) {
+    		groups[groupName] = [];
+  		}
 
-	console.log(result);
-  $.getJSON("./json/stubdata.json", function(data){
-    // console.log(data);
-     $.extend(true,self.treeData,data);
-  	// console.log(self.treeData);
-    $("#summary>span").text(self.treeData.title);
-    self.dataReady = true;
-		for (i = 0; i < arrDestinations.length; i++) {
-			addMarker(arrDestinations[i]);
-		}
-		showMarkers();
-})
-}
-)
+  		groups[groupName].push({name:"Sensor Node "+self.snList.nodelist[i].ID,id:self.snList.nodelist[i].ID,displayClass: 'level2',entitytype:"snode",alert:self.snList.nodelist[i].Alert});
+			}
+			for (var groupName in groups) {
+				var title='Sensor Node Group #'+groupName;
+				var gname='Sensor Node Group '+groupName;
+  			// result1.push({name: gname, title:title,displayClass: 'level1', entitytype:'group', children: groups[groupName]});
+				self.treeData.children.push({name: gname, title:title,displayClass: 'level1', entitytype:'group', children: groups[groupName]});
+			}
+			for (var i = 0; i < self.gwList.nodelist.length; i++) {
+				self.treeData.children.push({name:"Gateway "+self.gwList.nodelist[i].ID,id:self.gwList.nodelist[i].ID,displayClass: 'level1',entitytype:"gateway",alert:self.gwList.nodelist[i].Alert});
+			}
+			for (var i = 0; i < self.vnList.nodelist.length; i++) {
+				self.treeData.children.push({name:"Video Node "+self.vnList.nodelist[i].ID,id:self.vnList.nodelist[i].ID,displayClass: 'level1',entitytype:"vnode",alert:self.vnList.nodelist[i].Alert});
+			}
+  	 	$("#summary>span").text(self.treeData.title);
+    	self.dataReady = true;
+			self.constructDestationArray("gateway");
+			self.constructDestationArray("vnode");
+			self.constructDestationArray("snode");
+				// console.log(arrDestinations.length);
+			for (i = 0; i < arrDestinations.length; i++) {
+				addMarker(arrDestinations[i]);
+			}
+			showMarkers();
+
+	}
+	)
 },
 methods:{
 	setHighlight:function(id){
 		this.highlight=id;
+	},
+	constructDestationArray: function(type){
+		var self=this;
+		switch(type){
+			case "gateway":
+				ready=self.gwReady;
+				list=self.gwList.nodelist;
+				break;
+			case  "snode":
+				ready=self.snReady;
+				list=self.snList.nodelist;
+				break;
+			case  "vnode":
+				ready=self.vnReady;
+				list=self.vnList.nodelist;
+				break;
+		}
+		if(ready){
+			$.each(list,function(index,item){
+			// console.log(item);
+				var arrDest = {};
+				arrDest.lat=item.Latitude;
+				arrDest.lon=item.Longitude;
+				arrDest.id=item.ID;
+				arrDest.title=item.ID;
+				arrDest.type=type;
+				arrDest.alert=item.Alert;
+				arrDest.description="Normal Operation.";
+				arrDestinations.push(arrDest);
+			})
+		}
 	}
 }
 })
@@ -304,15 +318,16 @@ function overlayShow(id) {
 	$("#node_id").text(id);
 }
 
-	function initMap() {
+function initMap() {
 		var uluru = {lat: 42.289916, lng: -83.730076};
+
 		map = new google.maps.Map(document.getElementById('map'), {
 			zoom: 19,
 			center: uluru
 		});
 	  infowindow =  new google.maps.InfoWindow({
-		content: ''
-	});
+			content: ''
+		});
 }
 
 function showOverlay(marker, id){
@@ -337,24 +352,11 @@ function bindInfoWindow(marker, map, infowindow, html, id) {
 		eventBus.$emit("listhighlight",null);}
 	});
 	google.maps.event.addListener(infowindow, 'domready', function() {
-
    // Reference to the DIV which receives the contents of the infowindow using jQuery
-   var iwOuter = $('.gm-style-iw');
-
-   /* The DIV we want to change is above the .gm-style-iw DIV.
-    * So, we use jQuery and create a iwBackground variable,
-    * and took advantage of the existing reference to .gm-style-iw for the previous DIV with .prev().
-    */
-  //  var iwBackground = iwOuter.prev();
-	 //
-  //  // Remove the background shadow DIV
-  //  iwBackground.children(':nth-child(2)').css({'display' : 'none'});
-	 //
-  //  // Remove the white background DIV
-  //  iwBackground.children(':nth-child(4)').css({'display' : 'none'});
-	 var iwCloseBtn = iwOuter.next();
-	 iwCloseBtn.css({'display': 'none'});
-});
+   	var iwOuter = $('.gm-style-iw');
+	 	var iwCloseBtn = iwOuter.next();
+	 	iwCloseBtn.css({'display': 'none'});
+	});
 }
 
 function addMarker(dest) {

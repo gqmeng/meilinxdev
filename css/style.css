@@ -415,11 +415,11 @@ ul#demolist{
 	padding-left: 0px;
 	line-height: 1.5em;
 	list-style: none;
-	height:320px;
+	height:350px;
 	overflow-y:auto;
 }
 ul#demolist>li {
-  padding:5px;
+  padding:2px;
 
 }
 ul#demolist li>div {
@@ -428,7 +428,8 @@ ul#demolist li>div {
 	transition:background-color 1s ease;
 }
 ul#demolist li>div:hover{
-	background-color:#fff;
+	background-color:#2c2cef;
+	color:#fff;
 	font-weight:600;
 }
 ul#demolist>li span {
@@ -448,7 +449,7 @@ li.level1{
 
     font-size: 16px;
 
-    margin:5px 0px;
+    margin:2px 0px;
 }
 li.level1>div{
 	    padding-left: 10px;
@@ -462,7 +463,8 @@ li.level2>div{
 	    padding-left: 25px;
 }
 .highlight {
-	background-color: #fff;
+	background-color: #2c2cef;
+	color:#fff;
 }
 /* overwrite */
 /*.gm-style-iw {

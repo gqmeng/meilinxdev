@@ -113,20 +113,12 @@
  -->
 
       <div id="mjpeg_wrapper" style="width:360px;padding:10px;background-color:#f3f3f3;">
-        <!-- <img src="http://localhost:8000/img/v11.mjpg"> -->
-        <!-- <img src="http://localhost:3000/img/v11.mjpeg"> -->
-        <!-- <img id="motionjpeg" src="http://localhost:3000/img/v11.mjpeg" />
-            <script src="./js/motionjpeg.js"></script> -->
-            <!-- <video src="http://localhost:3000/img/v11.mjpeg" controls>
-   Your browser does not support the <code>video</code> element.
-</video> -->
-<!-- <iframe src="https://onedrive.live.com/embed?cid=D0A681367621ABDC&resid=D0A681367621ABDC%212578&authkey=AG_2HCjwtSlC8iA" width="98" height="120" frameborder="0" scrolling="no"></iframe> -->
       </div>
 <script>
 var playNow = false;
 var el = $('#mjpeg_wrapper');
 el.clipchamp_mjpeg_player(
-  'http://localhost:3000/img/v11.mjpg',
+  './video/v11.mjpg',
   24, // frames per second
   false, // autoloop
   function(el, playerInterface) {
