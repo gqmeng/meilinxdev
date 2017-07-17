@@ -94,8 +94,8 @@
       }
       #mjpeg_wrapper {
         position: relative;
-        width:300px;
-        height: 200px;
+        width:480px;
+        height: 360px;
         opacity:1;
           text-align: center;
           transition: opacity 2s linear;
@@ -111,23 +111,35 @@
 <!--
       <div id="loader"></div>
  -->
+ <div><span>V11</span>
+   <button  onclick="play()"><span class="glyphicon glyphicon-play"></span></button>
+ </div>
 
-      <div id="mjpeg_wrapper" style="width:360px;padding:10px;background-color:#f3f3f3;">
+      <div id="mjpegcontainer">
       </div>
 <script>
-var playNow = false;
-var el = $('#mjpeg_wrapper');
-el.clipchamp_mjpeg_player(
+var pauseNow = false;
+  // var el = $('#mjpeg_wrapper');
+function stop(el, pi){
+  if(pauseNow){
+    pi.finish();
+  }
+}
+function play(){
+  console.log("clicked");
+  if($('#mjpegcontainer').children().length>0){
+    $('#mjpegcontainer').empty()
+  }
+
+  $('#mjpegcontainer').append("<div id='mjpeg_wrapper'></div>");
+  var el = $('#mjpeg_wrapper');
+  el.clipchamp_mjpeg_player(
   './video/v11.mjpg',
   24, // frames per second
   false, // autoloop
-  function(el, playerInterface) {
-    if (playNow){
-      playerInterface.finish() //to stop the playback
-    }
-
-  });
-
+  stop
+  );
+}
 
 </script>
     </body>

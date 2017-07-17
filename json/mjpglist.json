@@ -1,26 +1,21 @@
 {
   "name":"videofile",
+  "nodeID":"VR01",
   "filelist":[
   {
-    "filename":"v11",
-    "nodeID":"va",
+    "title":"v11",
+    "filename":"v11.mjpeg",
     "timestamp":14000,
-    "Alert":true,
-    "Videofn":"11111"
   },
   {
-    "filename":"v12",
-    "nodeID":"va",
+    "title":"v12",
+    "filename":"v11.mjpeg",
     "timestamp":14000,
-    "Alert":true,
-    "Videofn":"11111"
   },
   {
-    "filename":"v23",
-    "nodeID":"vb",
+    "title":"v13",
+    "filename":"v11.mjpeg",
     "timestamp":14000,
-    "Alert":true,
-    "Videofn":"11111"
   }
   ]
 }
