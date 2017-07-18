@@ -27,8 +27,107 @@ $(document).ready(function(){
 	//  });
 	//
 	// }
- 	google.charts.load('current', {'packages':['corechart']});
- 	google.charts.setOnLoadCallback(drawChart);
+google.charts.load('current', {'packages':['corechart', 'controls']});
+ 	google.charts.setOnLoadCallback(drawVisualization);
+
+          function showPage() {
+            document.getElementById("loader").style.opacity = 0;
+            document.getElementById("myDiv").style.opacity = 1;
+          }
+
+function drawVisualization() {
+	var dashboard = new google.visualization.Dashboard(
+			 document.getElementById('dashboard'));
+
+	 var control = new google.visualization.ControlWrapper({
+		 'controlType': 'ChartRangeFilter',
+		 'containerId': 'control',
+		 'options': {
+			 // Filter by the date axis.
+			 'filterColumnIndex': 0,
+			 'ui': {
+				 'chartType': 'LineChart',
+				 'chartOptions': {
+					 'chartArea': {'width': '90%'},
+						 'hAxis': {'baselineColor': 'none', format: "dd.MM.yyyy" }
+				 },
+				 // Display a single series that shows the closing value of the stock.
+				 // Thus, this view has two columns: the date (axis) and the stock value (line series).
+				 'chartView': {
+					 'columns': [0, 1]
+				 },
+				 // 1 day in milliseconds = 24 * 60 * 60 * 1000 = 86,400,000
+				 'minRangeSize': 86400000
+			 }
+		 },
+		 // Initial range: 2012-02-09 to 2012-03-20.
+		 'state': {'range': {'start': new Date(2017, 1, 20), 'end': new Date(2017, 1, 24)}}
+	 });
+
+	 var chart = new google.visualization.ChartWrapper({
+		 'chartType': 'LineChart',
+		 'containerId': 'chart',
+		 'options': {
+			 // Use the same chart area width as the control for axis alignment.
+			 'chartArea': {'height': '80%', 'width': '90%'},
+			 'hAxis': {'slantedText': false, title:"Sensor Reading"},
+			 'vAxis':{
+				 title: 'Time'
+			 },
+			//  'vAxis': {'viewWindow': {'min': 0, 'max': 2000}},
+			 'legend': {'position': 'none'}
+		 },
+		 // Convert the first column from 'date' to 'string'.
+		 'view': {
+			 'columns': [
+				 {
+					 'calc': function(dataTable, rowIndex) {
+						 return dataTable.getFormattedValue(rowIndex, 0);
+					 },
+					 'type': 'string'
+				 }, 1]
+		 }
+	 });
+
+	 var data = new google.visualization.DataTable();
+					data.addColumn('date', 'Date');
+					data.addColumn('number', 'Level');
+	//  data.addColumn('number', 'Stock low');
+	//  data.addColumn('number', 'Stock open');
+	//  data.addColumn('number', 'Stock close');
+	//  data.addColumn('number', 'Stock high');
+
+
+	 // Create random stock values, just like it works in reality.
+
+	 $.get( "./data/Data.txt", function( csv ) {
+		 var dataset = $.csv.toArrays(csv);
+		 var count=dataset.length;
+
+		 for(var i=0; i<count; i++){
+			 var ts = parseInt($.trim(dataset[i][2]));
+			// console.log(ts);
+			 var date = new Date(ts*1000);
+			 if(i==0){
+					control.setState({'range': {'start': date}});
+			 }
+			control.setState({'range': {'end': date}});
+			// console.log(date);
+			 var value =  parseFloat($.trim(dataset[i][1]));
+			 data.addRow([date, value]);
+		 }
+		 var formatter = new google.visualization.DateFormat({pattern: "dd.MM.yyyy H:mm"});
+		 formatter.format(data, 0);
+
+			dashboard.bind(control, chart);
+			dashboard.draw(data);
+		 setTimeout(showPage, 3000);
+//     console.log(data);
+	 });
+
+
+
+}
 
  function drawChart() {
 	 var data = google.visualization.arrayToDataTable([
@@ -109,7 +208,7 @@ Vue.component('item', {
 		openoverlay: function (e) {
 			if (this.isFolder) {
 				console.log("Clicked "+this.model.name);
-				overlayShow(this.model.id);
+				overlayShow("topnode",this.model.id);
 			}else {
 				console.log("Clicked "+this.model.name);
 				e.stopPropagation();
@@ -164,7 +263,9 @@ var demo = new Vue({
     	snReady: false,
     	gwReady: false,
     	vnReady: false,
-			markers:markers
+			markers:markers,
+			currentOLView:'sensornode',
+			showOverlay:false
   	}
 	},
 	created:function(){
@@ -312,9 +413,24 @@ Object.defineProperty(Array.prototype, 'group', {
   }
 });
 
-function overlayShow(id) {
+function overlayShow(type, id) {
 	console.log("Marker Clicked: "+id);
-	$("#nodeoverlay").modal('show');
+	var olID = '#snodeoverlay';
+	switch(type){
+		case "topnode":
+			olID = '#topnodeoverlay';
+			break;
+		case "vnode":
+				olID = '#vnodeoverlay';
+				break;
+		case "gateway":
+					olID = '#gatewayoverlay';
+					break;
+		case "snode":
+					olID = '#snodeoverlay';
+					break;
+	}
+	$(olID).modal('show');
 	$("#node_id").text(id);
 }
 
@@ -330,11 +446,11 @@ function initMap() {
 		});
 }
 
-function showOverlay(marker, id){
+function showOverlay(marker, type, id){
 	marker.addListener('click', function() {
 				 marker.map.setZoom(19);
 				 marker.map.setCenter(marker.getPosition());
-				 overlayShow(id);
+				 overlayShow(type, id);
 			 });
 }
 
@@ -380,7 +496,7 @@ function addMarker(dest) {
 		position: new google.maps.LatLng(dest.lat, dest.lon),
 		map: map
 	});
-	showOverlay(marker, dest.id);
+	showOverlay(marker, dest.type, dest.id);
 	bindInfoWindow(marker, map, infowindow, "<span style='font-weight:600;'>" + dest.id+" - "+dest.description + "</span>",dest.id);
 	markers.push(marker);
 }

@@ -24,7 +24,9 @@
     <!-- <script src="js/util.js"></script> -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="https://unpkg.com/vue"></script>
+        <script type="text/javascript" src="js/jquery.csv.js"></script>
  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDm34gZk1tuwBd-HzfXcDlHFj_9xGUhJWM"></script>
+
 
   </head>
 <body>
@@ -54,7 +56,7 @@
             </div>
             </div>
 
-            <div id="loader" v-else></div>
+            <!-- <div id="loader" v-else></div> -->
           </div>
           <div class="col-md-9 col-sm-9">
             <div id="map"></div>
@@ -73,7 +75,7 @@
         Copyright&copy;2017  Evigia Systems Inc.
       </div>
     </section>
-    <div class="modal" tabindex="-1" role="dialog" id="nodeoverlay">
+    <div class="modal" tabindex="-1" role="dialog" id="snodeoverlay">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -84,8 +86,60 @@
           </div>
           <div class="modal-body">
             <div class="brd-d7 mar-bot10">
-              <h3 class="pad-bot20">Sensor Node </h3>
-              <h4 > id: <span id="node_id">SR01</span> </h4>
+              <h4 class="pad-bot20">Sensor Node </h3>
+              <h3 > <span id="node_id">SR01</span> </h4>
+            </div>
+            <div id="exTab1">
+              <ul class="nav nav-pills">
+            		<li class="active">
+                  <a  href="#1a" data-toggle="tab">Status</a>
+          			</li>
+            		<li >
+                  <a href="#2a" data-toggle="tab">Data Plot</a>
+              	</li>
+            		<li>
+                  <a href="#3a" data-toggle="tab">Configuration</a>
+          			</li>
+          		</ul>
+        			<div class="tab-content clearfix">
+      			    <div class="tab-pane" id="1a">
+                  <div id="snprofile" style="height: 400px;width: 400px;">
+                  </div>
+                </div>
+                <div class="tab-pane active" id="2a">
+                  <div id="chart_div" style="height: 400px;width: 400px;">
+                    <div id="loader"></div>
+
+                    <div id="myDiv" class="">
+                      <div id="dashboard">
+                      <div id="chart" style='width: 915px; height: 300px;'></div>
+                      <div id="control" style='width: 915px; height: 50px;'></div>
+                  </div>
+                    </div>
+                  </div>
+                	</div>
+                <div class="tab-pane" id="3a">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="vnodeoverlay">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="brd-d7 mar-bot10">
+              <h4 class="pad-bot20">Video Node </h3>
+              <h3 > <span id="node_id">VR01</span> </h4>
             </div>
             <div id="exTab1">
               <ul class="nav nav-pills">
@@ -115,8 +169,100 @@
         </div>
       </div>
     </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="gatewayoverlay">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="brd-d7 mar-bot10">
+              <h4 class="pad-bot20">Gateway </h3>
+              <h3 > <span id="node_id">GW01</span> </h4>
+            </div>
+            <div id="exTab1">
+              <ul class="nav nav-pills">
+            		<li class="active">
+                  <a  href="#1a" data-toggle="tab">Status</a>
+          			</li>
+            		<li >
+                  <a href="#2a" data-toggle="tab">Data Plot</a>
+              	</li>
+            		<li>
+                  <a href="#3a" data-toggle="tab">Configuration</a>
+          			</li>
+          		</ul>
+        			<div class="tab-content clearfix">
+      			    <div class="tab-pane" id="1a">
+                  <div id="snprofile" style="height: 400px;width: 400px;">
+                  </div>
+                </div>
+                <div class="tab-pane active" id="2a">
+                  <div id="chart_div" style="height: 400px;width: 400px;"></div>
+                	</div>
+                <div class="tab-pane" id="3a">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="topnodeoverlay">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="brd-d7 mar-bot10">
+              <h4 class="pad-bot20">Sensor Node Group</h3>
+              <h3 > <span id="node_id">SN GROUP A</span> </h4>
+            </div>
+            <div id="exTab1">
+              <ul class="nav nav-pills">
+            		<li class="active">
+                  <a  href="#1a" data-toggle="tab">Status</a>
+          			</li>
+            		<li >
+                  <a href="#2a" data-toggle="tab">Data Plot</a>
+              	</li>
+            		<li>
+                  <a href="#3a" data-toggle="tab">Configuration</a>
+          			</li>
+          		</ul>
+        			<div class="tab-content clearfix">
+      			    <div class="tab-pane" id="1a">
+                  <div id="snprofile" style="height: 400px;width: 400px;">
+                  </div>
+                </div>
+                <div class="tab-pane active" id="2a">
+                  <div id="chart_div" style="height: 400px;width: 400px;"></div>
+                	</div>
+                <div class="tab-pane" id="3a">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
   </div>
   </body>
+
   <template id="item-template">
     <li :class="model.displayClass" :id="model.id" v-on:mouseover="hoverover" v-on:mouseout="hoverout">
       <div  @dblclick="changeType">
