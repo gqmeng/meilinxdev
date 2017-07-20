@@ -20,13 +20,17 @@
       crossorigin="anonymous"></script>
     <script src="js/tether.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="js/lodash.js"></script>
+    <script src="./js/lodash.js"></script>
     <!-- <script src="js/util.js"></script> -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="https://unpkg.com/vue"></script>
-        <script type="text/javascript" src="js/jquery.csv.js"></script>
+        <script type="text/javascript" src="./js/jquery.csv.js"></script>
  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDm34gZk1tuwBd-HzfXcDlHFj_9xGUhJWM"></script>
-
+  <script src="js/evg-util.js"></script>
+  <script>
+google.charts.load('current', {'packages':['corechart', 'controls']});
+google.charts.setOnLoadCallback(drawVisualization);
+</script>
 
   </head>
 <body>
@@ -107,13 +111,13 @@
                   </div>
                 </div>
                 <div class="tab-pane active" id="2a">
-                  <div id="chart_div" style="height: 400px;width: 400px;">
+                  <div id="chart_div" >
                     <div id="loader"></div>
 
                     <div id="myDiv" class="">
                       <div id="dashboard">
-                      <div id="chart" style='width: 915px; height: 300px;'></div>
-                      <div id="control" style='width: 915px; height: 50px;'></div>
+                      <div id="chart" style='width: 815px; height: 350px;'></div>
+                      <div id="control" style='width: 600px; height: 50px;'></div>
                   </div>
                     </div>
                   </div>
@@ -144,24 +148,24 @@
             <div id="exTab1">
               <ul class="nav nav-pills">
             		<li class="active">
-                  <a  href="#1a" data-toggle="tab">Status</a>
+                  <a  href="#1b" data-toggle="tab">Status</a>
           			</li>
             		<li >
-                  <a href="#2a" data-toggle="tab">Data Plot</a>
+                  <a href="#2b" data-toggle="tab">Data Plot</a>
               	</li>
             		<li>
-                  <a href="#3a" data-toggle="tab">Configuration</a>
+                  <a href="#3b" data-toggle="tab">Configuration</a>
           			</li>
           		</ul>
         			<div class="tab-content clearfix">
-      			    <div class="tab-pane" id="1a">
+      			    <div class="tab-pane" id="1b">
                   <div id="snprofile" style="height: 400px;width: 400px;">
                   </div>
                 </div>
-                <div class="tab-pane active" id="2a">
-                  <div id="chart_div" style="height: 400px;width: 400px;"></div>
+                <div class="tab-pane active" id="2b">
+                  <div style="height: 400px;width: 400px;"></div>
                 	</div>
-                <div class="tab-pane" id="3a">
+                <div class="tab-pane" id="3b">
                 </div>
               </div>
             </div>
@@ -187,24 +191,24 @@
             <div id="exTab1">
               <ul class="nav nav-pills">
             		<li class="active">
-                  <a  href="#1a" data-toggle="tab">Status</a>
+                  <a  href="#1c" data-toggle="tab">Status</a>
           			</li>
             		<li >
-                  <a href="#2a" data-toggle="tab">Data Plot</a>
+                  <a href="#2c" data-toggle="tab">Data Plot</a>
               	</li>
             		<li>
-                  <a href="#3a" data-toggle="tab">Configuration</a>
+                  <a href="#3c" data-toggle="tab">Configuration</a>
           			</li>
           		</ul>
         			<div class="tab-content clearfix">
-      			    <div class="tab-pane" id="1a">
+      			    <div class="tab-pane" id="1c">
                   <div id="snprofile" style="height: 400px;width: 400px;">
                   </div>
                 </div>
-                <div class="tab-pane active" id="2a">
-                  <div id="chart_div" style="height: 400px;width: 400px;"></div>
+                <div class="tab-pane active" id="2c">
+                  <div  style="height: 400px;width: 400px;"></div>
                 	</div>
-                <div class="tab-pane" id="3a">
+                <div class="tab-pane" id="3c">
                 </div>
               </div>
             </div>
@@ -230,24 +234,24 @@
             <div id="exTab1">
               <ul class="nav nav-pills">
             		<li class="active">
-                  <a  href="#1a" data-toggle="tab">Status</a>
+                  <a  href="#1d" data-toggle="tab">Status</a>
           			</li>
             		<li >
-                  <a href="#2a" data-toggle="tab">Data Plot</a>
+                  <a href="#2d" data-toggle="tab">Data Plot</a>
               	</li>
             		<li>
-                  <a href="#3a" data-toggle="tab">Configuration</a>
+                  <a href="#3d" data-toggle="tab">Configuration</a>
           			</li>
           		</ul>
         			<div class="tab-content clearfix">
-      			    <div class="tab-pane" id="1a">
+      			    <div class="tab-pane" id="1d">
                   <div id="snprofile" style="height: 400px;width: 400px;">
                   </div>
                 </div>
-                <div class="tab-pane active" id="2a">
-                  <div id="chart_div" style="height: 400px;width: 400px;"></div>
+                <div class="tab-pane active" id="2d">
+                  <div  style="height: 400px;width: 400px;"></div>
                 	</div>
-                <div class="tab-pane" id="3a">
+                <div class="tab-pane" id="3d">
                 </div>
               </div>
             </div>

@@ -8,150 +8,10 @@ var infowindow;
 var eventBus = new Vue();
 var arrDestinations = [];
 
-$(document).ready(function(){
-	var mydata;
-	var self=this;
-	console.log("Retrieving initial data...");
-
-	// function myFunction() {
-	// 	console.log("Starting retrieving config data...");
-	//
-	// 	$.getJSON("./json/resouces.json", function(data){
-	// 		 greendot = data.greendot;
-	// 		 reddot = data.reddot;
-	// 		 cameradot =data.cameradot;
-	// 		 gatewaydot=data.gatewaydot;
-	// 	 },
-	//  function(response){
-	// 	 console.log("Error=>"+response);
-	//  });
-	//
-	// }
-google.charts.load('current', {'packages':['corechart', 'controls']});
- 	google.charts.setOnLoadCallback(drawVisualization);
-
-          function showPage() {
+  function showPage() {
             document.getElementById("loader").style.opacity = 0;
             document.getElementById("myDiv").style.opacity = 1;
-          }
-
-function drawVisualization() {
-	var dashboard = new google.visualization.Dashboard(
-			 document.getElementById('dashboard'));
-
-	 var control = new google.visualization.ControlWrapper({
-		 'controlType': 'ChartRangeFilter',
-		 'containerId': 'control',
-		 'options': {
-			 // Filter by the date axis.
-			 'filterColumnIndex': 0,
-			 'ui': {
-				 'chartType': 'LineChart',
-				 'chartOptions': {
-					 'chartArea': {'width': '90%'},
-						 'hAxis': {'baselineColor': 'none', format: "dd.MM.yyyy" }
-				 },
-				 // Display a single series that shows the closing value of the stock.
-				 // Thus, this view has two columns: the date (axis) and the stock value (line series).
-				 'chartView': {
-					 'columns': [0, 1]
-				 },
-				 // 1 day in milliseconds = 24 * 60 * 60 * 1000 = 86,400,000
-				 'minRangeSize': 86400000
-			 }
-		 },
-		 // Initial range: 2012-02-09 to 2012-03-20.
-		 'state': {'range': {'start': new Date(2017, 1, 20), 'end': new Date(2017, 1, 24)}}
-	 });
-
-	 var chart = new google.visualization.ChartWrapper({
-		 'chartType': 'LineChart',
-		 'containerId': 'chart',
-		 'options': {
-			 // Use the same chart area width as the control for axis alignment.
-			 'chartArea': {'height': '80%', 'width': '90%'},
-			 'hAxis': {'slantedText': false, title:"Sensor Reading"},
-			 'vAxis':{
-				 title: 'Time'
-			 },
-			//  'vAxis': {'viewWindow': {'min': 0, 'max': 2000}},
-			 'legend': {'position': 'none'}
-		 },
-		 // Convert the first column from 'date' to 'string'.
-		 'view': {
-			 'columns': [
-				 {
-					 'calc': function(dataTable, rowIndex) {
-						 return dataTable.getFormattedValue(rowIndex, 0);
-					 },
-					 'type': 'string'
-				 }, 1]
-		 }
-	 });
-
-	 var data = new google.visualization.DataTable();
-					data.addColumn('date', 'Date');
-					data.addColumn('number', 'Level');
-	//  data.addColumn('number', 'Stock low');
-	//  data.addColumn('number', 'Stock open');
-	//  data.addColumn('number', 'Stock close');
-	//  data.addColumn('number', 'Stock high');
-
-
-	 // Create random stock values, just like it works in reality.
-
-	 $.get( "./data/Data.txt", function( csv ) {
-		 var dataset = $.csv.toArrays(csv);
-		 var count=dataset.length;
-
-		 for(var i=0; i<count; i++){
-			 var ts = parseInt($.trim(dataset[i][2]));
-			// console.log(ts);
-			 var date = new Date(ts*1000);
-			 if(i==0){
-					control.setState({'range': {'start': date}});
-			 }
-			control.setState({'range': {'end': date}});
-			// console.log(date);
-			 var value =  parseFloat($.trim(dataset[i][1]));
-			 data.addRow([date, value]);
-		 }
-		 var formatter = new google.visualization.DateFormat({pattern: "dd.MM.yyyy H:mm"});
-		 formatter.format(data, 0);
-
-			dashboard.bind(control, chart);
-			dashboard.draw(data);
-		 setTimeout(showPage, 3000);
-//     console.log(data);
-	 });
-
-
-
-}
-
- function drawChart() {
-	 var data = google.visualization.arrayToDataTable([
-		 ['Time', 'Reading'],
-		 [ 75617,      3360],
-		 [ 75622,    416],
-		 [  75636,     255],
-		 [  75645,      0],
-		 [  75689,      417],
-		 [  75693,    255]
-	 ]);
-
-	 var options = {
-		 title: 'Sensor Reading',
-		 hAxis: {title: 'Time'},
-		 vAxis: {title: 'Reading'},
-		 legend: 'none',
-		 width: 600,
-		 height: 300
-	 };
-	 var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
-	 chart.draw(data, options);
- }
-});
+  }
 
 
 // define the item component for the tree data
@@ -301,7 +161,10 @@ var demo = new Vue({
 					google.maps.event.trigger(self.markers[i], 'click');
 				}
 			}
-		})
+		});
+    // $("a[href='#2a']").on('shown.bs.tab', function (e) {
+
+  // });
 	},
 	beforeCreate: function(){
   	var self=this;
@@ -432,94 +295,31 @@ function overlayShow(type, id) {
 	}
 	$(olID).modal('show');
 	$("#node_id").text(id);
+	if(type=='snode'){
+    console.log("Tab 2a shown");
+    $.get( "../data/data.txt", function( csv ) {
+      console.log("loading data for the chart...");
+      var dataset = $.csv.toArrays(csv);
+      var count=dataset.length;
+
+      for(var i=0; i<count; i++){
+        var ts = parseInt($.trim(dataset[i][2]));
+       // console.log(ts);
+        var date = new Date(ts*1000);
+        if(i==0){
+           control.setState({'range': {'start': date}});
+        }
+       control.setState({'range': {'end': date}});
+       // console.log(date);
+        var value =  parseFloat($.trim(dataset[i][1]));
+        chartData.addRow([date, value]);
+      }
+      var formatter = new google.visualization.DateFormat({pattern: "dd.MM.yyyy H:mm"});
+      formatter.format(chartData, 0);
+
+       dashboard.bind(control, chart);
+       dashboard.draw(chartData);
+      setTimeout(showPage, 1000);
+  });
+	 }
 }
-
-function initMap() {
-		var uluru = {lat: 42.289916, lng: -83.730076};
-
-		map = new google.maps.Map(document.getElementById('map'), {
-			zoom: 19,
-			center: uluru
-		});
-	  infowindow =  new google.maps.InfoWindow({
-			content: ''
-		});
-}
-
-function showOverlay(marker, type, id){
-	marker.addListener('click', function() {
-				 marker.map.setZoom(19);
-				 marker.map.setCenter(marker.getPosition());
-				 overlayShow(type, id);
-			 });
-}
-
-function bindInfoWindow(marker, map, infowindow, html, id) {
-	google.maps.event.addListener(marker, 'mouseover', function(e) {
-		infowindow.setContent(html);
-		infowindow.open(map, marker);
-		if(e){
-		eventBus.$emit("listhighlight",id);}
-	});
-	google.maps.event.addListener(marker, 'mouseout', function(e) {
-		infowindow.setContent("");
-		infowindow.close();
-		if(e){
-		eventBus.$emit("listhighlight",null);}
-	});
-	google.maps.event.addListener(infowindow, 'domready', function() {
-   // Reference to the DIV which receives the contents of the infowindow using jQuery
-   	var iwOuter = $('.gm-style-iw');
-	 	var iwCloseBtn = iwOuter.next();
-	 	iwCloseBtn.css({'display': 'none'});
-	});
-}
-
-function addMarker(dest) {
-	var micon =null;
-	if(dest.type=="snode"){
-		if(dest.alert){
-			micon = reddot;
-		}else {
-			micon=greendot;
-		}
-	}
-	if(dest.type=="vnode"){
-		micon=cameradot;
-	}
-	if(dest.type=="gateway"){
-		micon=gatewaydot;
-	}
-	var marker = new google.maps.Marker({
-		title: dest.id,
-		icon:micon,
-		position: new google.maps.LatLng(dest.lat, dest.lon),
-		map: map
-	});
-	showOverlay(marker, dest.type, dest.id);
-	bindInfoWindow(marker, map, infowindow, "<span style='font-weight:600;'>" + dest.id+" - "+dest.description + "</span>",dest.id);
-	markers.push(marker);
-}
-
-		 // Sets the map on all markers in the array.
-		 function setMapOnAll(map) {
-			 for (var i = 0; i < markers.length; i++) {
-				 markers[i].setMap(map);
-			 }
-		 }
-
-		 // Removes the markers from the map, but keeps them in the array.
-		 function clearMarkers() {
-			 setMapOnAll(null);
-		 }
-
-		 // Shows any markers currently in the array.
-		 function showMarkers() {
-			 setMapOnAll(map);
-		 }
-
-		 // Deletes all markers in the array by removing references to them.
-		 function deleteMarkers() {
-			 clearMarkers();
-			 markers = [];
-		 }
