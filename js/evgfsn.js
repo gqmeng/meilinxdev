@@ -97,7 +97,7 @@ Vue.component('item', {
 			eventBus.$emit("maphighlightover",this.model.id);
 		},
   	showSummary:function() {
-    	$("#summary>span").text(this.model.name);
+    	$("#summary").jsonBrowse(this.model.data);
   	}
 	}
 })
@@ -195,19 +195,19 @@ var demo = new Vue({
     		groups[groupName] = [];
   		}
 
-  		groups[groupName].push({name:"Sensor Node "+self.snList.nodelist[i].ID,id:self.snList.nodelist[i].ID,displayClass: 'level2',entitytype:"snode",alert:self.snList.nodelist[i].Alert});
+  		groups[groupName].push({name:"Sensor Node "+self.snList.nodelist[i].ID,id:self.snList.nodelist[i].ID,displayClass: 'level2',entitytype:"snode",alert:self.snList.nodelist[i].Alert, data:self.snList.nodelist[i]});
 			}
 			for (var groupName in groups) {
 				var title='Sensor Node Group #'+groupName;
 				var gname='Sensor Node Group '+groupName;
   			// result1.push({name: gname, title:title,displayClass: 'level1', entitytype:'group', children: groups[groupName]});
-				self.treeData.children.push({name: gname, title:title,displayClass: 'level1', entitytype:'group', children: groups[groupName]});
+				self.treeData.children.push({name: gname, title:title, displayClass: 'level1', entitytype:'group', children: groups[groupName]});
 			}
 			for (var i = 0; i < self.gwList.nodelist.length; i++) {
-				self.treeData.children.push({name:"Gateway "+self.gwList.nodelist[i].ID,id:self.gwList.nodelist[i].ID,displayClass: 'level1',entitytype:"gateway",alert:self.gwList.nodelist[i].Alert});
+				self.treeData.children.push({name:"Gateway "+self.gwList.nodelist[i].ID,id:self.gwList.nodelist[i].ID,displayClass: 'level1',entitytype:"gateway",alert:self.gwList.nodelist[i].Alert,data:self.gwList.nodelist[i]});
 			}
 			for (var i = 0; i < self.vnList.nodelist.length; i++) {
-				self.treeData.children.push({name:"Video Node "+self.vnList.nodelist[i].ID,id:self.vnList.nodelist[i].ID,displayClass: 'level1',entitytype:"vnode",alert:self.vnList.nodelist[i].Alert});
+				self.treeData.children.push({name:"Video Node "+self.vnList.nodelist[i].ID,id:self.vnList.nodelist[i].ID,displayClass: 'level1',entitytype:"vnode",alert:self.vnList.nodelist[i].Alert,data:self.vnList.nodelist[i]});
 			}
   	 	$("#summary>span").text(self.treeData.title);
     	self.dataReady = true;
