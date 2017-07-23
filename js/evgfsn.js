@@ -224,6 +224,7 @@ var demo = new Vue({
 	)
 },
 methods:{
+
 	setHighlight:function(id){
 		this.highlight=id;
 	},

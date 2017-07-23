@@ -28,6 +28,8 @@
  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDm34gZk1tuwBd-HzfXcDlHFj_9xGUhJWM"></script>
   <script src="js/evg-util.js"></script>
   <script src="js/jquery.json-browse.js"></script>
+  <script src="./js/jquery.mjpeg.player.js"></script>
+
   <link href="css/jquery.json-browse.css"rel="stylesheet">
 
   <script>
@@ -154,7 +156,7 @@ google.charts.setOnLoadCallback(drawVisualization);
                   <a  href="#1b" data-toggle="tab">Status</a>
           			</li>
             		<li >
-                  <a href="#2b" data-toggle="tab">Data Plot</a>
+                  <a href="#2b" data-toggle="tab">Video</a>
               	</li>
             		<li>
                   <a href="#3b" data-toggle="tab">Configuration</a>
@@ -166,7 +168,12 @@ google.charts.setOnLoadCallback(drawVisualization);
                   </div>
                 </div>
                 <div class="tab-pane active" id="2b">
-                  <div style="height: 400px;width: 400px;"></div>
+                  <div><span>V11</span>
+                    <button  onclick="playmjpeg()"><span class="glyphicon glyphicon-play"></span></button>
+                  </div>
+
+                       <div id="mjpegcontainer">
+                       </div>
                 	</div>
                 <div class="tab-pane" id="3b">
                 </div>

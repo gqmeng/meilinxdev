@@ -13,6 +13,28 @@ function showPage() {
             document.getElementById("myDiv").style.opacity = 1;
   }
 
+function	playmjpeg() {
+    console.log("clicked");
+    if($('#mjpegcontainer').children().length>0){
+      $('#mjpegcontainer').empty()
+    }
+
+    $('#mjpegcontainer').append("<div id='mjpeg_wrapper'></div>");
+    var el = $('#mjpeg_wrapper');
+    el.clipchamp_mjpeg_player(
+    './video/v11.mjpg',
+    24, // frames per second
+    false, // autoloop
+    stop
+    );
+  }
+var pauseNow = false;
+	function stop(el, pi){
+	  if(pauseNow){
+	    pi.finish();
+	  }
+	}
+
 function drawVisualization() {
     dashboard = new google.visualization.Dashboard(
       			 document.getElementById('dashboard'));
