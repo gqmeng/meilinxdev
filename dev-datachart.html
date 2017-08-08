@@ -84,6 +84,9 @@
            // Use the same chart area width as the control for axis alignment.
            'chartArea': {'height': '80%', 'width': '90%'},
            'hAxis': {'slantedText': false},
+           'vAxis':{
+    				'title':"Sensor Reading"
+    			 },
           //  'vAxis': {'viewWindow': {'min': 0, 'max': 2000}},
            'legend': {'position': 'none'}
          },
@@ -110,7 +113,7 @@
 
        // Create random stock values, just like it works in reality.
 
-       $.get( "./data/data.txt", function( csv ) {
+       $.get( "./data/data1.txt", function( csv ) {
          var dataset = $.csv.toArrays(csv);
          var count=dataset.length;
 

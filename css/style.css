@@ -200,7 +200,7 @@ right: -15px;
 =========================== */
 section.header {
 	height: 60px;
-	background:linear-gradient(120deg, #2c2cef, #fff);
+	background: #2c2cef;
 }
 section.header h3 {
 	color:#fff;
@@ -546,4 +546,18 @@ li.level2>div{
 		 opacity:1;
 			 text-align: center;
 			 transition: opacity 2s linear;
+	 }
+	 #dashboard {
+		 width: 1000px;
+
+	 }
+	 #loginBtn{
+		 float:right;
+		 font-size: 14px;
+		 color: #fff;
+		 line-height: 2em;
+		 border: 1px solid #fff;
+		 padding: 5px 15px;
+     margin: 10px 0px;
+		     font-weight: 700;
 	 }

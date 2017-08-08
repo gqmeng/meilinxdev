@@ -254,7 +254,11 @@ methods:{
 				arrDest.title=item.ID;
 				arrDest.type=type;
 				arrDest.alert=item.Alert;
-				arrDest.description="Normal Operation.";
+        if(arrDest.alert){
+               arrDest.description="Alert!!";
+        }else{
+				      arrDest.description="Normal Operation.";
+        }
 				arrDestinations.push(arrDest);
 			})
 		}
@@ -298,7 +302,7 @@ function overlayShow(type, id) {
 	$("#node_id").text(id);
 	if(type=='snode'){
     console.log("Tab 2a shown");
-    $.get( "../data/data.txt", function( csv ) {
+    $.get( "../data/data1.txt", function( csv ) {
       console.log("loading data for the chart...");
       var dataset = $.csv.toArrays(csv);
       var count=dataset.length;

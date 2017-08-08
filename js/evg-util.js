@@ -47,9 +47,9 @@ function drawVisualization() {
 			 'ui': {
 				 'chartType': 'LineChart',
 				 'chartOptions': {
-					 'chartArea': {'width': '915px', 'height':'50px'},
+					 'chartArea': {'width': '90%'},
 						 'hAxis': {'baselineColor': 'none', format: "dd.MM.yyyy" },
-             'vAxis':{'title':''}
+             'vAxis':{'title':' '}
 				 },
 				 // Display a single series that shows the closing value of the stock.
 				 // Thus, this view has two columns: the date (axis) and the stock value (line series).
@@ -69,10 +69,10 @@ function drawVisualization() {
 		 'containerId': 'chart',
 		 'options': {
 			 // Use the same chart area width as the control for axis alignment.
-			 'chartArea': {'height': '300px', 'width': '915px'},
+			 'chartArea': {'height': '80%', 'width': '90%'},
 			 'hAxis': {'slantedText': false },
 			 'vAxis':{
-				title:"Sensor Reading"
+				'title':"Sensor Reading"
 			 },
 			//  'vAxis': {'viewWindow': {'min': 0, 'max': 2000}},
 			 'legend': {'position': 'none'}
