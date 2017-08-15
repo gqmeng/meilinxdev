@@ -317,13 +317,24 @@ function overlayShow(type, id) {
        control.setState({'range': {'end': date}});
        // console.log(date);
         var value =  parseFloat($.trim(dataset[i][1]));
-        chartData.addRow([date, value]);
+        var value2 =  parseInt($.trim(dataset[i][2]))-parseInt($.trim(dataset[i][2])/10)*10;
+        chartData.addRow([date, value,value2]);
       }
       var formatter = new google.visualization.DateFormat({pattern: "dd.MM.yyyy H:mm"});
       formatter.format(chartData, 0);
-
-       dashboard.bind(control, chart);
-       dashboard.draw(chartData);
+      chart.view={
+ 			 'columns': [
+ 				 {
+ 					 'calc': function(dataTable, rowIndex) {
+ 						 return dataTable.getFormattedValue(rowIndex, 0);
+ 					 },
+ 					 'type': 'string'
+ 				 }, 1]
+ 		 };
+     console.log(chart);
+     chartView-new google.visualization.DataView(chartData);
+      dashboard.bind(control, chart);
+      dashboard.draw(chartView);
       setTimeout(showPage, 1000);
   });
 	 }

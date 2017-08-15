@@ -1,4 +1,5 @@
 var chartData;
+var chartView;
 var chartOptions = {
 			  chartArea:{left:0,top:0,width:"100%",height:"100%"}
 			   ,height: 915
@@ -71,11 +72,15 @@ function drawVisualization() {
 			 // Use the same chart area width as the control for axis alignment.
 			 'chartArea': {'height': '80%', 'width': '90%'},
 			 'hAxis': {'slantedText': false },
-			 'vAxis':{
-				'title':"Sensor Reading"
+			 'vAxes':{0:{'viewWindowMode':'explicit','title':"Water Level"},
+						1:{'viewWindowMode':'explicit','title':"Second Reading",'viewWindow':{max:40,min:0},'gridlines':{count:5}}
 			 },
+			 'series': {0: {targetAxisIndex:0},
+									1:{targetAxisIndex:1}
+								 },
 			//  'vAxis': {'viewWindow': {'min': 0, 'max': 2000}},
-			 'legend': {'position': 'none'}
+			 'legend': {'position': 'top'},
+			 'color':['red','blue']
 		 },
 		 // Convert the first column from 'date' to 'string'.
 		 'view': {
@@ -85,13 +90,15 @@ function drawVisualization() {
 						 return dataTable.getFormattedValue(rowIndex, 0);
 					 },
 					 'type': 'string'
-				 }, 1]
+				 }, 1, 2]
 		 }
 	 });
 
 	 chartData = new google.visualization.DataTable();
    chartData.addColumn('date', 'Date');
-	  chartData.addColumn('number', 'Level');
+	 chartData.addColumn('number', 'Level');
+	 chartData.addColumn('number','Reading')
+	 chartView = new google.visualization.DataView(chartData);
 		console.log(chartData);
 }
 

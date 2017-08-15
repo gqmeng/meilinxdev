@@ -541,8 +541,10 @@ li.level2>div{
 
 	 #mjpeg_wrapper {
 		 position: relative;
-		 width:480px;
-		 height: 360px;
+		 width:520px;
+		 height:304px;
+		 padding:10px;
+		 border: 3px solid #f3f3f3;
 		 opacity:1;
 			 text-align: center;
 			 transition: opacity 2s linear;
