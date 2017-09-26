@@ -48,7 +48,7 @@ google.charts.setOnLoadCallback(drawVisualization);
       <h3> Evigia Flood Sensor Network</h3>
     </div>
             <div class='col-md-2 col-sm-2 col-xs-2'>
-      <div id='loginBtn'>Log In<div>
+      <div id='logoutBtn' v-if='isLoggedIn' @click='logout'>Log Out<div>
         <div class='col-md-1 col-sm-1 col-xs-1'>
         </div>
       </div>
@@ -57,7 +57,7 @@ google.charts.setOnLoadCallback(drawVisualization);
   </section>
 
   <section id="main">
-    <div class="container">
+    <div class="topcontainer" :class="{active:isLoggedIn}">
         <div class="row">
           <div class="col-md-3 col-sm-3 pad-right15 pad-left15 bg-grey" id="nlist">
             <!-- <h3 style="text-align:center;line-height:1.2em;margin-bottom:5px;">Area under monitoring</h3> -->
@@ -80,6 +80,26 @@ google.charts.setOnLoadCallback(drawVisualization);
             <div id="map"></div>
           </div>
       </div>
+    </div>
+    <div class='logincontainer' :class="{active:!isLoggedIn}">
+      <div class='loginform'>
+        <div class='row'>
+          <div class="col-md-3 col-sm-3"><label>Username</label></div>
+          <div class="col-md-7 col-sm-7"><input v-model='user.username'></input></div>
+        </div>
+          <div class='row'>
+            <div class="col-md-3 col-sm-3">  <label>Passsword</label>
+            </div>
+            <div class="col-md-7 col-sm-7"><input v-model='user.password'></input></div>
+        </div>
+          <div class='row'>
+            <div class="col-md-3 col-sm-3"></div>
+            <div class="col-md-7 col-sm-7">
+            <button class='float-right mar-top5' @click='submitlogin'>Log In</button></div>
+          </div>
+      </div>
+    </div>
+  </div>
   </section>
   <section id="banner">
       <!-- <marquee behavior="scroll" direction="left">

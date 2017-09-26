@@ -72,7 +72,7 @@ a, a:hover, a:active, a:visited, a:focus {
 .row {
 	z-index: 999;
 }
-.container {
+.container, .topcontainer, .logincontainer {
 	overflow: initial;
 	width:100%;
 }
@@ -246,6 +246,14 @@ div#nlist{
 	padding:10px 5px;
 	margin:0px 0px 0px 0px;
 }
+
+.loginform {
+	width:500px;
+	height:400px;
+	position:relative;
+	margin:30px auto;
+	padding:20px;
+}
 section.footer {
 	line-height:1.6em;
 	background-color: blue;
@@ -285,7 +293,7 @@ section.footer {
 	width: 100%;
 	margin: 16px auto 1px;
 }
-section .container {
+section .container,section .topcontainer,section .logincontainer {
 	max-width: 1200px;
 	margin:0 auto;
 }
@@ -293,12 +301,27 @@ section .container {
 	padding-top: 0px;
 }
 
+#main .topcontainer, #main .logincontainer {
+	position:absolute;
+	top:60px;
+	display:none;
+}
+#main .topcontainer.active, #main .logincontainer.active {
+	display:block;
+}
 section#section-tech h3 {
 	font-size: 18px;
 	font-weight: 600;
 	margin-top: 20px;
 }
-
+.loginform label {
+	width: 120px;
+}
+.loginform input{
+	width:100%;
+	padding:10px;
+	margin:5px auto;
+}
 section.section {
 	margin:0;
 	padding: 0px 0px 0px 0px;
@@ -553,7 +576,7 @@ li.level2>div{
 		 width: 1000px;
 
 	 }
-	 #loginBtn{
+	 #logoutBtn{
 		 float:right;
 		 font-size: 14px;
 		 color: #fff;

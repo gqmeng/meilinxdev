@@ -22,7 +22,7 @@ Vue.component('item', {
 	},
 	data: function () {
   	return {
-    	open: true
+    	open: true,
   	}
 	},
 	created:function(){
@@ -125,7 +125,11 @@ var demo = new Vue({
     	vnReady: false,
 			markers:markers,
 			currentOLView:'sensornode',
-			showOverlay:false
+			showOverlay:false,
+      isLoggedIn: false,
+      isAdmin:true,
+      user:{username:'',password:''},
+      servernodelist:[]
   	}
 	},
 	created:function(){
@@ -169,6 +173,21 @@ var demo = new Vue({
 	beforeCreate: function(){
   	var self=this;
   	$.when(
+      $.ajax({  // eslint-disable-line
+          type: 'GET',
+          url: 'http://52.36.202.215/sensornodes',
+          success: function (response) {
+            console.log(response);
+            if(response.length>0){
+              response.forEach(function(e){
+                self.servernodelist.push(e);
+              });
+            }
+          },
+          error: function (response) {
+            console.log(response);
+          }
+        }),
     	$.getJSON("./json/sensornodes.json",function(data){
 				$.extend(true, self.snList, data);
         // console.log("Sensor Node list retrieved"+ JSON.stringify(self.snList));
@@ -187,7 +206,10 @@ var demo = new Vue({
 ).then(
 	function(){
 		initMap();
-		// console.log(self.snList);
+		// construct sensor node list from servernodelist
+    self.snList.nodelist[0].ID = self.servernodelist[0].hwid;
+    self.snList.nodelist[1].ID = self.servernodelist[1].hwid; 
+
 		var groups = {};
 		for (var i = 0; i < self.snList.nodelist.length; i++) {
   		var groupName = self.snList.nodelist[i].Group;
@@ -224,7 +246,13 @@ var demo = new Vue({
 	)
 },
 methods:{
-
+  submitlogin:function(){
+    //send loginin
+    this.isLoggedIn=true;
+},
+logout:function(){
+  this.isLoggedIn=false;
+},
 	setHighlight:function(id){
 		this.highlight=id;
 	},
