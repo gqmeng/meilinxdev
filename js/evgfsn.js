@@ -68,7 +68,7 @@ Vue.component('item', {
 		openoverlay: function (e) {
 			if (this.isFolder) {
 				console.log("Clicked "+this.model.name);
-				overlayShow("topnode",this.model.id);
+				overlayShow(true,"topnode",this.model.id);
 			}else {
 				console.log("Clicked "+this.model.name);
 				e.stopPropagation();
@@ -129,7 +129,8 @@ var demo = new Vue({
       isLoggedIn: false,
       isAdmin:true,
       user:{username:'',password:''},
-      servernodelist:[]
+      servernodelist:[],
+      serverconnect:true
   	}
 	},
 	created:function(){
@@ -207,9 +208,10 @@ var demo = new Vue({
 	function(){
 		initMap();
 		// construct sensor node list from servernodelist
-    self.snList.nodelist[0].ID = self.servernodelist[0].hwid;
-    self.snList.nodelist[1].ID = self.servernodelist[1].hwid; 
-
+    if(self.serverconnect){
+      self.snList.nodelist[0].ID = self.servernodelist[0].hwid;
+      self.snList.nodelist[1].ID = self.servernodelist[1].hwid;
+    }
 		var groups = {};
 		for (var i = 0; i < self.snList.nodelist.length; i++) {
   		var groupName = self.snList.nodelist[i].Group;
@@ -309,7 +311,7 @@ Object.defineProperty(Array.prototype, 'group', {
   }
 });
 
-function overlayShow(type, id) {
+function overlayShow(serverconnect, type, id) {
 	console.log("Marker Clicked: "+id);
 	var olID = '#snodeoverlay';
 	switch(type){
@@ -330,9 +332,61 @@ function overlayShow(type, id) {
 	$("#node_id").text(id);
 	if(type=='snode'){
     console.log("Tab 2a shown");
+if(serverconnect){
+  $.ajax({  // eslint-disable-line
+      type: 'GET',
+      url: 'http://52.36.202.215/dataset?gatewaynode=sensor1',
+      success: function (response) {
+        console.log(response);
+        if(response.length>0){
+          var n = chartData.getNumberOfRows();
+          chartData.removeRows(0,n);
+          response.forEach(function(e, index){
+              var date=new Date(e[0]);
+              if(index==0){
+                 control.setState({'range': {'start': date}});
+              }
+             control.setState({'range': {'end': date}});
+             var alert =  parseFloat($.trim(e[1]));
+             var bat1 =  parseFloat($.trim(e[2]));
+             var bat2 =  parseFloat($.trim(e[3]));
+              var hum1 =  parseFloat($.trim(e[5]));
+              var pre1 =  parseFloat($.trim(e[6]));
+              var pre2 =  parseFloat($.trim(e[7]));
+              var temp1 =  parseFloat($.trim(e[9]));
+              var temp2 =  parseFloat($.trim(e[10]));
+              var water =  parseFloat($.trim(e[12]));
+             chartData.addRow([date, water,temp1]);
+
+          });
+        }
+        console.log(chartData);
+  var formatter = new google.visualization.DateFormat({pattern: "dd.MM.yyyy H:mm"});
+  formatter.format(chartData, 0);
+  chart.view={
+   'columns': [
+     {
+       'calc': function(dataTable, rowIndex) {
+         return dataTable.getFormattedValue(rowIndex, 0);
+       },
+       'type': 'string'
+     }, 1]
+ };
+ console.log(chart);
+ chartView=new google.visualization.DataView(chartData);
+  dashboard.bind(control, chart);
+  dashboard.draw(chartView);
+  setTimeout(showPage, 1000);
+      },
+      error: function (response) {
+        console.log(response);
+      }
+    })
+}else {
     $.get( "../data/data1.txt", function( csv ) {
       console.log("loading data for the chart...");
       var dataset = $.csv.toArrays(csv);
+
       var count=dataset.length;
 
       for(var i=0; i<count; i++){
@@ -348,6 +402,7 @@ function overlayShow(type, id) {
         var value2 =  parseInt($.trim(dataset[i][2]))-parseInt($.trim(dataset[i][2])/10)*10;
         chartData.addRow([date, value,value2]);
       }
+            console.log(chartData);
       var formatter = new google.visualization.DateFormat({pattern: "dd.MM.yyyy H:mm"});
       formatter.format(chartData, 0);
       chart.view={
@@ -360,10 +415,15 @@ function overlayShow(type, id) {
  				 }, 1]
  		 };
      console.log(chart);
-     chartView-new google.visualization.DataView(chartData);
+     chartView=new google.visualization.DataView(chartData);
       dashboard.bind(control, chart);
       dashboard.draw(chartView);
       setTimeout(showPage, 1000);
   });
+
+}
+
+
+
 	 }
 }

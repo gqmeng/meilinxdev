@@ -73,7 +73,7 @@ function drawVisualization() {
 			 'chartArea': {'height': '80%', 'width': '90%'},
 			 'hAxis': {'slantedText': false },
 			 'vAxes':{0:{'viewWindowMode':'explicit','title':"Water Level"},
-						1:{'viewWindowMode':'explicit','title':"Second Reading",'viewWindow':{max:40,min:0},'gridlines':{count:5}}
+						1:{'viewWindowMode':'explicit','title':"Temperature 1",'viewWindow':{max:40,min:0},'gridlines':{count:5}}
 			 },
 			 'series': {0: {targetAxisIndex:0},
 									1:{targetAxisIndex:1}
@@ -96,8 +96,8 @@ function drawVisualization() {
 
 	 chartData = new google.visualization.DataTable();
    chartData.addColumn('date', 'Date');
-	 chartData.addColumn('number', 'Level');
-	 chartData.addColumn('number','Reading')
+	 chartData.addColumn('number', 'Water Level');
+	 chartData.addColumn('number','Temperature 1')
 	 chartView = new google.visualization.DataView(chartData);
 		console.log(chartData);
 }
@@ -119,7 +119,7 @@ function showOverlay(marker, type, id){
 	marker.addListener('click', function() {
 				 marker.map.setZoom(19);
 				 marker.map.setCenter(marker.getPosition());
-				 overlayShow(type, id);
+				 overlayShow(true, type, id);
 			 });
 }
 
