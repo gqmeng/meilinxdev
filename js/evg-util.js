@@ -10,9 +10,9 @@ var control;
 var chart;
 
 function showPage() {
-            document.getElementById("loader").style.opacity = 0;
-            document.getElementById("myDiv").style.opacity = 1;
-  }
+    document.getElementById("loader").style.opacity = 0;
+    document.getElementById("myDiv").style.opacity = 1;
+}
 
 function	playmjpeg() {
     console.log("clicked");
@@ -119,7 +119,7 @@ function showOverlay(marker, type, id){
 	marker.addListener('click', function() {
 				 marker.map.setZoom(19);
 				 marker.map.setCenter(marker.getPosition());
-				 overlayShow(true, type, id);
+				 eventBus.$emit('overlayShow', id);
 			 });
 }
 

@@ -8,10 +8,10 @@ var infowindow;
 var eventBus = new Vue();
 var arrDestinations = [];
 
-  function showPage() {
-            document.getElementById("loader").style.opacity = 0;
-            document.getElementById("myDiv").style.opacity = 1;
-  }
+function showPage() {
+  document.getElementById("loader").style.opacity = 0;
+  document.getElementById("myDiv").style.opacity = 1;
+}
 
 
 // define the item component for the tree data
@@ -23,6 +23,8 @@ Vue.component('item', {
 	data: function () {
   	return {
     	open: true,
+      starttime:'2017-09-23T21:41:19Z',
+      endtime:'2017-09-24T18:51:40Z',
   	}
 	},
 	created:function(){
@@ -31,7 +33,16 @@ Vue.component('item', {
 			if(id==self.model.id){
 				self.showSummary();
 			}
-		})
+		});
+    eventBus.$on("overlayShow",function(id){
+      overlayShow(true,"snode",
+      'sensor1', //this.model.id,
+      self.starttime,self.endtime);
+		});
+    this.starttime=moment(this.endtime).subtract(6,'hours').toISOString();
+    console.log(this.starttime);
+    console.log(this.endtime);
+
 	},
 	computed: {
   	isFolder: function () {
@@ -68,7 +79,9 @@ Vue.component('item', {
 		openoverlay: function (e) {
 			if (this.isFolder) {
 				console.log("Clicked "+this.model.name);
-				overlayShow(true,"topnode",this.model.id);
+				overlayShow(true,"topnode",
+        'sensor1', //this.model.id,
+        this.starttime,this.endtime);
 			}else {
 				console.log("Clicked "+this.model.name);
 				e.stopPropagation();
@@ -130,7 +143,9 @@ var demo = new Vue({
       isAdmin:true,
       user:{username:'',password:''},
       servernodelist:[],
-      serverconnect:true
+      serverconnect:true,
+      starttime:"",
+      endtime:"",
   	}
 	},
 	created:function(){
@@ -209,8 +224,12 @@ var demo = new Vue({
 		initMap();
 		// construct sensor node list from servernodelist
     if(self.serverconnect){
-      self.snList.nodelist[0].ID = self.servernodelist[0].hwid;
-      self.snList.nodelist[1].ID = self.servernodelist[1].hwid;
+      self.servernodelist.forEach(function(e,index){
+        self.snList.nodelist[index].ID = e.hwid;
+        self.snList.nodelist[index].Latitude = e.latitude;
+        self.snList.nodelist[index].Longitude = e.longitude;
+      })
+
     }
 		var groups = {};
 		for (var i = 0; i < self.snList.nodelist.length; i++) {
@@ -311,8 +330,8 @@ Object.defineProperty(Array.prototype, 'group', {
   }
 });
 
-function overlayShow(serverconnect, type, id) {
-	console.log("Marker Clicked: "+id);
+function overlayShow(serverconnect, type, id, start, end) {
+	console.log("Func Marker Clicked: "+id);
 	var olID = '#snodeoverlay';
 	switch(type){
 		case "topnode":
@@ -335,7 +354,7 @@ function overlayShow(serverconnect, type, id) {
 if(serverconnect){
   $.ajax({  // eslint-disable-line
       type: 'GET',
-      url: 'http://52.36.202.215/dataset?gatewaynode=sensor1',
+      url: 'http://52.36.202.215/dataset?gatewaynode='+id+'&start_time='+start+'&end_time='+end,
       success: function (response) {
         console.log(response);
         if(response.length>0){
@@ -361,7 +380,7 @@ if(serverconnect){
           });
         }
         console.log(chartData);
-  var formatter = new google.visualization.DateFormat({pattern: "dd.MM.yyyy H:mm"});
+  var formatter = new google.visualization.DateFormat({pattern: "dd.MM.yy H:mm"});
   formatter.format(chartData, 0);
   chart.view={
    'columns': [
