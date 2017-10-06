@@ -40,9 +40,6 @@ Vue.component('item', {
       self.starttime,self.endtime);
 		});
     this.starttime=moment(this.endtime).subtract(6,'hours').toISOString();
-    console.log(this.starttime);
-    console.log(this.endtime);
-
 	},
 	computed: {
   	isFolder: function () {
@@ -146,6 +143,7 @@ var demo = new Vue({
       serverconnect:true,
       starttime:"",
       endtime:"",
+      libraryready:false,
   	}
 	},
 	created:function(){
@@ -221,7 +219,7 @@ var demo = new Vue({
     })
 ).then(
 	function(){
-		initMap();
+		// initMap();
 		// construct sensor node list from servernodelist
     if(self.serverconnect){
       self.servernodelist.forEach(function(e,index){
@@ -261,12 +259,30 @@ var demo = new Vue({
 			for (i = 0; i < arrDestinations.length; i++) {
 				addMarker(arrDestinations[i]);
 			}
-			showMarkers();
+			// showMarkers();
 
 	}
 	)
 },
+mounted: function(){
+	initMap();
+  showMarkers();
+  window.dispatchEvent(new Event('resize'));
+  google.maps.event.trigger(map, "resize");
+},
+watch:{
+  libraryready:function(){
+    console.log("Map Library Loaded")
+      window.dispatchEvent(new Event('resize'));
+  },
+  isLoggedIn:function(){
+    console.log("Map Loaded - Loggedin")
+    window.dispatchEvent(new Event('resize'));
+      google.maps.event.trigger(map, "resize");
+  }
+},
 methods:{
+
   submitlogin:function(){
     //send loginin
     this.isLoggedIn=true;
@@ -354,7 +370,7 @@ function overlayShow(serverconnect, type, id, start, end) {
 if(serverconnect){
   $.ajax({  // eslint-disable-line
       type: 'GET',
-      url: 'http://52.36.202.215/dataset?gatewaynode='+id+'&start_time='+start+'&end_time='+end,
+      url: 'http://52.36.202.215/dataset?sensornode='+'sensor1'+'&start_time='+start+'&end_time='+end,
       success: function (response) {
         console.log(response);
         if(response.length>0){
@@ -435,6 +451,7 @@ if(serverconnect){
  		 };
      console.log(chart);
      chartView=new google.visualization.DataView(chartData);
+      chartView.hideColumns([1])
       dashboard.bind(control, chart);
       dashboard.draw(chartView);
       setTimeout(showPage, 1000);

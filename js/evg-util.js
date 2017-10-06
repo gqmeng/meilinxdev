@@ -35,7 +35,10 @@ var pauseNow = false;
 	    pi.finish();
 	  }
 	}
-
+function maploaded() {
+	console.log("Map ready")
+	demo.$set('libraryready', true);
+}
 function drawVisualization() {
     dashboard = new google.visualization.Dashboard(
       			 document.getElementById('dashboard'));
@@ -79,7 +82,7 @@ function drawVisualization() {
 									1:{targetAxisIndex:1}
 								 },
 			//  'vAxis': {'viewWindow': {'min': 0, 'max': 2000}},
-			 'legend': {'position': 'top'},
+			 'legend': {'position': 'none'},
 			 'color':['red','blue']
 		 },
 		 // Convert the first column from 'date' to 'string'.
@@ -99,15 +102,14 @@ function drawVisualization() {
 	 chartData.addColumn('number', 'Water Level');
 	 chartData.addColumn('number','Temperature 1')
 	 chartView = new google.visualization.DataView(chartData);
-		console.log(chartData);
+
 }
 
 
 function initMap() {
 		var uluru = {lat: 42.289916, lng: -83.730076};
-
 		map = new google.maps.Map(document.getElementById('map'), {
-			zoom: 19,
+			zoom: 16,
 			center: uluru
 		});
 	  infowindow =  new google.maps.InfoWindow({

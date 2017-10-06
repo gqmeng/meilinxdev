@@ -9,10 +9,7 @@
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
       integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
       crossorigin="anonymous">
-    <!-- <link rel="stylesheet" href="css/bootstrap-theme.css"> -->
     <link rel="stylesheet" href="css/style.css">
-    <!-- skin -->
-    <!-- <link rel="stylesheet" href="skin/default.css"> -->
     <title>Evigia Sensor Network</title>
     <script
       src="https://code.jquery.com/jquery-3.2.1.min.js"
@@ -21,21 +18,19 @@
     <script src="js/tether.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="./js/lodash.js"></script>
-    <script src="./js/moment.min.js"></script> 
+    <script src="./js/moment.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="https://unpkg.com/vue"></script>
-        <script type="text/javascript" src="./js/jquery.csv.js"></script>
- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDm34gZk1tuwBd-HzfXcDlHFj_9xGUhJWM"></script>
-  <script src="js/evg-util.js"></script>
-  <script src="js/jquery.json-browse.js"></script>
-  <script src="./js/jquery.mjpeg.player.js"></script>
-
-  <link href="css/jquery.json-browse.css"rel="stylesheet">
-
-  <script>
-google.charts.load('current', {'packages':['corechart', 'controls']});
-google.charts.setOnLoadCallback(drawVisualization);
-</script>
+    <script type="text/javascript" src="./js/jquery.csv.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDm34gZk1tuwBd-HzfXcDlHFj_9xGUhJWM"&callback=maploaded></script>
+    <script src="js/evg-util.js"></script>
+    <script src="js/jquery.json-browse.js"></script>
+    <script src="./js/jquery.mjpeg.player.js"></script>
+    <link href="css/jquery.json-browse.css"rel="stylesheet">
+    <script>
+      google.charts.load('current', {'packages':['corechart', 'controls']});
+      google.charts.setOnLoadCallback(drawVisualization);
+    </script>
 
   </head>
 <body>

@@ -223,7 +223,7 @@ section#banner {
 }
 div#map {
 			height: 530px;
-			width: 95%;
+			width: 800px;
 			/*border:2px solid blue;*/
 		 }
 .mb-0 a {
@@ -305,10 +305,10 @@ section .container,section .topcontainer,section .logincontainer {
 #main .topcontainer, #main .logincontainer {
 	position:absolute;
 	top:60px;
-	display:none;
+	opacity:0;
 }
 #main .topcontainer.active, #main .logincontainer.active {
-	display:block;
+	opacity:1;
 }
 section#section-tech h3 {
 	font-size: 18px;
