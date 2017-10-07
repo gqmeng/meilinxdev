@@ -267,19 +267,12 @@ var demo = new Vue({
 mounted: function(){
 	initMap();
   showMarkers();
-  window.dispatchEvent(new Event('resize'));
-  google.maps.event.trigger(map, "resize");
 },
 watch:{
   libraryready:function(){
     console.log("Map Library Loaded")
-      window.dispatchEvent(new Event('resize'));
   },
-  isLoggedIn:function(){
-    console.log("Map Loaded - Loggedin")
-    window.dispatchEvent(new Event('resize'));
-      google.maps.event.trigger(map, "resize");
-  }
+
 },
 methods:{
 
@@ -376,12 +369,16 @@ if(serverconnect){
         if(response.length>0){
           var n = chartData.getNumberOfRows();
           chartData.removeRows(0,n);
+          var n = chartData2.getNumberOfRows();
+          chartData2.removeRows(0,n);
           response.forEach(function(e, index){
               var date=new Date(e[0]);
               if(index==0){
                  control.setState({'range': {'start': date}});
+                 control2.setState({'range': {'start': date}});
               }
              control.setState({'range': {'end': date}});
+             control2.setState({'range': {'end': date}});
              var alert =  parseFloat($.trim(e[1]));
              var bat1 =  parseFloat($.trim(e[2]));
              var bat2 =  parseFloat($.trim(e[3]));
@@ -392,25 +389,28 @@ if(serverconnect){
               var temp2 =  parseFloat($.trim(e[10]));
               var water =  parseFloat($.trim(e[12]));
              chartData.addRow([date, water,temp1]);
-
+             chartData2.addRow([date, alert,bat1,bat2,hum1,pre1,pre2,temp1,temp2]);
           });
         }
-        console.log(chartData);
+        console.log(chartData2);
   var formatter = new google.visualization.DateFormat({pattern: "dd.MM.yy H:mm"});
   formatter.format(chartData, 0);
-  chart.view={
-   'columns': [
-     {
-       'calc': function(dataTable, rowIndex) {
-         return dataTable.getFormattedValue(rowIndex, 0);
-       },
-       'type': 'string'
-     }, 1]
- };
+  // chart.view={
+  //  'columns': [
+  //    {
+  //      'calc': function(dataTable, rowIndex) {
+  //        return dataTable.getFormattedValue(rowIndex, 0);
+  //      },
+  //      'type': 'string'
+  //    }, 1]
+ // };
  console.log(chart);
  chartView=new google.visualization.DataView(chartData);
   dashboard.bind(control, chart);
   dashboard.draw(chartView);
+  chartView2=new google.visualization.DataView(chartData2);
+   dashboard2.bind(control2, chart2);
+   dashboard2.draw(chartView2);
   setTimeout(showPage, 1000);
       },
       error: function (response) {

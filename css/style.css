@@ -306,9 +306,11 @@ section .container,section .topcontainer,section .logincontainer {
 	position:absolute;
 	top:60px;
 	opacity:0;
+		 z-index:1;
 }
 #main .topcontainer.active, #main .logincontainer.active {
 	opacity:1;
+	z-index:1000;
 }
 section#section-tech h3 {
 	font-size: 18px;
@@ -368,8 +370,6 @@ section.section {
 	color: #555555;
 	font-weight: 500;
 	font-size: 14px;
-	/*letter-spacing: .1em;*/
-	/*text-transform: uppercase;*/
 	padding-top: 18px;
 	padding-bottom: 10px;
 }
@@ -490,25 +490,7 @@ li.level2>div{
 	background-color: #2c2cef;
 	color:#fff;
 }
-/* overwrite */
-/*.gm-style-iw {
-   width: 350px !important;
-   top: 15px !important; // move the infowindow 15px down
-   left: 0 !important;
-   background-color: #fff;
-   box-shadow: 0 1px 6px rgba(178, 178, 178, 0.6);
-   border: 1px solid rgba(72, 181, 233, 0.6);
-   border-radius: 2px 2px 0 0;
-}
-#iw-container  .iw-title {
-   font-family: 'Open Sans Condensed', sans-serif;
-   font-size: 22px;
-   font-weight: 400;
-   padding: 10px;
-   background-color: #48b5e9;
-   color: white;
-   margin: 1px;
-   border-radius: 2px 2px 0 0; /* In accordance with the rounding of the default infowindow corners. */
+
 	 #loader {
 		 position: absolute;
 		 left: 50%;
@@ -557,7 +539,7 @@ li.level2>div{
 		 to{ bottom:0; opacity:1 }
 	 }
 
-	 #myDiv {
+	 #myDiv, #mydiv2 {
 	 opacity:0;
 		 text-align: center;
 		 transition: opacity 2s linear;
@@ -573,9 +555,8 @@ li.level2>div{
 			 text-align: center;
 			 transition: opacity 2s linear;
 	 }
-	 #dashboard {
+	 #dashboard, #dashboard2 {
 		 width: 1000px;
-
 	 }
 	 #logoutBtn{
 		 float:right;

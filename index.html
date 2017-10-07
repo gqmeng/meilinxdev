@@ -22,7 +22,8 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="https://unpkg.com/vue"></script>
     <script type="text/javascript" src="./js/jquery.csv.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDm34gZk1tuwBd-HzfXcDlHFj_9xGUhJWM"&callback=maploaded></script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDm34gZk1tuwBd-HzfXcDlHFj_9xGUhJWM"></script>
     <script src="js/evg-util.js"></script>
     <script src="js/jquery.json-browse.js"></script>
     <script src="./js/jquery.mjpeg.player.js"></script>
@@ -136,7 +137,14 @@
           		</ul>
         			<div class="tab-content clearfix">
       			    <div class="tab-pane" id="2a">
-                  <div id="snprofile" style="height: 400px;width: 400px;">
+                  <div id="chart_div2" >
+                    <div id="loader2"></div>
+                    <div id="myDiv2" class="">
+                      <div id="dashboard2">
+                        <div id="chart2" style='width: 815px; height: 320px;'></div>
+                        <div id="control2" style='width: 815px; height: 40px;'></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="tab-pane active" id="1a">
