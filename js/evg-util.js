@@ -24,7 +24,7 @@ function	playmjpeg() {
     $('#mjpegcontainer').append("<div id='mjpeg_wrapper'></div>");
     var el = $('#mjpeg_wrapper');
     el.clipchamp_mjpeg_player(
-    './video/v11.mjpg',
+    '../static/UserMgm/video/v11.mjpg',
     24, // frames per second
     false, // autoloop
     stop

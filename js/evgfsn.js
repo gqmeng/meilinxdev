@@ -202,17 +202,17 @@ var demo = new Vue({
             console.log(response);
           }
         }),
-    	$.getJSON("./json/sensornodes.json",function(data){
+    	$.getJSON("../static/UserMgm/json/sensornodes.json",function(data){
 				$.extend(true, self.snList, data);
         // console.log("Sensor Node list retrieved"+ JSON.stringify(self.snList));
         self.snReady=true;
       }),
-    $.getJSON("./json/gateways.json",function(data){
+    $.getJSON("../static/UserMgm/json/gateways.json",function(data){
 			$.extend(true, self.gwList, data);
       // console.log("Gateway retrieved"+self.gwList);
       self.gwReady=true;
       }),
-  $.getJSON("./json/videonodes.json",function(data){
+  $.getJSON("../static/UserMgm/json/videonodes.json",function(data){
 			$.extend(true, self.vnList, data);
       // console.log("Video Nodes retrieved"+self.vnList);
       self.vnReady=true;
