@@ -96,12 +96,18 @@ function drawVisualization() {
 		 'options': {
 			 // Use the same chart area width as the control for axis alignment.
 			 'chartArea': {'height': '80%', 'width': '90%'},
-			 'hAxis': {'slantedText': false },
-			 'vAxes':{0:{'viewWindowMode':'explicit','title':"Water Level"},
-						1:{'viewWindowMode':'explicit','title':"Temperature 1",'viewWindow':{max:40,min:0},'gridlines':{count:5}}
+			 'hAxis': {'slantedText': false ,
+			 		'gridlines': {
+						'count': -1,
+						'units': {
+						'days': {'format': ['MMM dd']},
+						'hours': {'format': ['HH:mm', 'ha']},
+					}
+				},
+		 		},
+			 'vAxes':{0:{'viewWindowMode':'explicit','title':"Water Level (Inches)"},
 			 		}	,
 			 'series': {0: {targetAxisIndex:0},
-									1:{targetAxisIndex:1}
 								 },
 			//  'vAxis': {'viewWindow': {'min': 0, 'max': 2000}},
 			 'legend': {'position': 'none'},
@@ -115,7 +121,7 @@ function drawVisualization() {
 						 return dataTable.getFormattedValue(rowIndex, 0);
 					 },
 					 'type': 'string'
-				 }, 1, 2]
+				 }, 1]
 		 }
 	 });
 	 chart2 = new google.visualization.ChartWrapper({
@@ -126,7 +132,7 @@ function drawVisualization() {
  			 'chartArea': {'height': '80%', 'width': '90%'},
  			 'hAxis': {'slantedText': false },
  			 'vAxes':{0:{'viewWindowMode':'explicit','title':"Alert"},
- 						1:{'viewWindowMode':'explicit','title':"Temperature 1",'viewWindow':{max:40,min:0},'gridlines':{count:5}}
+ 						1:{'viewWindowMode':'explicit','title':"Temperature 1 (Celsius)",'viewWindow':{max:40,min:0},'gridlines':{count:5}}
  			 		}	,
  			 'series': {0: {targetAxisIndex:0},
  									1:{targetAxisIndex:1},
@@ -146,25 +152,24 @@ function drawVisualization() {
  						 return dataTable.getFormattedValue(rowIndex, 0);
  					 },
  					 'type': 'string'
- 				 }, 1, 2,3,4,5,6,7]
+ 				 }, 1, 2,3,4,5,6,7,8]
  		 }
  	 });
 
 	 chartData = new google.visualization.DataTable();
    chartData.addColumn('date', 'Date');
 	 chartData.addColumn('number', 'Water Level');
-	 chartData.addColumn('number','Temperature 1')
 	 chartView = new google.visualization.DataView(chartData);
 	 chartData2 = new google.visualization.DataTable();
    chartData2.addColumn('date', 'Date');
 	 chartData2.addColumn('number', 'Alert');
 	 chartData2.addColumn('number','Battery 1')
-	chartData2.addColumn('number','Battery 2')
-		 chartData2.addColumn('number', 'Humidity');
-	  chartData2.addColumn('number','Pressure 1')
+	 chartData2.addColumn('number','Battery 2')
+	chartData2.addColumn('number', 'Humidity');
+	 chartData2.addColumn('number','Pressure 1')
 	 chartData2.addColumn('number','Pressure 2')
 	 chartData2.addColumn('number','Temperature 1')
-	chartData2.addColumn('number','Temperature 2')
+	 chartData2.addColumn('number','Temperature 2')
 	 chartView2 = new google.visualization.DataView(chartData2);
 
 }

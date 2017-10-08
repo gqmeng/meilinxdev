@@ -388,7 +388,7 @@ if(serverconnect){
               var temp1 =  parseFloat($.trim(e[9]));
               var temp2 =  parseFloat($.trim(e[10]));
               var water =  parseFloat($.trim(e[12]));
-             chartData.addRow([date, water,temp1]);
+             chartData.addRow([date, water]);
              chartData2.addRow([date, alert,bat1,bat2,hum1,pre1,pre2,temp1,temp2]);
           });
         }

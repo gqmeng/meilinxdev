@@ -264,6 +264,7 @@ section.footer {
 }
 .modal-dialog {
 	width: 900px;
+	margin:10px auto;
 }
 .tab-pane {
 		height: 400px;
