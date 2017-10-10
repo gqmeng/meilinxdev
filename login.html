@@ -23,308 +23,55 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="https://unpkg.com/vue"></script>
     <script type="text/javascript" src="{% static './UserMgm/js/jquery.csv.js' %}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDm34gZk1tuwBd-HzfXcDlHFj_9xGUhJWM"></script>
   <script src="{% static 'UserMgm/js/evg-util.js' %}"></script>
   <script src="{% static 'UserMgm/js/jquery.json-browse.js' %}"></script>
   <script src="{% static 'UserMgm/js/jquery.mjpeg.player.js' %}"></script>
   <link href="{% static 'UserMgm/css/jquery.json-browse.css' %}"rel="stylesheet">
-  <script>
-	google.charts.load('current', {'packages':['corechart', 'controls']});
-	google.charts.setOnLoadCallback(drawVisualization);
-  </script>
-
   </head>
 <body>
   <div id="fsnapp">
   <section class="header">
     <div class="container">
       <div class='row'>
-
         <div class='col-md-9 col-sm-9 col-xs-9'>
-      <h3> Evigia Flood Sensor Network</h3>
-    </div>
-            <div class='col-md-2 col-sm-2 col-xs-2'>
-      <div id='logoutBtn' v-if='isLoggedIn' @click='logout'>Log Out<div>
-        <div class='col-md-1 col-sm-1 col-xs-1'>
+          <h3> Evigia Flood Sensor Network</h3>
         </div>
-      </div>
+        <div class='col-md-2 col-sm-2 col-xs-2'>
+
+        </div>
+      <div class='col-md-1 col-sm-1 col-xs-1'>
+        </div>
       </div>
     </div>
   </section>
 
   <section id="main">
-    <div class="topcontainer" :class="{active:isLoggedIn}">
-        <div class="row">
-          <div class="col-md-3 col-sm-3 pad-right15 pad-left15 bg-grey" id="nlist">
-            <div v-if="dataReady">
-            <ul id="demolist" >
-              <item
-                class="item"
-                :model="treeData">
-              </item>
-            </ul>
-
-            <div id="summary">
-              <span></span>
-            </div>
-            </div>
-
-            <!-- <div id="loader" v-else></div> -->
-          </div>
-          <div class="col-md-9 col-sm-9">
-            <div id="map"></div>
-          </div>
-      </div>
-    </div>
-    <div class='logincontainer' :class="{active:!isLoggedIn}">
-
-<div class = 'loginform'>
-   <form method="POST">
-        {% csrf_token %}
-        <p>
+    <div class='logincontainer active' >
+      <div class = 'loginform'>
+        <form method="POST">
+          {% csrf_token %}
+          <p>
             <label>Username</label>
             <input type="text" name="username">
-        </p>
-        <p>
+          </p>
+          <p>
             <label>Password</label>
             <input type="password" name="password">
-        </p>
-        <button type="submit">Login</button>
-    </form>
-</div>
-
-
-
+          </p>
+          <button type="submit">Login</button>
+        </form>
+      </div>
     </div>
-  </div>
   </section>
-  <section id="banner">
-      <!-- <marquee behavior="scroll" direction="left">
-        <span style="color:green;">2017-06-06-13:53:00 Network up.</span>
-        <span style="color:green">  2017-06-06-13:55:12 All nodes report normal operation.</span>
-        <span style="color:red">  2017-06-06-15:07:03 Sensor Node #2 Flood Alert Warning!!!</span>
-      </marquee> -->
-    </section>
+
     <section class="footer">
       <div class="container" style="text-align:center;">
         Copyright&copy;2017  Evigia Systems Inc.
       </div>
     </section>
-    <div class="modal" tabindex="-1" role="dialog" id="snodeoverlay">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="brd-d7 mar-bot10">
-              <h4 class="pad-bot20">Sensor Node </h3>
-              <h3 > <span id="node_id">SR01</span> </h4>
-            </div>
-            <div id="exTab1">
-              <ul class="nav nav-pills">
-            		<li class="active">
-                  <a  href="#1a" data-toggle="tab">Water Level Plot</a>
-          			</li>
-            		<li >
-                  <a href="#2a" data-toggle="tab">Diagnostic Plot</a>
-              	</li>
-            		<li>
-                  <a href="#3a" data-toggle="tab">Configuration</a>
-          			</li>
-          		</ul>
-        			<div class="tab-content clearfix">
-      			    <div class="tab-pane" id="2a">
-                  <div id="chart_div2" >
-                    <div id="loader2"></div>
-                    <div id="myDiv2" class="">
-                      <div id="dashboard2">
-                        <div id="chart2" style='width: 815px; height: 320px;'></div>
-                        <div id="control2" style='width: 815px; height: 40px;'></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="tab-pane active" id="1a">
-                  <div id="chart_div" >
-                    <div id="loader"></div>
-                    <div id="myDiv" class="">
-                      <div id="dashboard">
-                        <div id="chart" style='width: 815px; height: 320px;'></div>
-                        <div id="control" style='width: 815px; height: 40px;'></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="tab-pane" id="3a">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
     </div>
-
-    <div class="modal" tabindex="-1" role="dialog" id="vnodeoverlay">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="brd-d7 mar-bot10">
-              <h4 class="pad-bot20">Video Node </h3>
-              <h3 > <span id="node_id">VR01</span> </h4>
-            </div>
-            <div id="exTab1">
-              <ul class="nav nav-pills">
-            		<li class="active">
-                  <a  href="#1b" data-toggle="tab">Status</a>
-          			</li>
-            		<li >
-                  <a href="#2b" data-toggle="tab">Video</a>
-              	</li>
-            		<li>
-                  <a href="#3b" data-toggle="tab">Configuration</a>
-          			</li>
-          		</ul>
-        			<div class="tab-content clearfix">
-      			    <div class="tab-pane" id="1b">
-                  <div id="snprofile" style="height: 400px;width: 400px;">
-                  </div>
-                </div>
-                <div class="tab-pane active" id="2b">
-                  <div class='col-md-4'><span>V11  2017.07.11.15:35:44</span>
-                    <button  onclick="playmjpeg()"><span class="glyphicon glyphicon-play"></span></button>
-                  </div>
-
-                       <div class='col-md-8' id="mjpegcontainer">
-                       </div>
-                	</div>
-                <div class="tab-pane" id="3b">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal" tabindex="-1" role="dialog" id="gatewayoverlay">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="brd-d7 mar-bot10">
-              <h4 class="pad-bot20">Gateway </h3>
-              <h3 > <span id="node_id">GW01</span> </h4>
-            </div>
-            <div id="exTab1">
-              <ul class="nav nav-pills">
-            		<li class="active">
-                  <a  href="#1c" data-toggle="tab">Status</a>
-          			</li>
-            		<li >
-                  <a href="#2c" data-toggle="tab">Data Plot</a>
-              	</li>
-            		<li>
-                  <a href="#3c" data-toggle="tab">Configuration</a>
-          			</li>
-          		</ul>
-        			<div class="tab-content clearfix">
-      			    <div class="tab-pane" id="1c">
-                  <div id="snprofile" style="height: 400px;width: 400px;">
-                  </div>
-                </div>
-                <div class="tab-pane active" id="2c">
-                  <div  style="height: 400px;width: 400px;"></div>
-                	</div>
-                <div class="tab-pane" id="3c">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal" tabindex="-1" role="dialog" id="topnodeoverlay">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="brd-d7 mar-bot10">
-              <h4 class="pad-bot20">Sensor Node Group</h3>
-              <h3 > <span id="node_id">SN GROUP A</span> </h4>
-            </div>
-            <div id="exTab1">
-              <ul class="nav nav-pills">
-            		<li class="active">
-                  <a  href="#1d" data-toggle="tab">Status</a>
-          			</li>
-            		<li >
-                  <a href="#2d" data-toggle="tab">Data Plot</a>
-              	</li>
-            		<li>
-                  <a href="#3d" data-toggle="tab">Configuration</a>
-          			</li>
-          		</ul>
-        			<div class="tab-content clearfix">
-      			    <div class="tab-pane" id="1d">
-                  <div id="snprofile" style="height: 400px;width: 400px;">
-                  </div>
-                </div>
-                <div class="tab-pane active" id="2d">
-                  <div  style="height: 400px;width: 400px;"></div>
-                	</div>
-                <div class="tab-pane" id="3d">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-
-
-
-  </div>
   </body>
 
-  <template id="item-template">
-    <li :class="model.displayClass" :id="model.id" v-on:mouseover="hoverover" v-on:mouseout="hoverout">
-      <div  @dblclick="changeType">
-        <span v-if="isFolder" :class='open ? "glyphicon glyphicon-minus":"glyphicon glyphicon-plus"' @click="toggle"></span>
-        <span v-else><img :src='micon' height="18px"></span>
-        <span class='entryname' @click.stop='openoverlay'>{{model.name}}</span>
-      </div>
-      <ul v-show="open" v-if="isFolder">
-        <item
-          class="item"
-          v-for="model in model.children"
-          :model="model" :key="model.name">
-        </item>
-        <!-- <li class="add" @click="addChild">+</li> -->
-      </ul>
-    </li>
-  </template>
   <script src="{% static 'UserMgm/js/evgfsn.js' %}"></script>
 </html>
