@@ -136,7 +136,7 @@ var demo = new Vue({
 			markers:markers,
 			currentOLView:'sensornode',
 			showOverlay:false,
-      isLoggedIn: false,
+      isLoggedIn: true,
       isAdmin:true,
       user:{username:'',password:''},
       servernodelist:[],
@@ -281,7 +281,16 @@ methods:{
     this.isLoggedIn=true;
 },
 logout:function(){
-  this.isLoggedIn=false;
+  $.ajax({  // eslint-disable-line
+      type: 'GET',
+      url: 'http://52.36.202.215/logout',
+      success: function (response) {
+        console.log(response);
+      },
+      error: function (response) {
+        console.log(response);
+      }
+    }),
 },
 	setHighlight:function(id){
 		this.highlight=id;

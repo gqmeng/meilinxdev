@@ -305,7 +305,7 @@
   </div>
   </body>
 
-  <template id="item-template">
+  <script type="text/x-template" id="item-template">
     <li :class="model.displayClass" :id="model.id" v-on:mouseover="hoverover" v-on:mouseout="hoverout">
       <div  @dblclick="changeType">
         <span v-if="isFolder" :class='open ? "glyphicon glyphicon-minus":"glyphicon glyphicon-plus"' @click="toggle"></span>
@@ -321,6 +321,6 @@
         <!-- <li class="add" @click="addChild">+</li> -->
       </ul>
     </li>
-  </template>
+  </script>
   <script src="{% static 'UserMgm/js/evgfsn.js' %}"></script>
 </html>
