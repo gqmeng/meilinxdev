@@ -24,7 +24,7 @@ function	playmjpeg() {
     $('#mjpegcontainer').append("<div id='mjpeg_wrapper'></div>");
     var el = $('#mjpeg_wrapper');
     el.clipchamp_mjpeg_player(
-    '../static/UserMgm/video/v11.mjpg',
+    './video/v11.mjpg',
     24, // frames per second
     false, // autoloop
     stop
@@ -188,6 +188,7 @@ function initMap() {
 
 function showOverlay(marker, type, id){
 	marker.addListener('click', function() {
+		var obj =  {id:id,type:type};
 				 marker.map.setZoom(19);
 				 marker.map.setCenter(marker.getPosition());
 				 eventBus.$emit('overlayShow', obj);

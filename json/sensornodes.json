@@ -31,7 +31,7 @@
     "Temperature2":89,
     "TypeA":20,
     "Humidity1":80,
-    "Group":"b"
+    "Group":"a"
   },
   {
     "ID":"SR12",
@@ -47,7 +47,7 @@
     "Temperature2":89,
     "TypeA":20,
     "Humidity1":80,
-    "Group":"b"
+    "Group":"a"
   },
   {
     "ID":"SR02",

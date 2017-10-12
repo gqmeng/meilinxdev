@@ -1,9 +1,3 @@
-/*==========================================================================
-  General
-	Build Time: 2017-10-11 8:52PM EDT
-  ========================================================================== */
-
-
 var greendot='http://maps.google.com/mapfiles/ms/icons/green-dot.png';
 var reddot='http://maps.google.com/mapfiles/ms/icons/red-dot.png';
 var cameradot ='http://maps.google.com/mapfiles/ms/icons/blue.png';
@@ -160,7 +154,7 @@ var demo = new Vue({
       isAdmin:true,
       user:{username:'',password:''},
       servernodelist:[],
-      serverconnect:true,
+      serverconnect:false,
       starttime:"",
       endtime:"",
       libraryready:false,
@@ -207,32 +201,18 @@ var demo = new Vue({
 	beforeCreate: function(){
   	var self=this;
   	$.when(
-      $.ajax({  // eslint-disable-line
-          type: 'GET',
-          url: 'http://52.36.202.215/sensornodes',
-          success: function (response) {
-            console.log(response);
-            if(response.length>0){
-              response.forEach(function(e){
-                self.servernodelist.push(e);
-              });
-            }
-          },
-          error: function (response) {
-            console.log(response);
-          }
-        }),
-    	$.getJSON("../static/UserMgm/json/sensornodes.json",function(data){
+
+    	$.getJSON("./json/sensornodes.json",function(data){
 				$.extend(true, self.snList, data);
         // console.log("Sensor Node list retrieved"+ JSON.stringify(self.snList));
         self.snReady=true;
       }),
-    $.getJSON("../static/UserMgm/json/gateways.json",function(data){
+    $.getJSON("./json/gateways.json",function(data){
 			$.extend(true, self.gwList, data);
       // console.log("Gateway retrieved"+self.gwList);
       self.gwReady=true;
       }),
-  $.getJSON("../static/UserMgm/json/videonodes.json",function(data){
+  $.getJSON("./json/videonodes.json",function(data){
 			$.extend(true, self.vnList, data);
       // console.log("Video Nodes retrieved"+self.vnList);
       self.vnReady=true;
@@ -249,7 +229,7 @@ var demo = new Vue({
           self.snList.nodelist[index].Longitude = e.longitude;
         }
         else{
-          self.snList.nodelist.push({ID:e.hwid,Latitude:e.latitude,Longitude:e.longitude,    "Timstamp":100,
+          self.snList.nodelist.push({ID:e.hwid,Latitude:e.latitude,Longitude:e.longitude,"Timstamp":100,
               "Battery1":12,
               "Battery2":12,
               "Alert":false,
@@ -261,7 +241,7 @@ var demo = new Vue({
               "Humidity1":80,
               "Group":"a"})
         }
-      })
+            })
 
     }
 		var groups = {};
@@ -495,8 +475,7 @@ if(serverconnect){
  		 };
      console.log(chart);
      chartView=new google.visualization.DataView(chartData);
-      chartView.hideColumns([1])
-      dashboard.bind(control, chart);
+        dashboard.bind(control, chart);
       dashboard.draw(chartView);
       setTimeout(showPage, 1000);
   });

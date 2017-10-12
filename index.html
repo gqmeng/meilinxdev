@@ -24,7 +24,7 @@
     <script src="https://unpkg.com/vue"></script>
     <script type="text/javascript" src="./js/jquery.csv.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDm34gZk1tuwBd-HzfXcDlHFj_9xGUhJWM"></script>
-    <script src="./js/evg-util.js"></script>
+    <script src="./js/evg-util-local.js"></script>
     <script src="./js/jquery.json-browse.js"></script>
     <script src="./js/jquery.mjpeg.player.js"></script>
     <link href="./css/jquery.json-browse.css" rel="stylesheet">
@@ -53,7 +53,7 @@
 
   <section id="main">
     <div class="topcontainer active" >
-        <div class="row">
+        <div class="row mar-left5">
           <div class="col-md-3 col-sm-3 pad-right15 pad-left15 bg-grey" id="nlist">
              <div v-if="dataReady">
             <ul id="demolist" >
@@ -299,29 +299,7 @@
       </div>
     </div>
 
-
-
-
-
   </div>
   </body>
-
-  <template id="item-template">
-    <li :class="model.displayClass" :id="model.id" v-on:mouseover="hoverover" v-on:mouseout="hoverout">
-      <div  @dblclick="changeType">
-        <span v-if="isFolder" :class='open ? "glyphicon glyphicon-minus":"glyphicon glyphicon-plus"' @click="toggle"></span>
-        <span v-else><img :src='micon' height="18px"></span>
-        <span class='entryname' @click.stop='openoverlay'>{{model.name}}</span>
-      </div>
-      <ul v-show="open" v-if="isFolder">
-        <item
-          class="item"
-          v-for="model in model.children"
-          :model="model" :key="model.name">
-        </item>
-        <!-- <li class="add" @click="addChild">+</li> -->
-      </ul>
-    </li>
-  </template>
-  <script src="js/evgfsn.js"></script>
+  <script src="js/evgfsn-local.js"></script>
 </html>
