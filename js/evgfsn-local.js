@@ -11,6 +11,8 @@ var arrDestinations = [];
 function showPage() {
   document.getElementById("loader").style.opacity = 0;
   document.getElementById("myDiv").style.opacity = 1;
+  document.getElementById("loader2").style.opacity = 0;
+  document.getElementById("myDiv2").style.opacity = 1;
 }
 
 
@@ -18,7 +20,7 @@ function showPage() {
 Vue.component('item', {
 	template: `<li :class="model.displayClass" :id="model.id" v-on:mouseover="hoverover" v-on:mouseout="hoverout"><div  @dblclick="changeType">
           <span v-if="isFolder" class="glyphicon glyphicon-minus" @click="toggle"></span><span v-else><img :src="micon" height="18px"></span>
-          <span class="entryname" @click.stop="openoverlay">{{model.name}}</span></div>
+          <span class="entryname" @click.stop="toggle">{{model.name}}</span></div>
         <ul v-show="open" v-if="isFolder">
           <item class="item"
             v-for="model in model.children"
@@ -44,9 +46,10 @@ Vue.component('item', {
 			}
 		});
     eventBus.$on("overlayShow",function(obj){
-      overlayShow(true,obj.type,
-      obj.id,
-      self.starttime,self.endtime);
+      if(self.model.id==obj.id) {
+        overlayShow(false,obj.type,obj.id,
+          self.starttime,self.endtime);
+      }
 		});
     this.starttime=moment(this.endtime).subtract(6,'hours').toISOString();
 	},
@@ -158,6 +161,7 @@ var demo = new Vue({
       starttime:"",
       endtime:"",
       libraryready:false,
+      selectedTrace:'temp'
   	}
 	},
 	created:function(){
@@ -188,13 +192,11 @@ var demo = new Vue({
 		});
 		eventBus.$on("mapMarkerClick",function(id){
 			for(var i=0;i<markers.length;i++){
-			// console.log("hover:"+id+" vs "+self.markers[i].title);
 				if(self.markers[i].title==id){
 					google.maps.event.trigger(self.markers[i], 'click');
 				}
 			}
 		});
-    // $("a[href='#2a']").on('shown.bs.tab', function (e) {
 
   // });
 	},
@@ -287,16 +289,42 @@ watch:{
   libraryready:function(){
     console.log("Map Library Loaded")
   },
+  selectedTrace: function(){
+    chartView2=new google.visualization.DataView(chartData2);
+    if(this.selectedTrace=='temp'){
+      chart2.setOptions({'vAxes':{0:{'title':"Temperature (Celsius)"}},'legend': {'position': 'none'},'chartArea': {'height': '80%', 'width': '90%','left':60}} );
+      chartView2.hideColumns([1,2,3,4,5,6])
 
+    }
+    if(this.selectedTrace=='hum'){
+      chart2.setOptions({'vAxes':{0:{'title':"Humidity (%RH)"}},'legend': {'position': 'none'},'chartArea': {'height': '80%', 'width': '90%','left':60}} )	;
+      chartView2.hideColumns([1,2,3,5,6,7,8]);
+
+    }
+    if(this.selectedTrace=='pres'){
+      chart2.setOptions({'vAxes':{0:{'title':"Pressure (Pascal)"}},'legend': {'position': 'none'},'chartArea': {'height': '80%', 'width': '90%','left':60}} )	;
+      chartView2.hideColumns([1,2,3,4,7,8]);
+
+    }
+    if(this.selectedTrace=='batt'){
+      chart2.setOptions({'vAxes':{0:{'title':"Battery (V)"}},'legend': {'position': 'none'},'chartArea': {'height': '80%', 'width': '90%','left':60}} )	;
+      chartView2.hideColumns([1,4,5,6,7,8]);
+
+    }
+    console.log("chart 2:")
+  console.log(chart2);
+
+    console.log("chart view 2:"+this.selectedTrace)
+    console.log(chartView2);
+    dashboard2.draw(chartView2);
+  }
 },
 methods:{
-
   submitlogin:function(){
-    //send loginin
     this.isLoggedIn=true;
-},
-logout:function(){
-  $.ajax({  // eslint-disable-line
+  },
+  logout:function(){
+    $.ajax({  // eslint-disable-line
       type: 'GET',
       url: 'http://52.36.202.215/logout',
       success: function (response) {
@@ -306,7 +334,7 @@ logout:function(){
         console.log(response);
       }
     });
-},
+  },
 	setHighlight:function(id){
 		this.highlight=id;
 	},
@@ -364,7 +392,6 @@ Object.defineProperty(Array.prototype, 'group', {
 });
 
 function overlayShow(serverconnect, type, id, start, end) {
-	console.log("Func Marker Clicked: "+id);
 	var olID = '#snodeoverlay';
 	switch(type){
 		case "topnode":
@@ -384,23 +411,23 @@ function overlayShow(serverconnect, type, id, start, end) {
 	$("#node_id").text(id);
 	if(type=='snode'){
     console.log("Tab 2a shown");
-if(serverconnect){
-  $.ajax({  // eslint-disable-line
-      type: 'GET',
-      url: 'http://52.36.202.215/dataset?sensornode='+id+'&start_time='+start+'&end_time='+end,
-      success: function (response) {
-        console.log(response);
-        if(response.length>0){
-          var n = chartData.getNumberOfRows();
-          chartData.removeRows(0,n);
-          var n = chartData2.getNumberOfRows();
-          chartData2.removeRows(0,n);
-          response.forEach(function(e, index){
-              var date=new Date(e[0]);
-              if(index==0){
+    if(serverconnect){
+      $.ajax({  // eslint-disable-line
+        type: 'GET',
+        url: 'http://52.36.202.215/dataset?sensornode='+id+'&start_time='+start+'&end_time='+end,
+        success: function (response) {
+          console.log(response);
+          if(response.length>0){
+            var n = chartData.getNumberOfRows();
+            chartData.removeRows(0,n);
+            var n = chartData2.getNumberOfRows();
+            chartData2.removeRows(0,n);
+            response.forEach(function(e, index){
+            var date=new Date(e[0]);
+            if(index==0){
                  control.setState({'range': {'start': date}});
                  control2.setState({'range': {'start': date}});
-              }
+            }
              control.setState({'range': {'end': date}});
              control2.setState({'range': {'end': date}});
              var alert =  parseFloat($.trim(e[1]));
@@ -417,8 +444,7 @@ if(serverconnect){
           });
         }
         console.log(chartData2);
-  var formatter = new google.visualization.DateFormat({pattern: "dd.MM.yy H:mm"});
-  formatter.format(chartData, 0);
+
   // chart.view={
   //  'columns': [
   //    {
@@ -446,43 +472,46 @@ if(serverconnect){
       console.log("loading data for the chart...");
       var dataset = $.csv.toArrays(csv);
 
-      var count=dataset.length;
-
-      for(var i=0; i<count; i++){
-        var ts = parseInt($.trim(dataset[i][2]));
-       // console.log(ts);
-        var date = new Date(ts*1000);
-        if(i==0){
-           control.setState({'range': {'start': date}});
-        }
-       control.setState({'range': {'end': date}});
-       // console.log(date);
-        var value =  parseFloat($.trim(dataset[i][1]));
-        var value2 =  parseInt($.trim(dataset[i][2]))-parseInt($.trim(dataset[i][2])/10)*10;
-        chartData.addRow([date, value,value2]);
-      }
-            console.log(chartData);
-      var formatter = new google.visualization.DateFormat({pattern: "dd.MM.yyyy H:mm"});
-      formatter.format(chartData, 0);
-      chart.view={
- 			 'columns': [
- 				 {
- 					 'calc': function(dataTable, rowIndex) {
- 						 return dataTable.getFormattedValue(rowIndex, 0);
- 					 },
- 					 'type': 'string'
- 				 }, 1]
- 		 };
-     console.log(chart);
-     chartView=new google.visualization.DataView(chartData);
-        dashboard.bind(control, chart);
-      dashboard.draw(chartView);
-      setTimeout(showPage, 1000);
-  });
+      var n = chartData.getNumberOfRows();
+      chartData.removeRows(0,n);
+      var n = chartData2.getNumberOfRows();
+      chartData2.removeRows(0,n);
+      dataset.forEach(function(e, index){
+          var date=moment.unix(e[0]).toDate();
+          console.log("Unix timestamp:"+e[0]+"===>"+date)
+          if(index==0){
+             control.setState({'range': {'start': date}});
+             control2.setState({'range': {'start': date}});
+          }
+         control.setState({'range': {'end': date}});
+         control2.setState({'range': {'end': date}});
+         var alert =  parseFloat($.trim(e[1]));
+         var bat1 =  parseFloat($.trim(e[2]));
+         var bat2 =  parseFloat($.trim(e[3]));
+          var hum1 =  parseFloat($.trim(e[5]));
+          var pre1 =  parseFloat($.trim(e[6]));
+          var pre2 =  parseFloat($.trim(e[7]));
+          var temp1 =  parseFloat($.trim(e[9]));
+          var temp2 =  parseFloat($.trim(e[10]));
+          var water =  parseFloat($.trim(e[12]));
+         chartData.addRow([date, water]);
+         chartData2.addRow([date, alert,bat1,bat2,hum1,pre1,pre2,temp1,temp2]);
+      });
+      console.log("chart data 2:")
+    console.log(chartData2);
+  chartView=new google.visualization.DataView(chartData);
+  dashboard.bind(control, chart);
+  dashboard.draw(chartView);
+  chartView2=new google.visualization.DataView(chartData2);
+  chartView2.hideColumns([1,2,3,4,5,6]);
+  dashboard2.bind(control2, chart2);
+  dashboard2.draw(chartView2);
+  setTimeout(showPage, 1000);
+  })
+  };
 
 }
 
 
 
 	 }
-}

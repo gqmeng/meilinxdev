@@ -418,7 +418,7 @@ section span {
 }
 .modal-body {
     position: relative;
-    padding: 30px;
+    padding: 0px 30px 30px 30px;
 }
 
 .close .icon-bar+.icon-bar {
@@ -426,10 +426,12 @@ section span {
 }
 
 button.close {
-	width:40px;
-	height:40px;
+	width:25px;
+	height:25px;
 }
-
+h3 span#node_id {
+	font-size: 28px;
+}
 .item {
   cursor: pointer;
 }
@@ -470,6 +472,11 @@ div#summary {
 	border:1px solid #b3b3b3;
 	height:150px;
 	overflow-y:auto;
+}
+
+div#selectors {
+	height: 25px;
+	padding:7px 0px;
 }
 li.level1{
 

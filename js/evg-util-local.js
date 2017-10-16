@@ -49,8 +49,8 @@ function drawVisualization() {
 			 'ui': {
 				 'chartType': 'LineChart',
 				 'chartOptions': {
-					 'chartArea': {'width': '90%'},
-						 'hAxis': {'baselineColor': 'none', format: "dd.MM.yyyy" },
+					 'chartArea': {'width': '90%','left':60},
+						 'hAxis': {'baselineColor': 'none', format: "dd.MM.yy" },
              'vAxis':{'title':' '}
 				 },
 				 // Display a single series that shows the closing value of the stock.
@@ -74,8 +74,8 @@ function drawVisualization() {
 			'ui': {
 				'chartType': 'LineChart',
 				'chartOptions': {
-					'chartArea': {'width': '90%'},
-						'hAxis': {'baselineColor': 'none', format: "dd.MM.yyyy" },
+					'chartArea': {'width': '90%','left':60},
+						'hAxis': {'baselineColor': 'none', format: "dd.MM.yy" },
 						'vAxis':{'title':' '}
 				},
 				// Display a single series that shows the closing value of the stock.
@@ -95,16 +95,24 @@ function drawVisualization() {
 		 'containerId': 'chart',
 		 'options': {
 			 // Use the same chart area width as the control for axis alignment.
-			 'chartArea': {'height': '80%', 'width': '90%'},
-			 'hAxis': {'slantedText': false ,
+			 'chartArea': {'height': '80%', 'width': '90%',left:60},
+			 'hAxis': {
+				 	'slantedText': false ,
 			 		'gridlines': {
-						'count': -1,
-						'units': {
-						'days': {'format': ['MMM dd']},
-						'hours': {'format': ['HH:mm', 'ha']},
-					}
+							count: -1,
+							units: {
+								days: {format: ['MMM dd']},
+								hours: {format: ['HH:mm', 'ha']},
+							}
+						},
+					'minorGridlines': {
+							units: {
+								hours: {format: ['hh:mm:ss a', 'ha']},
+								minutes: {format: ['HH:mm a Z', ':mm']}
+							}
+						}
 				},
-		 		},
+
 			 'vAxes':{0:{'viewWindowMode':'explicit','title':"Water Level (Inches)"},
 			 		}	,
 			 'series': {0: {targetAxisIndex:0},
@@ -116,12 +124,7 @@ function drawVisualization() {
 		 // Convert the first column from 'date' to 'string'.
 		 'view': {
 			 'columns': [
-				 {
-					 'calc': function(dataTable, rowIndex) {
-						 return dataTable.getFormattedValue(rowIndex, 0);
-					 },
-					 'type': 'string'
-				 }, 1]
+				 0, 1]
 		 }
 	 });
 	 chart2 = new google.visualization.ChartWrapper({
@@ -129,37 +132,46 @@ function drawVisualization() {
  		 'containerId': 'chart2',
  		 'options': {
  			 // Use the same chart area width as the control for axis alignment.
- 			 'chartArea': {'height': '80%', 'width': '90%'},
- 			 'hAxis': {'slantedText': false },
- 			 'vAxes':{0:{'viewWindowMode':'explicit','title':"Alert"},
- 						1:{'viewWindowMode':'explicit','title':"Temperature 1 (Celsius)",'viewWindow':{max:40,min:0},'gridlines':{count:5}}
+ 			 'chartArea': {'height': '80%', 'width': '90%','left':60},
+			 'hAxis': {
+					'slantedText': false ,
+					'gridlines': {
+							count: -1,
+							units: {
+								days: {format: ['MMM dd']},
+								hours: {format: ['HH:mm', 'ha']},
+							}
+						},
+					'minorGridlines': {
+							units: {
+								hours: {format: ['hh:mm:ss a', 'ha']},
+								minutes: {format: ['HH:mm a Z', ':mm']}
+							}
+						}
+				},
+ 			 'vAxes':{0:{'viewWindowMode':'explicit','title':"Temperature (Celsius)"},
+
  			 		}	,
- 			 'series': {0: {targetAxisIndex:0},
- 									1:{targetAxisIndex:1},
-									2:{targetAxisIndex:2},
-									3:{targetAxisIndex:3},
-									4:{targetAxisIndex:4}
- 								 },
+ 		// 	 'series': {0: {targetAxisIndex:0},
+ 		// 							1:{targetAxisIndex:1},
+			// 						2:{targetAxisIndex:2},
+			// 						3:{targetAxisIndex:3},
+			// 						4:{targetAxisIndex:4}
+ 		// 						 },
  			//  'vAxis': {'viewWindow': {'min': 0, 'max': 2000}},
  			 'legend': {'position': 'none'},
  			 'color':['red','blue']
  		 		},
  		 // Convert the first column from 'date' to 'string'.
- 		 'view': {
- 			 'columns': [
- 				 {
- 					 'calc': function(dataTable, rowIndex) {
- 						 return dataTable.getFormattedValue(rowIndex, 0);
- 					 },
- 					 'type': 'string'
- 				 }, 1, 2,3,4,5,6,7,8]
- 		 }
+ 	// 	 'view': {
+ 	// 		 'columns': [
+ 	// 			 0, 1, 2,3,4,5,6,7,8]
+ 	// 	 }
  	 });
 
 	 chartData = new google.visualization.DataTable();
    chartData.addColumn('date', 'Date');
 	 chartData.addColumn('number', 'Water Level');
-	 chartView = new google.visualization.DataView(chartData);
 	 chartData2 = new google.visualization.DataTable();
    chartData2.addColumn('date', 'Date');
 	 chartData2.addColumn('number', 'Alert');
@@ -170,8 +182,6 @@ function drawVisualization() {
 	 chartData2.addColumn('number','Pressure 2')
 	 chartData2.addColumn('number','Temperature 1')
 	 chartData2.addColumn('number','Temperature 2')
-	 chartView2 = new google.visualization.DataView(chartData2);
-
 }
 
 
@@ -189,10 +199,10 @@ function initMap() {
 function showOverlay(marker, type, id){
 	marker.addListener('click', function() {
 		var obj =  {id:id,type:type};
-				 marker.map.setZoom(19);
-				 marker.map.setCenter(marker.getPosition());
-				 eventBus.$emit('overlayShow', obj);
-			 });
+		marker.map.setZoom(18);
+		marker.map.setCenter(marker.getPosition());
+		eventBus.$emit('overlayShow', obj);
+	});
 }
 
 function bindInfoWindow(marker, map, infowindow, html, id) {
@@ -237,16 +247,16 @@ function addMarker(dest) {
 		position: new google.maps.LatLng(dest.lat, dest.lon),
 		map: map
 	});
-	console.log(dest)
-
 	marker.addListener('click', function() {
 		var obj =  {id:dest.id,type:dest.type};
 				 marker.map.setZoom(19);
 				 marker.map.setCenter(marker.getPosition());
 				 eventBus.$emit('overlayShow', obj);
 			 });
+
 	bindInfoWindow(marker, map, infowindow, "<span style='font-weight:600;'>" + dest.id+" - "+dest.description + "</span>",dest.id);
 	markers.push(marker);
+
 }
 
 		 // Sets the map on all markers in the array.
@@ -274,6 +284,7 @@ function addMarker(dest) {
 
 $(document).ready(function(){
 	$( 'a[data-toggle="tab"]' ).on( 'shown.bs.tab', function( evt ) {
+		dashboard.draw(chartView);
 		dashboard2.draw(chartView2);
 	});
 })

@@ -24,7 +24,7 @@ function showPage() {
 Vue.component('item', {
 	template: `<li :class="model.displayClass" :id="model.id" v-on:mouseover="hoverover" v-on:mouseout="hoverout"><div  @dblclick="changeType">
           <span v-if="isFolder" class="glyphicon glyphicon-minus" @click="toggle"></span><span v-else><img :src="micon" height="18px"></span>
-          <span class="entryname" @click.stop="openoverlay">{{model.name}}</span></div>
+          <span class="entryname" @click.stop="toggle">{{model.name}}</span></div>
         <ul v-show="open" v-if="isFolder">
           <item class="item"
             v-for="model in model.children"
@@ -54,7 +54,7 @@ Vue.component('item', {
       obj.id,
       self.starttime,self.endtime);
 		});
-    this.starttime=moment(this.endtime).subtract(6,'hours').toISOString();
+    this.starttime=moment(this.endtime).subtract(12,'hours').toISOString();
 	},
 	computed: {
   	isFolder: function () {
@@ -402,8 +402,13 @@ function overlayShow(serverconnect, type, id, start, end) {
 	}
 	$(olID).modal('show');
 	$("#node_id").text(id);
+          document.getElementById("loader").style.opacity = 0;
 	if(type=='snode'){
     console.log("Tab 2a shown");
+    var n = chartData.getNumberOfRows();
+    chartData.removeRows(0,n);
+    var n = chartData2.getNumberOfRows();
+    chartData2.removeRows(0,n);
 if(serverconnect){
   $.ajax({  // eslint-disable-line
       type: 'GET',
@@ -411,10 +416,6 @@ if(serverconnect){
       success: function (response) {
         console.log(response);
         if(response.length>0){
-          var n = chartData.getNumberOfRows();
-          chartData.removeRows(0,n);
-          var n = chartData2.getNumberOfRows();
-          chartData2.removeRows(0,n);
           response.forEach(function(e, index){
               var date=new Date(e[0]);
               if(index==0){
@@ -459,6 +460,9 @@ if(serverconnect){
       },
       error: function (response) {
         console.log(response);
+        document.getElementById("loader").style.opacity = 0;
+        document.getElementById("myDiv").style.opacity = 0;
+        $("#node_id").text(id+ "  -  No Data Available");
       }
     })
 }else {
