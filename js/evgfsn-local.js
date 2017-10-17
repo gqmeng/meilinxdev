@@ -1,3 +1,9 @@
+/*==========================================================================
+  General
+	Build Time: 2017-10-16 6:52PM EDT
+  ========================================================================== */
+
+
 var greendot='http://maps.google.com/mapfiles/ms/icons/green-dot.png';
 var reddot='http://maps.google.com/mapfiles/ms/icons/red-dot.png';
 var cameradot ='http://maps.google.com/mapfiles/ms/icons/blue.png';
@@ -465,6 +471,9 @@ function overlayShow(serverconnect, type, id, start, end) {
       },
       error: function (response) {
         console.log(response);
+        document.getElementById("loader").style.opacity = 0;
+        document.getElementById("myDiv").style.opacity = 0;
+        $("#node_id").text(id+ "  -  No Data Available");
       }
     })
 }else {
