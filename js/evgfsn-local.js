@@ -1,6 +1,6 @@
 /*==========================================================================
   General
-	Build Time: 2017-10-19 9:52PM EDT
+	Build Time: 2017-10-16 6:52PM EDT
   ========================================================================== */
 
 
@@ -210,32 +210,18 @@ var demo = new Vue({
 	beforeCreate: function(){
   	var self=this;
   	$.when(
-      $.ajax({  // eslint-disable-line
-          type: 'GET',
-          url: 'http://52.36.202.215/sensornodes',
-          success: function (response) {
-            console.log(response);
-            if(response.length>0){
-              response.forEach(function(e){
-                self.servernodelist.push(e);
-              });
-            }
-          },
-          error: function (response) {
-            console.log(response);
-          }
-        }),
-    	$.getJSON("../static/UserMgm/json/sensornodes.json",function(data){
+
+    	$.getJSON("./json/sensornodes.json",function(data){
 				$.extend(true, self.snList, data);
         // console.log("Sensor Node list retrieved"+ JSON.stringify(self.snList));
         self.snReady=true;
       }),
-    $.getJSON("../static/UserMgm/json/gateways.json",function(data){
+    $.getJSON("./json/gateways.json",function(data){
 			$.extend(true, self.gwList, data);
       // console.log("Gateway retrieved"+self.gwList);
       self.gwReady=true;
       }),
-  $.getJSON("../static/UserMgm/json/videonodes.json",function(data){
+  $.getJSON("./json/videonodes.json",function(data){
 			$.extend(true, self.vnList, data);
       // console.log("Video Nodes retrieved"+self.vnList);
       self.vnReady=true;
@@ -252,7 +238,7 @@ var demo = new Vue({
           self.snList.nodelist[index].Longitude = e.longitude;
         }
         else{
-          self.snList.nodelist.push({ID:e.hwid,Latitude:e.latitude,Longitude:e.longitude,    "Timstamp":100,
+          self.snList.nodelist.push({ID:e.hwid,Latitude:e.latitude,Longitude:e.longitude,"Timstamp":100,
               "Battery1":12,
               "Battery2":12,
               "Alert":false,
@@ -264,7 +250,7 @@ var demo = new Vue({
               "Humidity1":80,
               "Group":"a"})
         }
-      })
+            })
 
     }
 		var groups = {};
@@ -315,22 +301,18 @@ watch:{
     if(this.selectedTrace=='temp'){
       chart2.setOptions({'vAxes':{0:{'title':"Temperature (Celsius)"}},'legend': {'position': 'none'},'chartArea': {'height': '80%', 'width': '90%','left':60}} );
       chartView2.hideColumns([1,2,3,4,5,6])
-
     }
     if(this.selectedTrace=='hum'){
       chart2.setOptions({'vAxes':{0:{'title':"Humidity (%RH)"}},'legend': {'position': 'none'},'chartArea': {'height': '80%', 'width': '90%','left':60}} )	;
       chartView2.hideColumns([1,2,3,5,6,7,8]);
-
     }
     if(this.selectedTrace=='pres'){
       chart2.setOptions({'vAxes':{0:{'title':"Pressure (Pascal)"}},'legend': {'position': 'none'},'chartArea': {'height': '80%', 'width': '90%','left':60}} )	;
       chartView2.hideColumns([1,2,3,4,7,8]);
-
     }
     if(this.selectedTrace=='batt'){
       chart2.setOptions({'vAxes':{0:{'title':"Battery (V)"}},'legend': {'position': 'none'},'chartArea': {'height': '80%', 'width': '90%','left':60}} )	;
       chartView2.hideColumns([1,4,5,6,7,8]);
-
     }
     dashboard2.draw(chartView2);
   }
@@ -409,6 +391,7 @@ Object.defineProperty(Array.prototype, 'group', {
 });
 
 function overlayShow(serverconnect, type, id, start, end) {
+  console.log("serverconnect"+serverconnect);
 	var olID = '#snodeoverlay';
 	switch(type){
 		case "topnode":

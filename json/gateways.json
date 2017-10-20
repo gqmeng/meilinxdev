@@ -11,16 +11,5 @@
     "Alert":true,
     "snnumber":4
   }
-  ,
-  {
-    "ID":"gb",
-    "Timstamp":100,
-    "Battery1":12,
-    "Battery2":12,
-    "Latitude":42.289919,
-    "Longitude":-83.7300,
-    "Alert":true,
-    "snnumber":4
-  }
   ]
 }

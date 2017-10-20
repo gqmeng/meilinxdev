@@ -24,7 +24,7 @@ function	playmjpeg() {
     $('#mjpegcontainer').append("<div id='mjpeg_wrapper'></div>");
     var el = $('#mjpeg_wrapper');
     el.clipchamp_mjpeg_player(
-    '../static/UserMgm/video/v11.mjpg',
+    './video/v11.mjpg',
     24, // frames per second
     false, // autoloop
     stop
@@ -285,7 +285,6 @@ function addMarker(dest) {
 $(document).ready(function(){
 	$( 'a[data-toggle="tab"]' ).on( 'shown.bs.tab', function( evt ) {
 		dashboard.draw(chartView);
-    chartView2.hideColumns([1,2,3,4,5,6])
 		dashboard2.draw(chartView2);
 	});
 })
