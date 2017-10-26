@@ -13,6 +13,7 @@ var map;
 var infowindow;
 var eventBus = new Vue();
 var arrDestinations = [];
+var mjpeglist=[];
 
 function showPage() {
   document.getElementById("loader").style.opacity = 0;
@@ -21,7 +22,57 @@ function showPage() {
   document.getElementById("myDiv2").style.opacity = 1;
 }
 
+Vue.component('videoitem', {
+	template: `<div :id="fileitem.title">
+            <span>{{fileitem.title}}</span>
 
+            <button @click="stopmjpeg" v-if='isPlaying' ><span class="glyphicon glyphicon-stop"></span></button>
+            <button @click="playmjpeg" v-else><span class="glyphicon glyphicon-play"></span></button>
+      </div>`,
+  // template: `<span>{{fileitem.title}}</span>`,
+	props: {
+  	fileitem: Object
+	},
+	data: function () {
+  	return {
+      serverconnect:true,
+    	isPlaying: false,
+  	}
+	},
+  computed:{
+    fileurl:function(){
+      if(this.serverconnect){
+        return "http://34.213.66.163/movieportal/"+this.fileitem.filename
+      }else {
+      return "../video/"+this.fileitem.filename
+    }
+    }
+  },
+  methods:{
+    playmjpeg: function() {
+        console.log("clicked");
+        this.isPlaying=true;
+        if($('#mjpegcontainer').children().length>0){
+          $('#mjpegcontainer').empty()
+        }
+        $('#mjpegcontainer').append("<div id='mjpeg_wrapper'></div>");
+    		var file=this.fileurl;
+        $('#mjpeg_wrapper').clipchamp_mjpeg_player(
+        file,
+        24, // frames per second
+        false, // autoloop
+        stop
+        );
+
+      },
+      stopmjpeg:function(){
+        this.isPlaying=false;
+        if($('#mjpegcontainer').children().length>0){
+          $('#mjpegcontainer').empty()
+        }
+      }
+  }
+});
 // define the item component for the tree data
 Vue.component('item', {
 	template: `<li :class="model.displayClass" :id="model.id" v-on:mouseover="hoverover" v-on:mouseout="hoverout"><div  @dblclick="changeType">
@@ -40,9 +91,10 @@ Vue.component('item', {
 	data: function () {
   	return {
     	open: true,
-      serverconnect:true,
+      serverconnect:false,
       starttime:'2017-09-23T21:41:19Z',
       endtime:moment().toISOString(),
+      mjpeglist:mjpeglist
   	}
 	},
 	created:function(){
@@ -164,11 +216,12 @@ var demo = new Vue({
       isAdmin:true,
       user:{username:'',password:''},
       servernodelist:[],
-      serverconnect:true,
+      serverconnect:false,
       starttime:"",
       endtime:"",
       libraryready:false,
-      selectedTrace:'temp'
+      selectedTrace:'temp',
+      mjpeglistModel:{list:mjpeglist}
   	}
 	},
 	created:function(){
@@ -189,6 +242,9 @@ var demo = new Vue({
 				}
 			}
 		});
+    eventBus.$on('vlistReady',function(l){
+      self.mjpeglistModel.list=l;
+    });
 		eventBus.$on("maphighlightover",function(id){
 			for(var i=0;i<markers.length;i++){
 			// console.log("hover:"+id+" vs "+self.markers[i].title);
@@ -210,7 +266,6 @@ var demo = new Vue({
 	beforeCreate: function(){
   	var self=this;
   	$.when(
-
     	$.getJSON("./json/sensornodes.json",function(data){
 				$.extend(true, self.snList, data);
         // console.log("Sensor Node list retrieved"+ JSON.stringify(self.snList));
@@ -392,6 +447,7 @@ Object.defineProperty(Array.prototype, 'group', {
 
 function overlayShow(serverconnect, type, id, start, end) {
   console.log("serverconnect"+serverconnect);
+  console.log("type"+type);
 	var olID = '#snodeoverlay';
 	switch(type){
 		case "topnode":
@@ -409,6 +465,21 @@ function overlayShow(serverconnect, type, id, start, end) {
 	}
 	$(olID).modal('show');
 	$("#node_id").text(id);
+  if(type=='vnode'){
+    console.log("video list:");
+    var fn = mjpeglist.length;
+    mjpeglist.splice(0,fn);
+    // if(serverconnect){
+    //
+    // }else{
+      $.getJSON("./json/mjpglist.json", function( response ) {
+        console.log(response);
+        var l = response.filelist;
+        $.extend(true, mjpeglist, l);
+        eventBus.$emit('vlistReady',l);
+    });
+
+}
 	if(type=='snode'){
     console.log("Tab 2a shown");
     var n = chartData.getNumberOfRows();

@@ -4,18 +4,18 @@
   "filelist":[
   {
     "title":"v11",
-    "filename":"v11.mjpeg",
-    "timestamp":14000,
+    "filename":"v11.mjpg",
+    "timestamp":14000
   },
   {
     "title":"v12",
-    "filename":"v11.mjpeg",
-    "timestamp":14000,
+    "filename":"v11.mjpg",
+    "timestamp":15000
   },
   {
     "title":"v13",
-    "filename":"v11.mjpeg",
-    "timestamp":14000,
+    "filename":"v11.mjpg",
+    "timestamp":18000
   }
   ]
 }

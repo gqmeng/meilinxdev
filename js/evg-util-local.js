@@ -15,20 +15,20 @@ var chart;
 var chart2;
 
 
-function	playmjpeg() {
+function	playmjpeg(file) {
     console.log("clicked");
     if($('#mjpegcontainer').children().length>0){
       $('#mjpegcontainer').empty()
     }
-
     $('#mjpegcontainer').append("<div id='mjpeg_wrapper'></div>");
-    var el = $('#mjpeg_wrapper');
-    el.clipchamp_mjpeg_player(
-    './video/v11.mjpg',
+		if(file!=""){
+    $('#mjpeg_wrapper').clipchamp_mjpeg_player(
+    file,
     24, // frames per second
     false, // autoloop
     stop
     );
+	}
   }
 var pauseNow = false;
 	function stop(el, pi){

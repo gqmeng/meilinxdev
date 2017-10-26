@@ -145,10 +145,6 @@
                         <div class='col-md-2 pad-left0 pad-right0  mar-left0 mar-right0'><input type="radio" id="four" value="batt" v-model="selectedTrace">
                         <label for="four">Battery</label></div>
                         <div class='col-md-2'></div>
-
-
-
-
                       </div>
                       <div id="dashboard2">
                         <div id="chart2" style='width: 815px; height: 300px;'></div>
@@ -206,13 +202,16 @@
                   </div>
                 </div>
                 <div class="tab-pane active" id="2b">
-                  <div class='col-md-4'><span>V11  2017.07.11.15:35:44</span>
-                    <button  onclick="playmjpeg()"><span class="glyphicon glyphicon-play"></span></button>
+                  <div class='col-md-4'>
+                    <ul id='vlist'>
+                      <li v-for='(v,index) in mjpeglistModel.list'>
+                        <videoitem :fileitem='v'></videoitem>
+                      </li>
+                    </ul>
                   </div>
-
-                       <div class='col-md-8' id="mjpegcontainer">
-                       </div>
-                	</div>
+                  <div class='col-md-8' id="mjpegcontainer">
+                  </div>
+                </div>
                 <div class="tab-pane" id="3b">
                 </div>
               </div>

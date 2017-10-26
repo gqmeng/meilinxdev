@@ -578,3 +578,11 @@ li.level2>div{
 		     font-weight: 700;
 				 cursor: pointer;
 	 }
+
+	 ul#vlist li {
+		 padding:3px;
+	 }
+	 ul#vlist button {
+		 padding: 0px 3px 2px 1px;
+		 line-height: 0.6em;
+	 }
