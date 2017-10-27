@@ -1,12 +1,12 @@
 /*!
  * jQuery Clipchamp MJPEG Player Plugin v0.0.1
  * https://github.com/clipchamp/jquery-clipchamp-mjpeg-player-plugin
- * 
+ *
  * Plays back MJPEG files produced by the clipchamp
  * online video converter, online video compressor, and
  * webcam recorder.
  *
- * Copyright 2015 zfaas Pty Ltd (clipchamp.com) 
+ * Copyright 2015 zfaas Pty Ltd (clipchamp.com)
  * https://clipchamp.com
  * https://zfaas.com
  *
@@ -19,13 +19,13 @@
 
 	var requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame || window.setTimeout;
 
-	function splitMJPEG(mjpegUrl, callback) {
+	function splitMJPEG(mjpegUrl, jwtoken, callback) {
 		var xhr = new XMLHttpRequest();
 
 		xhr.open('GET', mjpegUrl, true);
 		xhr.overrideMimeType('application/octet-stream');
 		xhr.responseType = 'arraybuffer';
-		
+		if(jwtoken!="") xhr.setRequestHeader('Authorization', 'Bearer ' + jwtoken);
 		xhr.onload = function(event) {
 			var array = new Uint8Array(xhr.response),
 				startIndex,
@@ -45,8 +45,8 @@
 
 		xhr.send();
 	};
-	
-	function playMJPEGInternal(wrapperElement, mjpegUrl, fps, autoloop) {
+
+	function playMJPEGInternal(wrapperElement, mjpegUrl, fps, autoloop, jwtoken) {
 		fps = (typeof fps === 'number') ? fps : DEFAULT_FPS;
 		autoloop = (typeof autoloop === 'boolean') ? autoloop : DEFAULT_AUTOLOOP;
 
@@ -57,7 +57,7 @@
 		imageElement.setAttribute('style', 'width:100%;');
 		wrapperElement.appendChild(imageElement);
 
-		splitMJPEG(mjpegUrl, function(jpegFiles) {
+		splitMJPEG(mjpegUrl, jwtoken, function(jpegFiles) {
 			if (jpegFiles.length > 0) {
 				var nextFrameIndex = 0;
 
@@ -69,7 +69,7 @@
 						jpegUrl = URL.createObjectURL(jpegFiles[nextFrameIndex++]);
 
 						imageElement.onload = function() {
-							
+
 							if (imageElement) {
 								if (autoloop || nextFrameIndex < jpegFiles.length) {
 									nextFrameIndex = (nextFrameIndex === jpegFiles.length) ? 0 : nextFrameIndex;
@@ -97,16 +97,16 @@
 					imageElement = undefined;
 				}
 			}
-		};	
+		};
 	};
 
 	// optionally make available as jQuery plugin
 	if (typeof $ === 'function') {
-		$.fn.clipchamp_mjpeg_player = function(mjpegUrl, fps, autoloop, callback) {
+		$.fn.clipchamp_mjpeg_player = function(mjpegUrl, fps, autoloop, jwtoken, callback) {
 			if (typeof mjpegUrl === 'string') {
 				if (typeof callback === 'function') {
 					return this.each(function() {
-						callback($(this)[0], playMJPEGInternal($(this)[0], mjpegUrl, fps, autoloop));
+						callback($(this)[0], playMJPEGInternal($(this)[0], mjpegUrl, fps, autoloop, jwtoken));
 					});
 				} else {
 					throw new Error('Callback must be given and must be a function');
@@ -122,10 +122,10 @@
 	if (typeof define === 'function') {
 		define('jquery.clipchamp.mjpeg.player', [], function() {
 			return {
-				playMJPEG: function(wrapperElement, mjpegUrl, fps, autoloop) {
+				playMJPEG: function(wrapperElement, mjpegUrl, fps, autoloop, jwtoken) {
 					if (wrapperElement instanceof Element) {
 						if (typeof mjpegUrl === 'string') {
-							return playMJPEGInternal(wrapperElement, mjpegUrl, fps, autoloop);
+							return playMJPEGInternal(wrapperElement, mjpegUrl, fps, autoloop, jwtoken);
 						} else {
 							throw new Error('MJPEG URL must be a string');
 						}

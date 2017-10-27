@@ -1,6 +1,6 @@
 /*==========================================================================
   General
-	Build Time: 2017-10-16 6:52PM EDT
+	Build Time: 2017-10-26 10:52PM EDT
   ========================================================================== */
 
 
@@ -42,7 +42,7 @@ Vue.component('videoitem', {
   computed:{
     fileurl:function(){
       if(this.serverconnect){
-        return "http://34.213.66.163/movieportal/"+this.fileitem.filename
+        return "http://34.213.66.163/movieportal?file_name="+this.fileitem.filename
       }else {
       return "../video/"+this.fileitem.filename
     }
@@ -52,6 +52,10 @@ Vue.component('videoitem', {
     playmjpeg: function() {
         console.log("clicked");
         this.isPlaying=true;
+        var token="";
+        if(this.serverconnect){
+          token="368b618133ffb78d475f9721d25fcf4f0e8723aa";
+        }
         if($('#mjpegcontainer').children().length>0){
           $('#mjpegcontainer').empty()
         }
@@ -61,6 +65,7 @@ Vue.component('videoitem', {
         file,
         24, // frames per second
         false, // autoloop
+        token,  //token
         stop
         );
 
@@ -469,16 +474,29 @@ function overlayShow(serverconnect, type, id, start, end) {
     console.log("video list:");
     var fn = mjpeglist.length;
     mjpeglist.splice(0,fn);
-    // if(serverconnect){
-    //
-    // }else{
+    if(true){
+      $.ajax({  // eslint-disable-line
+        type: 'GET',
+        url: 'http://52.36.202.215/videos',
+        success: function (response) {
+          console.log(response);
+          response.forEach(function(e){
+            var obj={};
+            obj.filename=e;
+            obj.title=e.slice(0,e.indexOf('.'));
+            mjpeglist.push(obj);
+          })
+
+        }
+      })
+    }else{
       $.getJSON("./json/mjpglist.json", function( response ) {
         console.log(response);
         var l = response.filelist;
         $.extend(true, mjpeglist, l);
         eventBus.$emit('vlistReady',l);
     });
-
+  }
 }
 	if(type=='snode'){
     console.log("Tab 2a shown");
