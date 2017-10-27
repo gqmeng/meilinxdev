@@ -25,7 +25,8 @@
 		xhr.open('GET', mjpegUrl, true);
 		xhr.overrideMimeType('application/octet-stream');
 		xhr.responseType = 'arraybuffer';
-		if(jwtoken!="") xhr.setRequestHeader('Authorization', 'Bearer ' + jwtoken);
+    console.log(jwtoken)
+		if(jwtoken!="") xhr.setRequestHeader('X-CSRF-Token', jwtoken);
 		xhr.onload = function(event) {
 			var array = new Uint8Array(xhr.response),
 				startIndex,

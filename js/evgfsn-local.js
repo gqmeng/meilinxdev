@@ -42,7 +42,7 @@ Vue.component('videoitem', {
   computed:{
     fileurl:function(){
       if(this.serverconnect){
-        return "http://34.213.66.163/movieportal?file_name="+this.fileitem.filename
+        return "https://34.213.66.163/movieportal?file_name="+this.fileitem.filename
       }else {
       return "../video/"+this.fileitem.filename
     }
@@ -54,8 +54,8 @@ Vue.component('videoitem', {
         this.isPlaying=true;
         var token="";
         if(this.serverconnect){
-          token="368b618133ffb78d475f9721d25fcf4f0e8723aa";
-        }
+          token = $('meta[name=csrf-token]').attr('content');
+          }
         if($('#mjpegcontainer').children().length>0){
           $('#mjpegcontainer').empty()
         }
