@@ -36,13 +36,18 @@ Vue.component('videoitem', {
 	data: function () {
   	return {
       serverconnect:true,
+      auth:false,
     	isPlaying: false,
   	}
 	},
   computed:{
     fileurl:function(){
       if(this.serverconnect){
+        if(this.auth){
         return "https://34.213.66.163/movieportal?file_name="+this.fileitem.filename
+      }else{
+        return "http://34.213.66.163/movieportal?file_name="+this.fileitem.filename
+      }
       }else {
       return "../video/"+this.fileitem.filename
     }
@@ -54,8 +59,12 @@ Vue.component('videoitem', {
         this.isPlaying=true;
         var token="";
         if(this.serverconnect){
-          token = $('meta[name=csrf-token]').attr('content');
+          if(this.auth){
+          token = $('meta[name=csrf-token]').attr('content');}
+          else{
+            token="";
           }
+        }
         if($('#mjpegcontainer').children().length>0){
           $('#mjpegcontainer').empty()
         }
