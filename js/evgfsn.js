@@ -1,6 +1,6 @@
 /*==========================================================================
   General
-	Build Time: 2017-10-26 10:52PM EDT
+	Build Time: 2017-10-30 10:52PM EDT
   ========================================================================== */
 
 
@@ -36,7 +36,7 @@ Vue.component('videoitem', {
 	data: function () {
   	return {
       serverconnect:true,
-      auth:false,
+      auth:true,
     	isPlaying: false,
   	}
 	},
@@ -60,7 +60,7 @@ Vue.component('videoitem', {
         var token="";
         if(this.serverconnect){
           if(this.auth){
-          token = $('meta[name=csrf-token]').attr('content');}
+          token = $('meta[name=jwtoken]').attr('content');}
           else{
             token="";
           }
@@ -268,6 +268,7 @@ var demo = new Vue({
 			}
 		});
 		eventBus.$on("mapMarkerClick",function(id){
+      chart2.setOptions({'vAxes':{0:{'title':"Temperature (Celsius)"}},'legend': {'position': 'none'},'chartArea': {'height': '80%', 'width': '90%','left':60}} );
 			for(var i=0;i<markers.length;i++){
 				if(self.markers[i].title==id){
 					google.maps.event.trigger(self.markers[i], 'click');
@@ -406,6 +407,9 @@ watch:{
   }
 },
 methods:{
+  resetc2:function(){
+    this.selectedTrace='temp';
+  },
   submitlogin:function(){
     this.isLoggedIn=true;
   },

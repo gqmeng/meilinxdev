@@ -13,7 +13,31 @@ var control;
 var control2;
 var chart;
 var chart2;
-
+var initControl = {
+ 'controlType': 'ChartRangeFilter',
+ 'containerId': 'control',
+ 'options': {
+	 // Filter by the date axis.
+	 'filterColumnIndex': 0,
+	 'ui': {
+		 'chartType': 'LineChart',
+		 'chartOptions': {
+			 'chartArea': {'width': '90%','left':60},
+				 'hAxis': {'baselineColor': 'none', format: "dd.MM.yy" },
+				 'vAxis':{'title':' '}
+		 },
+		 // Display a single series that shows the closing value of the stock.
+		 // Thus, this view has two columns: the date (axis) and the stock value (line series).
+		 'chartView': {
+			 'columns': [0, 1]
+		 },
+		 // 1 day in milliseconds = 24 * 60 * 60 * 1000 = 86,400,000
+		 'minRangeSize': 86400000
+	 }
+ },
+ // Initial range: 2012-02-09 to 2012-03-20.
+ 'state': {'range': {'start': new Date(2017, 1, 20), 'end': new Date(2017, 1, 24)}}
+}
 
 function	playmjpeg(file) {
     console.log("clicked");
@@ -40,57 +64,10 @@ var pauseNow = false;
 function drawVisualization() {
     dashboard = new google.visualization.Dashboard(document.getElementById('dashboard'));
 		dashboard2 = new google.visualization.Dashboard(document.getElementById('dashboard2'));
-    control = new google.visualization.ControlWrapper({
-		 'controlType': 'ChartRangeFilter',
-		 'containerId': 'control',
-		 'options': {
-			 // Filter by the date axis.
-			 'filterColumnIndex': 0,
-			 'ui': {
-				 'chartType': 'LineChart',
-				 'chartOptions': {
-					 'chartArea': {'width': '90%','left':60},
-						 'hAxis': {'baselineColor': 'none', format: "dd.MM.yy" },
-             'vAxis':{'title':' '}
-				 },
-				 // Display a single series that shows the closing value of the stock.
-				 // Thus, this view has two columns: the date (axis) and the stock value (line series).
-				 'chartView': {
-					 'columns': [0, 1]
-				 },
-				 // 1 day in milliseconds = 24 * 60 * 60 * 1000 = 86,400,000
-				 'minRangeSize': 86400000
-			 }
-		 },
-		 // Initial range: 2012-02-09 to 2012-03-20.
-		 'state': {'range': {'start': new Date(2017, 1, 20), 'end': new Date(2017, 1, 24)}}
-	 });
-	 control2 = new google.visualization.ControlWrapper({
-		'controlType': 'ChartRangeFilter',
-		'containerId': 'control2',
-		'options': {
-			// Filter by the date axis.
-			'filterColumnIndex': 0,
-			'ui': {
-				'chartType': 'LineChart',
-				'chartOptions': {
-					'chartArea': {'width': '90%','left':60},
-						'hAxis': {'baselineColor': 'none', format: "dd.MM.yy" },
-						'vAxis':{'title':' '}
-				},
-				// Display a single series that shows the closing value of the stock.
-				// Thus, this view has two columns: the date (axis) and the stock value (line series).
-				'chartView': {
-					'columns': [0, 1]
-				},
-				// 1 day in milliseconds = 24 * 60 * 60 * 1000 = 86,400,000
-				'minRangeSize': 86400000
-			}
-		},
-		// Initial range: 2012-02-09 to 2012-03-20.
-		'state': {'range': {'start': new Date(2017, 1, 20), 'end': new Date(2017, 1, 24)}}
-	});
-	chart = new google.visualization.ChartWrapper({
+    control = new google.visualization.ControlWrapper(initControl);
+		initControl.containerID='control2';
+	 	control2 = new google.visualization.ControlWrapper(initControl);
+		chart = new google.visualization.ChartWrapper({
 		 'chartType': 'LineChart',
 		 'containerId': 'chart',
 		 'options': {

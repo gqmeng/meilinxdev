@@ -1,6 +1,6 @@
 /*==========================================================================
   General
-	Build Time: 2017-10-26 10:52PM EDT
+	Build Time: 2017-10-30 10:52PM EDT
   ========================================================================== */
 
 
@@ -60,7 +60,7 @@ Vue.component('videoitem', {
         var token="";
         if(this.serverconnect){
           if(this.auth){
-          token = $('meta[name=csrf-token]').attr('content');}
+          token = $('meta[name=jwtoken]').attr('content');}
           else{
             token="";
           }
@@ -268,6 +268,7 @@ var demo = new Vue({
 			}
 		});
 		eventBus.$on("mapMarkerClick",function(id){
+      chart2.setOptions({'vAxes':{0:{'title':"Temperature (Celsius)"}},'legend': {'position': 'none'},'chartArea': {'height': '80%', 'width': '90%','left':60}} );
 			for(var i=0;i<markers.length;i++){
 				if(self.markers[i].title==id){
 					google.maps.event.trigger(self.markers[i], 'click');
@@ -319,7 +320,7 @@ var demo = new Vue({
               "Humidity1":80,
               "Group":"a"})
         }
-            })
+      })
 
     }
 		var groups = {};
@@ -370,23 +371,30 @@ watch:{
     if(this.selectedTrace=='temp'){
       chart2.setOptions({'vAxes':{0:{'title':"Temperature (Celsius)"}},'legend': {'position': 'none'},'chartArea': {'height': '80%', 'width': '90%','left':60}} );
       chartView2.hideColumns([1,2,3,4,5,6])
+
     }
     if(this.selectedTrace=='hum'){
       chart2.setOptions({'vAxes':{0:{'title':"Humidity (%RH)"}},'legend': {'position': 'none'},'chartArea': {'height': '80%', 'width': '90%','left':60}} )	;
       chartView2.hideColumns([1,2,3,5,6,7,8]);
+
     }
     if(this.selectedTrace=='pres'){
       chart2.setOptions({'vAxes':{0:{'title':"Pressure (Pascal)"}},'legend': {'position': 'none'},'chartArea': {'height': '80%', 'width': '90%','left':60}} )	;
       chartView2.hideColumns([1,2,3,4,7,8]);
+
     }
     if(this.selectedTrace=='batt'){
       chart2.setOptions({'vAxes':{0:{'title':"Battery (V)"}},'legend': {'position': 'none'},'chartArea': {'height': '80%', 'width': '90%','left':60}} )	;
       chartView2.hideColumns([1,4,5,6,7,8]);
+
     }
     dashboard2.draw(chartView2);
   }
 },
 methods:{
+  resetc2:function(){
+    this.selectedTrace='temp';
+  },
   submitlogin:function(){
     this.isLoggedIn=true;
   },
@@ -460,8 +468,6 @@ Object.defineProperty(Array.prototype, 'group', {
 });
 
 function overlayShow(serverconnect, type, id, start, end) {
-  console.log("serverconnect"+serverconnect);
-  console.log("type"+type);
 	var olID = '#snodeoverlay';
 	switch(type){
 		case "topnode":
