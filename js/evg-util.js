@@ -206,9 +206,11 @@ function bindInfoWindow(marker, map, infowindow, html, id) {
 function addMarker(dest) {
 	var micon =null;
 	if(dest.type=="snode"){
-		if(dest.alert){
+		if(dest.alert>=4){
 			micon = reddot;
-		}else {
+		}else if(dest.alert==3){
+			micon=yellowdot;
+		}else{
 			micon=greendot;
 		}
 	}

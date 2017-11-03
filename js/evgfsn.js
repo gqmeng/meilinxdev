@@ -5,6 +5,7 @@
 
 
 var greendot='http://maps.google.com/mapfiles/ms/icons/green-dot.png';
+var yellowdot='http://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
 var reddot='http://maps.google.com/mapfiles/ms/icons/red-dot.png';
 var cameradot ='http://maps.google.com/mapfiles/ms/icons/blue.png';
 var gatewaydot ='http://maps.google.com/mapfiles/ms/icons/purple.png';
@@ -138,11 +139,13 @@ Vue.component('item', {
       	case 'vnode':
         	return cameradot;
       	case 'snode':
-        	if(!this.model.alert){
-          	return greendot;
-        	}else {
-          	return reddot;
-        	}
+        if(this.model.alert>=4){
+          return reddot;
+        }else if(this.model.alert==3){
+          return yellowdot;
+        }else {
+          return greendot;
+        }
       	default:
        		return '';
     	}
