@@ -322,6 +322,7 @@ var demo = new Vue({
       self.servernodelist.forEach(function(e,index){
         if(self.snList.nodelist[index]){
           self.snList.nodelist[index].ID = e.hwid;
+          self.snList.nodelist[index].Alert = e.alert;
           self.snList.nodelist[index].Latitude = e.latitude;
           self.snList.nodelist[index].Longitude = e.longitude;
         }
@@ -329,7 +330,7 @@ var demo = new Vue({
           self.snList.nodelist.push({ID:e.hwid,Latitude:e.latitude,Longitude:e.longitude,    "Timstamp":100,
               "Battery1":12,
               "Battery2":12,
-              "Alert":false,
+              "Alert":0,
               "Pressure1":0.4,
               "Pressure2":0.6,
               "Temperature1":89,
