@@ -45,7 +45,7 @@ Vue.component('videoitem', {
     fileurl:function(){
       if(this.serverconnect){
         if(this.auth){
-        return "https://34.213.66.163/movieportal?file_name="+this.fileitem.filename
+        return "http://34.213.66.163/movieportal?file_name="+this.fileitem.filename
       }else{
         return "http://34.213.66.163/movieportal?file_name="+this.fileitem.filename
       }

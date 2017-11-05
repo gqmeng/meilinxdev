@@ -36,7 +36,7 @@ Vue.component('videoitem', {
 	},
 	data: function () {
   	return {
-      serverconnect:true,
+      serverconnect:false,
       auth:false,
     	isPlaying: false,
   	}
@@ -45,7 +45,7 @@ Vue.component('videoitem', {
     fileurl:function(){
       if(this.serverconnect){
         if(this.auth){
-        return "https://34.213.66.163/movieportal?file_name="+this.fileitem.filename
+        return "http://34.213.66.163/movieportal?file_name="+this.fileitem.filename
       }else{
         return "http://34.213.66.163/movieportal?file_name="+this.fileitem.filename
       }
@@ -56,12 +56,12 @@ Vue.component('videoitem', {
   },
   methods:{
     playmjpeg: function() {
-        console.log("clicked");
+
         this.isPlaying=true;
-        var token="";
+        var token=$('meta[name=jwtoken]').attr('content');
         if(this.serverconnect){
           if(this.auth){
-          token = $('meta[name=jwtoken]').attr('content');}
+            token = $('meta[name=jwtoken]').attr('content');}
           else{
             token="";
           }
@@ -71,6 +71,8 @@ Vue.component('videoitem', {
         }
         $('#mjpegcontainer').append("<div id='mjpeg_wrapper'></div>");
     		var file=this.fileurl;
+        console.log("clicked"+token+" for "+file);
+
         $('#mjpeg_wrapper').clipchamp_mjpeg_player(
         file,
         24, // frames per second
@@ -492,7 +494,7 @@ function overlayShow(serverconnect, type, id, start, end) {
     console.log("video list:");
     var fn = mjpeglist.length;
     mjpeglist.splice(0,fn);
-    if(true){
+    if(false){
       $.ajax({  // eslint-disable-line
         type: 'GET',
         url: 'http://52.36.202.215/videos',
