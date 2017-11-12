@@ -1,8 +1,7 @@
 /*==========================================================================
   General
-	Build Time: 2017-10-30 10:52PM EDT
+	Build Time: 2017-11-05 10:52PM EDT
   ========================================================================== */
-
 
 var greendot='http://maps.google.com/mapfiles/ms/icons/green-dot.png';
 var yellowdot='http://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
@@ -15,12 +14,24 @@ var infowindow;
 var eventBus = new Vue();
 var arrDestinations = [];
 var mjpeglist=[];
+var serverconnect = true;
 
 function showPage() {
   document.getElementById("loader").style.opacity = 0;
   document.getElementById("myDiv").style.opacity = 1;
   document.getElementById("loader2").style.opacity = 0;
   document.getElementById("myDiv2").style.opacity = 1;
+}
+
+function getQueryVariable(variable)
+{
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
 }
 
 Vue.component('videoitem', {
@@ -50,7 +61,8 @@ Vue.component('videoitem', {
         return "http://34.213.66.163/movieportal?file_name="+this.fileitem.filename
       }
       }else {
-      return "../video/"+this.fileitem.filename
+        // return "../video/"+this.fileitem.filename
+        return "http://34.213.66.163/movieportal?file_name="+this.fileitem.filename
     }
     }
   },
@@ -59,13 +71,12 @@ Vue.component('videoitem', {
 
         this.isPlaying=true;
         var token=$('meta[name=jwtoken]').attr('content');
-        if(this.serverconnect){
-          if(this.auth){
+        if(this.auth){
             token = $('meta[name=jwtoken]').attr('content');}
           else{
             token="";
           }
-        }
+        
         if($('#mjpegcontainer').children().length>0){
           $('#mjpegcontainer').empty()
         }

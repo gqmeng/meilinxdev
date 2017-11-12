@@ -264,7 +264,11 @@ function addMarker(dest) {
 $(document).ready(function(){
 	$( 'a[data-toggle="tab"]' ).on( 'shown.bs.tab', function( evt ) {
 		dashboard.draw(chartView);
-    chartView2.hideColumns([1,2,3,4,5,6])
 		dashboard2.draw(chartView2);
 	});
+	var aurl= getQueryVariable('localtest');
+	if(aurl){
+ 		serverconnect = false;
+	}
+	console.log("Connect to Server:"+serverconnect);
 })

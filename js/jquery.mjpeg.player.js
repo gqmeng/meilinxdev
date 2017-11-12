@@ -76,7 +76,7 @@
 									nextFrameIndex = (nextFrameIndex === jpegFiles.length) ? 0 : nextFrameIndex;
 									setTimeout(function() {
 										requestAnimationFrame(showNextFrame);
-									}, 240/fps);
+									}, 200/fps);
 								}
 							}
 						};
@@ -86,7 +86,7 @@
 
 				setTimeout(function() {
 					requestAnimationFrame(showNextFrame);
-				},240/fps);
+				},200/fps);
 			}
 		});
 

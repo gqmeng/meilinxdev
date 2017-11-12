@@ -1,8 +1,7 @@
 /*==========================================================================
   General
-	Build Time: 2017-10-30 10:52PM EDT
+	Build Time: 2017-11-05 10:52PM EDT
   ========================================================================== */
-
 
 var greendot='http://maps.google.com/mapfiles/ms/icons/green-dot.png';
 var yellowdot='http://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
@@ -37,7 +36,7 @@ Vue.component('videoitem', {
 	data: function () {
   	return {
       serverconnect:true,
-      auth:true,
+      auth:false,
     	isPlaying: false,
   	}
 	},
@@ -61,7 +60,7 @@ Vue.component('videoitem', {
         var token="";
         if(this.serverconnect){
           if(this.auth){
-          token = $('meta[name=jwtoken]').attr('content');}
+            token = $('meta[name=jwtoken]').attr('content');}
           else{
             token="";
           }
@@ -233,6 +232,8 @@ var demo = new Vue({
       isAdmin:true,
       user:{username:'',password:''},
       servernodelist:[],
+      servervnodelist:[],
+      servergatewaylist:[],
       serverconnect:true,
       starttime:"",
       endtime:"",
@@ -284,7 +285,7 @@ var demo = new Vue({
 	beforeCreate: function(){
   	var self=this;
   	$.when(
-      $.ajax({  // eslint-disable-line
+      $.ajax({  //get sensornodes
           type: 'GET',
           url: 'http://52.36.202.215/sensornodes',
           success: function (response) {
@@ -299,6 +300,36 @@ var demo = new Vue({
             console.log(response);
           }
         }),
+        $.ajax({  //get videonodes
+            type: 'GET',
+            url: 'http://52.36.202.215/videonodes',  //Codrin: here is the videonode endpoint
+            success: function (response) {
+              console.log(response);
+              if(response.length>0){
+                response.forEach(function(e){
+                  self.servervnodelist.push(e);
+                });
+              }
+            },
+            error: function (response) {
+              console.log(response);
+            }
+          }),
+          $.ajax({  //get gateway
+              type: 'GET',
+              url: 'http://52.36.202.215/gatewaynodes/?format=json',
+              success: function (response) {
+                console.log(response);
+                if(response.length>0){
+                  response.forEach(function(e){
+                    self.servergatewaylist.push(e);
+                  });
+                }
+              },
+              error: function (response) {
+                console.log(response);
+              }
+            }),
     	$.getJSON("../static/UserMgm/json/sensornodes.json",function(data){
 				$.extend(true, self.snList, data);
         // console.log("Sensor Node list retrieved"+ JSON.stringify(self.snList));
@@ -341,6 +372,48 @@ var demo = new Vue({
         }
       })
 
+      self.servervnodelist.forEach(function(e,index){
+        if(self.vnList.nodelist[index]){
+          self.vnList.nodelist[index].ID = e.hwid;
+          self.vnList.nodelist[index].Alert = e.alert;
+          self.vnList.nodelist[index].Latitude = e.latitude;
+          self.vnList.nodelist[index].Longitude = e.longitude;
+        }
+        else{
+          self.vnList.nodelist.push({ID:e.hwid,Latitude:e.latitude,Longitude:e.longitude,    "Timstamp":100,
+              "Battery1":12,
+              "Battery2":12,
+              "Alert":0,
+              "Pressure1":0.4,
+              "Pressure2":0.6,
+              "Temperature1":89,
+              "Temperature2":89,
+              "TypeA":20,
+              "Humidity1":80,
+              "Group":"a"})
+        }
+      })
+      self.servergatewaylist.forEach(function(e,index){
+        if(self.gwList.nodelist[index]){
+          self.gwList.nodelist[index].ID = e.hwid;
+          self.gwList.nodelist[index].Alert = e.alert;
+          self.gwList.nodelist[index].Latitude = e.latitude;
+          self.gwList.nodelist[index].Longitude = e.longitude;
+        }
+        else{
+          self.gwList.nodelist.push({ID:e.hwid,Latitude:e.latitude,Longitude:e.longitude,    "Timstamp":100,
+              "Battery1":12,
+              "Battery2":12,
+              "Alert":0,
+              "Pressure1":0.4,
+              "Pressure2":0.6,
+              "Temperature1":89,
+              "Temperature2":89,
+              "TypeA":20,
+              "Humidity1":80,
+              "Group":"a"})
+        }
+      })
     }
 		var groups = {};
 		for (var i = 0; i < self.snList.nodelist.length; i++) {

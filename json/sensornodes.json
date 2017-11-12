@@ -16,54 +16,6 @@
     "TypeA":20,
     "Humidity1":80,
     "Group":"a"
-  },
-  {
-    "ID":"SR11",
-    "Timstamp":100,
-    "Battery1":12,
-    "Battery2":12,
-    "Latitude":42.289781,
-    "Longitude":-83.730076,
-    "Alert":5,
-    "Pressure1":0.4,
-    "Pressure2":0.6,
-    "Temperature1":89,
-    "Temperature2":89,
-    "TypeA":20,
-    "Humidity1":80,
-    "Group":"a"
-  },
-  {
-    "ID":"SR12",
-    "Timstamp":100,
-    "Battery1":12,
-    "Battery2":12,
-    "Latitude":42.289837,
-    "Longitude":-83.729956,
-    "Alert":4,
-    "Pressure1":0.4,
-    "Pressure2":0.6,
-    "Temperature1":89,
-    "Temperature2":89,
-    "TypeA":20,
-    "Humidity1":80,
-    "Group":"a"
-  },
-  {
-    "ID":"SR02",
-    "Timstamp":100,
-    "Battery1":12,
-    "Battery2":12,
-    "Latitude":42.289837,
-    "Longitude":-83.730291,
-    "Alert":3,
-    "Pressure1":0.4,
-    "Pressure2":0.6,
-    "Temperature1":89,
-    "Temperature2":89,
-    "TypeA":20,
-    "Humidity1":80,
-    "Group":"a"
   }
   ]
 }
