@@ -76,7 +76,7 @@ Vue.component('videoitem', {
           else{
             token="";
           }
-        
+
         if($('#mjpegcontainer').children().length>0){
           $('#mjpegcontainer').empty()
         }
@@ -500,8 +500,12 @@ function overlayShow(serverconnect, type, id, start, end) {
 					break;
 	}
 	$(olID).modal('show');
-	$("#node_id").text(id);
+  console.log("ID:"+id+ "  Type:"+type);
+  if(type=='gateway'){
+    $("#gnode_id").text(id);
+  }
   if(type=='vnode'){
+    	$("#vnode_id").text(id);
     console.log("video list:");
     var fn = mjpeglist.length;
     mjpeglist.splice(0,fn);
@@ -530,6 +534,7 @@ function overlayShow(serverconnect, type, id, start, end) {
   }
 }
 	if(type=='snode'){
+    	$("#node_id").text(id);
     console.log("Tab 2a shown");
     var n = chartData.getNumberOfRows();
     chartData.removeRows(0,n);

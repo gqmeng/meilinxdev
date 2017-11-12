@@ -302,7 +302,7 @@ var demo = new Vue({
         }),
         $.ajax({  //get videonodes
             type: 'GET',
-            url: 'http://52.36.202.215/videonodes',  //Codrin: here is the videonode endpoint
+            url: 'http://52.36.202.215/videonodes/?format=json',  //Codrin: here is the videonode endpoint
             success: function (response) {
               console.log(response);
               if(response.length>0){
@@ -430,9 +430,11 @@ var demo = new Vue({
   			// result1.push({name: gname, title:title,displayClass: 'level1', entitytype:'group', children: groups[groupName]});
 				self.treeData.children.push({name: gname, title:title, displayClass: 'level1', entitytype:'group', children: groups[groupName]});
 			}
+      if(self.servergatewaylist.length>0)
 			for (var i = 0; i < self.gwList.nodelist.length; i++) {
 				self.treeData.children.push({name:"Gateway "+self.gwList.nodelist[i].ID,id:self.gwList.nodelist[i].ID,displayClass: 'level1',entitytype:"gateway",alert:self.gwList.nodelist[i].Alert,data:self.gwList.nodelist[i]});
 			}
+      if(self.servervnodelist.length>0)
 			for (var i = 0; i < self.vnList.nodelist.length; i++) {
 				self.treeData.children.push({name:"Video Node "+self.vnList.nodelist[i].ID,id:self.vnList.nodelist[i].ID,displayClass: 'level1',entitytype:"vnode",alert:self.vnList.nodelist[i].Alert,data:self.vnList.nodelist[i]});
 			}
@@ -576,8 +578,12 @@ function overlayShow(serverconnect, type, id, start, end) {
 					break;
 	}
 	$(olID).modal('show');
-	$("#node_id").text(id);
+  console.log("ID:"+id+ "  Type:"+type);
+  if(type=='gateway'){
+    $("#gnode_id").text(id);
+  }
   if(type=='vnode'){
+    	$("#vnode_id").text(id);
     console.log("video list:");
     var fn = mjpeglist.length;
     mjpeglist.splice(0,fn);
@@ -606,6 +612,7 @@ function overlayShow(serverconnect, type, id, start, end) {
   }
 }
 	if(type=='snode'){
+    	$("#node_id").text(id);
     console.log("Tab 2a shown");
     var n = chartData.getNumberOfRows();
     chartData.removeRows(0,n);

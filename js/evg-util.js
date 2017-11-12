@@ -266,9 +266,9 @@ $(document).ready(function(){
 		dashboard.draw(chartView);
 		dashboard2.draw(chartView2);
 	});
-	var aurl= getQueryVariable('localtest');
-	if(aurl){
- 		serverconnect = false;
-	}
+	// var aurl= getQueryVariable('localtest');
+	// if(aurl){
+ 	// 	serverconnect = false;
+	// }
 	console.log("Connect to Server:"+serverconnect);
 })

@@ -16,6 +16,22 @@
     "TypeA":20,
     "Humidity1":80,
     "Group":"a"
+  },
+  {
+    "ID":"S2",
+    "Timstamp":100,
+    "Battery1":12,
+    "Battery2":12,
+    "Latitude": 42.289714,
+    "Longitude":-83.730221,
+    "Alert":0,
+    "Pressure1":0.4,
+    "Pressure2":0.6,
+    "Temperature1":89,
+    "Temperature2":89,
+    "TypeA":20,
+    "Humidity1":80,
+    "Group":"a"
   }
   ]
 }
