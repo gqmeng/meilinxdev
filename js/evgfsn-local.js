@@ -37,13 +37,18 @@ function getQueryVariable(variable)
 Vue.component('videoitem', {
 	template: `<div :id="fileitem.title">
             <span>{{fileitem.title}}</span>
-
+            <div style="display:inline-block" v-if='vformat!="mp4"'>
             <button @click="stopmjpeg" v-if='isPlaying' ><span class="glyphicon glyphicon-stop"></span></button>
             <button @click="playmjpeg" v-else><span class="glyphicon glyphicon-play"></span></button>
+            </div>
+            <div v-else style="display:inline-block">
+            <button @click='selectvideo'><span>SELECT</span></button>
+            </div>
       </div>`,
   // template: `<span>{{fileitem.title}}</span>`,
 	props: {
-  	fileitem: Object
+  	fileitem: Object,
+    vformat:'mp4'
 	},
 	data: function () {
   	return {
@@ -56,17 +61,20 @@ Vue.component('videoitem', {
     fileurl:function(){
       if(this.serverconnect){
         if(this.auth){
-        return "http://34.213.66.163/movieportal?file_name="+this.fileitem.filename
-      }else{
-        return "http://34.213.66.163/movieportal?file_name="+this.fileitem.filename
-      }
+          return "http://34.213.66.163/movieportal?file_name="+this.fileitem.filename
+        }else{
+          return "http://34.213.66.163/movieportal?file_name="+this.fileitem.filename
+        }
       }else {
-        // return "../video/"+this.fileitem.filename
-        return "http://34.213.66.163/movieportal?file_name="+this.fileitem.filename
-    }
+         return "../video/"+this.fileitem.filename.replace('mjpg','mp4')
+        //return "http://34.213.66.163/movieportal?file_name="+this.fileitem.filename
+      }
     }
   },
   methods:{
+    selectvideo:function(){
+      eventBus.$emit('videoselected', this.fileurl)
+    },
     playmjpeg: function() {
 
         this.isPlaying=true;
@@ -251,7 +259,9 @@ var demo = new Vue({
       endtime:"",
       libraryready:false,
       selectedTrace:'temp',
-      mjpeglistModel:{list:mjpeglist}
+      mjpeglistModel:{list:mjpeglist},
+      vformat:'mp4',
+      videofn:''
   	}
 	},
 	created:function(){
@@ -264,6 +274,9 @@ var demo = new Vue({
 				$("#"+id).addClass("highlight");
 			}
 		});
+    eventBus.$on('videoselected', function(fn){
+      self.videofn=fn;
+    });
 		eventBus.$on("maphighlight",function(id){
 			for(var i=0;i<markers.length;i++){
 			// console.log("hover:"+id+" vs "+self.markers[i].title);

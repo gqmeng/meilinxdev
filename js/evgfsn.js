@@ -239,7 +239,8 @@ var demo = new Vue({
       endtime:"",
       libraryready:false,
       selectedTrace:'temp',
-      mjpeglistModel:{list:mjpeglist}
+      mjpeglistModel:{list:mjpeglist},
+      vformat:'mp4'
   	}
 	},
 	created:function(){

@@ -207,11 +207,14 @@
                   <div class='col-md-4'>
                     <ul id='vlist'>
                       <li v-for='(v,index) in mjpeglistModel.list'>
-                        <videoitem :fileitem='v'></videoitem>
+                        <videoitem :fileitem='v' :vformat='vformat'></videoitem>
                       </li>
                     </ul>
                   </div>
-                  <div class='col-md-8' id="mjpegcontainer">
+                  <div v-if='vformat=="mjpeg"' class='col-md-8' id="mjpegcontainer">
+                  </div>
+                  <div v-if='vformat=="mp4"' class='col-md-8' id='mp4container'>
+                    <video :src='videofn' width='480' height='360' controls></video>
                   </div>
                 </div>
                 <div class="tab-pane" id="3b">
