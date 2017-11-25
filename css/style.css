@@ -586,3 +586,7 @@ li.level2>div{
 		 padding: 0px 3px 2px 1px;
 		 line-height: 0.6em;
 	 }
+	 .video-js {
+		 width:480px;
+		 height:360px;
+	 }

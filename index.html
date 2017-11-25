@@ -11,6 +11,7 @@
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
       integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
       crossorigin="anonymous">
+        <link href="http://vjs.zencdn.net/6.4.0/video-js.css" rel="stylesheet">
     <link rel="stylesheet" href="./css/style.css">
     <title>Evigia Sensor Network</title>
     <script
@@ -22,7 +23,6 @@
     <script src="./js/lodash.js"></script>
     <script src="./js/moment.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <!-- <script src="https://unpkg.com/vue"></script> -->
     <script type="text/javascript" src="./js/vue.min.js"></script>
     <script type="text/javascript" src="./js/jquery.csv.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDm34gZk1tuwBd-HzfXcDlHFj_9xGUhJWM"></script>
@@ -207,14 +207,20 @@
                   <div class='col-md-4'>
                     <ul id='vlist'>
                       <li v-for='(v,index) in mjpeglistModel.list'>
-                        <videoitem :fileitem='v' :vformat='vformat'></videoitem>
+                        <videoitem :fileitem='v'  :vformat='vformat'></videoitem>
                       </li>
                     </ul>
                   </div>
                   <div v-if='vformat=="mjpeg"' class='col-md-8' id="mjpegcontainer">
                   </div>
                   <div v-if='vformat=="mp4"' class='col-md-8' id='mp4container'>
-                    <video :src='videofn' width='480' height='360' controls></video>
+                    <!-- <video :src='videofn' type="rtmp/mp4" width='480' height='360' controls></video> -->
+                    <video id="my-video" class="video-js" width="480" height="360" poster="">
+                        <p class="vjs-no-js">
+                          To view this video please enable JavaScript, and consider upgrading to a web browser that
+                          <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                        </p>
+                      </video>
                   </div>
                 </div>
                 <div class="tab-pane" id="3b">
@@ -308,5 +314,8 @@
 
   </div>
   </body>
-  <script src="js/evgfsn-local.js"></script>
+
+  <script src="http://vjs.zencdn.net/6.4.0/video.js"></script>
+  <script src="js/videojs-flash.js"></script>
+    <script src="js/evgfsn-local.js"></script>
 </html>

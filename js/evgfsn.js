@@ -1,6 +1,6 @@
 /*==========================================================================
   General
-	Build Time: 2017-11-05 10:52PM EDT
+	Build Time: 2017-11-25 3:31PM EDT
   ========================================================================== */
 
 var greendot='http://maps.google.com/mapfiles/ms/icons/green-dot.png';
@@ -25,13 +25,18 @@ function showPage() {
 Vue.component('videoitem', {
 	template: `<div :id="fileitem.title">
             <span>{{fileitem.title}}</span>
-
+            <div style="display:inline-block" v-if='vformat!="mp4"'>
             <button @click="stopmjpeg" v-if='isPlaying' ><span class="glyphicon glyphicon-stop"></span></button>
             <button @click="playmjpeg" v-else><span class="glyphicon glyphicon-play"></span></button>
+            </div>
+            <div v-else style="display:inline-block">
+            <button @click='selectvideo'><span>SELECT</span></button>
+            </div>
       </div>`,
   // template: `<span>{{fileitem.title}}</span>`,
 	props: {
-  	fileitem: Object
+  	fileitem: Object,
+    vformat:'mp4'
 	},
 	data: function () {
   	return {
@@ -42,20 +47,15 @@ Vue.component('videoitem', {
 	},
   computed:{
     fileurl:function(){
-      if(this.serverconnect){
-        if(this.auth){
-        return "http://34.213.66.163/movieportal?file_name="+this.fileitem.filename
-      }else{
-        return "http://34.213.66.163/movieportal?file_name="+this.fileitem.filename
-      }
-      }else {
       return "../video/"+this.fileitem.filename
-    }
     }
   },
   methods:{
+    selectvideo:function(){
+      eventBus.$emit('videoselected', this.fileurl)
+    },
     playmjpeg: function() {
-        console.log("clicked");
+
         this.isPlaying=true;
         var token="";
         if(this.serverconnect){
@@ -240,19 +240,42 @@ var demo = new Vue({
       libraryready:false,
       selectedTrace:'temp',
       mjpeglistModel:{list:mjpeglist},
-      vformat:'mp4'
+      vformat:'mp4',
+      serverconnect:false,
+      localurl:'http://localhost:8080',
+      dserverurl:'',
+      vserverurl:'',
+      videoserverauth:false,
+      videofn:''
   	}
 	},
 	created:function(){
 		var self=this;
 				// initMap();
 				// showMarkers();
+    $.getJSON('../json/config.json', function(data){
+      self.vformat=data.vformat;
+      self.serverconnect=data.serverconnect;
+      self.localurl=data.localurl;
+      self.dserverurl=data.dserverurl;
+      self.vserverurl=data.vserverurl;
+      self.videoserverauth = data.videoserverauth;
+    });
 		eventBus.$on("listhighlight",function(id){
 	  	$(".highlight").removeClass("highlight");
 			if(id!=null){
 				$("#"+id).addClass("highlight");
 			}
 		});
+    eventBus.$on('videoselected', function(fn){
+      self.videofn=fn.replace('../video','rtmp://34.213.66.163/movieportal')
+      var myPlayer =   videojs('my-video',{
+          controls: true,
+          autoplay: false,
+          preload: 'auto' });
+      console.log(self.videofn)
+      myPlayer.src({type: "rtmp/mp4", src: self.videofn});
+    });
 		eventBus.$on("maphighlight",function(id){
 			for(var i=0;i<markers.length;i++){
 			// console.log("hover:"+id+" vs "+self.markers[i].title);
@@ -431,11 +454,11 @@ var demo = new Vue({
   			// result1.push({name: gname, title:title,displayClass: 'level1', entitytype:'group', children: groups[groupName]});
 				self.treeData.children.push({name: gname, title:title, displayClass: 'level1', entitytype:'group', children: groups[groupName]});
 			}
-      if(self.servergatewaylist.length>0)
+      if(self.gwList.nodelist.length>0)
 			for (var i = 0; i < self.gwList.nodelist.length; i++) {
 				self.treeData.children.push({name:"Gateway "+self.gwList.nodelist[i].ID,id:self.gwList.nodelist[i].ID,displayClass: 'level1',entitytype:"gateway",alert:self.gwList.nodelist[i].Alert,data:self.gwList.nodelist[i]});
 			}
-      if(self.servervnodelist.length>0)
+      if(self.vnList.nodelist.length>0)
 			for (var i = 0; i < self.vnList.nodelist.length; i++) {
 				self.treeData.children.push({name:"Video Node "+self.vnList.nodelist[i].ID,id:self.vnList.nodelist[i].ID,displayClass: 'level1',entitytype:"vnode",alert:self.vnList.nodelist[i].Alert,data:self.vnList.nodelist[i]});
 			}

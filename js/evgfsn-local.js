@@ -1,6 +1,6 @@
 /*==========================================================================
   General
-	Build Time: 2017-11-05 10:52PM EDT
+	Build Time: 2017-11-25 3:31PM EDT
   ========================================================================== */
 
 var greendot='http://maps.google.com/mapfiles/ms/icons/green-dot.png';
@@ -14,24 +14,13 @@ var infowindow;
 var eventBus = new Vue();
 var arrDestinations = [];
 var mjpeglist=[];
-var serverconnect = true;
+var serverconnect = false;
 
 function showPage() {
   document.getElementById("loader").style.opacity = 0;
   document.getElementById("myDiv").style.opacity = 1;
   document.getElementById("loader2").style.opacity = 0;
   document.getElementById("myDiv2").style.opacity = 1;
-}
-
-function getQueryVariable(variable)
-{
-       var query = window.location.search.substring(1);
-       var vars = query.split("&");
-       for (var i=0;i<vars.length;i++) {
-               var pair = vars[i].split("=");
-               if(pair[0] == variable){return pair[1];}
-       }
-       return(false);
 }
 
 Vue.component('videoitem', {
@@ -254,13 +243,20 @@ var demo = new Vue({
       isAdmin:true,
       user:{username:'',password:''},
       servernodelist:[],
-      serverconnect:false,
+      servervnodelist:[],
+      servergatewaylist:[],
+      serverconnect:true,
       starttime:"",
       endtime:"",
       libraryready:false,
       selectedTrace:'temp',
       mjpeglistModel:{list:mjpeglist},
       vformat:'mp4',
+      serverconnect:false,
+      localurl:'http://localhost:8080',
+      dserverurl:'',
+      vserverurl:'',
+      videoserverauth:false,
       videofn:''
   	}
 	},
@@ -268,6 +264,14 @@ var demo = new Vue({
 		var self=this;
 				// initMap();
 				// showMarkers();
+    $.getJSON('../json/config.json', function(data){
+      self.vformat=data.vformat;
+      self.serverconnect=data.serverconnect;
+      self.localurl=data.localurl;
+      self.dserverurl=data.dserverurl;
+      self.vserverurl=data.vserverurl;
+      self.videoserverauth = data.videoserverauth;
+    });
 		eventBus.$on("listhighlight",function(id){
 	  	$(".highlight").removeClass("highlight");
 			if(id!=null){
@@ -276,6 +280,16 @@ var demo = new Vue({
 		});
     eventBus.$on('videoselected', function(fn){
       self.videofn=fn;
+      // test code
+      self.videofn=fn.replace('../video','rtmp://34.213.66.163/movieportal')
+      var myPlayer =   videojs('my-video',{
+          controls: true,
+          autoplay: false,
+          preload: 'auto' });
+      console.log(self.videofn)
+      myPlayer.src({type: "rtmp/mp4", src: self.videofn
+      // "https://vjs.zencdn.net/v/oceans.mp4"
+    });
     });
 		eventBus.$on("maphighlight",function(id){
 			for(var i=0;i<markers.length;i++){
@@ -333,6 +347,7 @@ var demo = new Vue({
       self.servernodelist.forEach(function(e,index){
         if(self.snList.nodelist[index]){
           self.snList.nodelist[index].ID = e.hwid;
+          self.snList.nodelist[index].Alert = e.alert;
           self.snList.nodelist[index].Latitude = e.latitude;
           self.snList.nodelist[index].Longitude = e.longitude;
         }
@@ -340,7 +355,7 @@ var demo = new Vue({
           self.snList.nodelist.push({ID:e.hwid,Latitude:e.latitude,Longitude:e.longitude,"Timstamp":100,
               "Battery1":12,
               "Battery2":12,
-              "Alert":false,
+              "Alert":0,
               "Pressure1":0.4,
               "Pressure2":0.6,
               "Temperature1":89,
@@ -351,7 +366,52 @@ var demo = new Vue({
         }
       })
 
+      self.servervnodelist.forEach(function(e,index){
+        if(self.vnList.nodelist[index]){
+          self.vnList.nodelist[index].ID = e.hwid;
+          self.vnList.nodelist[index].Alert = e.alert;
+          self.vnList.nodelist[index].Latitude = e.latitude;
+          self.vnList.nodelist[index].Longitude = e.longitude;
+        }
+        else{
+          self.vnList.nodelist.push({ID:e.hwid,Latitude:e.latitude,Longitude:e.longitude,    "Timstamp":100,
+              "Battery1":12,
+              "Battery2":12,
+              "Alert":0,
+              "Pressure1":0.4,
+              "Pressure2":0.6,
+              "Temperature1":89,
+              "Temperature2":89,
+              "TypeA":20,
+              "Humidity1":80,
+              "Group":"a"})
+        }
+      })
+      self.servergatewaylist.forEach(function(e,index){
+        if(self.gwList.nodelist[index]){
+          self.gwList.nodelist[index].ID = e.hwid;
+          self.gwList.nodelist[index].Alert = e.alert;
+          self.gwList.nodelist[index].Latitude = e.latitude;
+          self.gwList.nodelist[index].Longitude = e.longitude;
+        }
+        else{
+          self.gwList.nodelist.push({ID:e.hwid,Latitude:e.latitude,Longitude:e.longitude,    "Timstamp":100,
+              "Battery1":12,
+              "Battery2":12,
+              "Alert":0,
+              "Pressure1":0.4,
+              "Pressure2":0.6,
+              "Temperature1":89,
+              "Temperature2":89,
+              "TypeA":20,
+              "Humidity1":80,
+              "Group":"a"})
+        }
+      })
     }
+    console.log("SN:"+self.snList.length);
+    console.log("SN:"+self.snList.length);
+
 		var groups = {};
 		for (var i = 0; i < self.snList.nodelist.length; i++) {
   		var groupName = self.snList.nodelist[i].Group;
@@ -367,9 +427,11 @@ var demo = new Vue({
   			// result1.push({name: gname, title:title,displayClass: 'level1', entitytype:'group', children: groups[groupName]});
 				self.treeData.children.push({name: gname, title:title, displayClass: 'level1', entitytype:'group', children: groups[groupName]});
 			}
+      if(self.gwList.nodelist.length>0)
 			for (var i = 0; i < self.gwList.nodelist.length; i++) {
 				self.treeData.children.push({name:"Gateway "+self.gwList.nodelist[i].ID,id:self.gwList.nodelist[i].ID,displayClass: 'level1',entitytype:"gateway",alert:self.gwList.nodelist[i].Alert,data:self.gwList.nodelist[i]});
 			}
+      if(self.vnList.nodelist.length>0)
 			for (var i = 0; i < self.vnList.nodelist.length; i++) {
 				self.treeData.children.push({name:"Video Node "+self.vnList.nodelist[i].ID,id:self.vnList.nodelist[i].ID,displayClass: 'level1',entitytype:"vnode",alert:self.vnList.nodelist[i].Alert,data:self.vnList.nodelist[i]});
 			}
