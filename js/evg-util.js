@@ -266,5 +266,4 @@ $(document).ready(function(){
 		dashboard.draw(chartView);
 		dashboard2.draw(chartView2);
 	});
-	console.log("Connect to Server:"+serverconnect);
 })

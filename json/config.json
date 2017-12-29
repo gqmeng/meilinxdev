@@ -1,8 +1,8 @@
 {
-  "serverconnect":false,
+  "serverconnect":true,
   "localurl":"http://localhost:8080",
   "dserverurl":"http://52.36.202.215",
-  "vserverurl":"http://34.213.66.163/movieportal",
+  "vserverurl":"rtmp://34.213.66.163/movieportal",
   "vformat":"mp4",
   "videoserverauth":false
 }

@@ -303,7 +303,9 @@ section .container,section .topcontainer,section .logincontainer {
 .container.pad-top0 {
 	padding-top: 0px;
 }
-
+div#mp4container {
+	padding:20px;
+}
 #main .topcontainer, #main .logincontainer {
 	position:absolute;
 	top:60px;
@@ -578,7 +580,9 @@ li.level2>div{
 		     font-weight: 700;
 				 cursor: pointer;
 	 }
-
+	 ul#vlist {
+		 overflow:auto;
+	 }
 	 ul#vlist li {
 		 padding:3px;
 	 }
@@ -589,4 +593,5 @@ li.level2>div{
 	 .video-js {
 		 width:480px;
 		 height:360px;
+		 margin: 0 auto;
 	 }

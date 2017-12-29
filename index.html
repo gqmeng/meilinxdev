@@ -2,7 +2,6 @@
 <html>
   <head>
     <meta charset="utf-8">
-
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +10,7 @@
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
       integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
       crossorigin="anonymous">
-        <link href="http://vjs.zencdn.net/6.4.0/video-js.css" rel="stylesheet">
+        <link href="http://vjs.zencdn.net/5.20.3/video-js.css" rel="stylesheet">
     <link rel="stylesheet" href="./css/style.css">
     <title>Evigia Sensor Network</title>
     <script
@@ -40,41 +39,36 @@
   <section class="header">
     <div class="container">
       <div class='row'>
-
         <div class='col-md-9 col-sm-9 col-xs-9'>
-      <h3> Evigia Flood Sensor Network</h3>
-    </div>
-            <div class='col-md-2 col-sm-2 col-xs-2'>
-      <div id='logoutBtn' v-if='isLoggedIn' @click='logout'>Log Out<div>
-        <div class='col-md-1 col-sm-1 col-xs-1'>
+          <h3> Evigia Flood Sensor Network</h3>
         </div>
+        <div class='col-md-2 col-sm-2 col-xs-2'>
+          <div id='logoutBtn' v-if='isLoggedIn' @click='logout'>Log Out</div>
+        </div>
+        <div class='col-md-1 col-sm-1 col-xs-1'></div>
       </div>
-      </div>
-    </div></div></div>
+    </div>
   </section>
 
   <section id="main">
     <div class="topcontainer active" >
-        <div class="row mar-left5">
-          <div class="col-md-3 col-sm-3 pad-right15 pad-left15 bg-grey" id="nlist">
-             <div v-if="dataReady">
+      <div class="row mar-left5">
+        <div class="col-md-3 col-sm-3 pad-right15 pad-left15 bg-grey" id="nlist">
+          <div v-if="dataReady">
             <ul id="demolist" >
               <item
                 class="item"
                 :model="treeData">
               </item>
             </ul>
-
             <div id="summary">
               <span></span>
             </div>
-            </div>
-
-            <!-- <div id="loader" v-else></div> -->
           </div>
-          <div class="col-md-9 col-sm-9">
-            <div id="map"></div>
-          </div>
+        </div>
+        <div class="col-md-9 col-sm-9">
+          <div id="map"></div>
+        </div>
       </div>
     </div>
     <div class='logincontainer' >
@@ -96,19 +90,21 @@
       </div>
     </div>
   </section>
+
   <section id="banner">
       <!-- <marquee behavior="scroll" direction="left">
         <span style="color:green;">2017-06-06-13:53:00 Network up.</span>
         <span style="color:green">  2017-06-06-13:55:12 All nodes report normal operation.</span>
         <span style="color:red">  2017-06-06-15:07:03 Sensor Node #2 Flood Alert Warning!!!</span>
       </marquee> -->
-    </section>
-    <section class="footer">
-      <div class="container" style="text-align:center;">
+  </section>
+  <section class="footer">
+    <div class="container" style="text-align:center;">
         Copyright&copy;2017  Evigia Systems Inc.
-      </div>
-    </section>
-    <div class="modal" tabindex="-1" role="dialog" id="snodeoverlay">
+    </div>
+  </section>
+
+  <div class="modal" tabindex="-1" role="dialog" id="snodeoverlay">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -121,15 +117,9 @@
             </div>
             <div id="exTab1">
               <ul class="nav nav-pills">
-            		<li class="active">
-                  <a  href="#1a" data-toggle="tab">Water Level Plot</a>
-          			</li>
-            		<li >
-                  <a href="#2a" data-toggle="tab">Diagnostic Plots</a>
-              	</li>
-            		<li>
-                  <a href="#3a" data-toggle="tab">Configuration</a>
-          			</li>
+            		<li class="active"> <a  href="#1a" data-toggle="tab">Water Level Plot</a>	</li>
+            		<li> <a href="#2a" data-toggle="tab">Diagnostic Plots</a>	</li>
+            		<li> <a href="#3a" data-toggle="tab">Configuration</a> </li>
           		</ul>
         			<div class="tab-content clearfix">
       			    <div class="tab-pane" id="2a">
@@ -315,7 +305,12 @@
   </div>
   </body>
 
-  <script src="http://vjs.zencdn.net/6.4.0/video.js"></script>
-  <script src="js/videojs-flash.js"></script>
+  <script src="https://unpkg.com/video.js@6.2.1/dist/video.min.js"></script>
+  <script src="https://unpkg.com/videojs-flash@2.0.0/dist/videojs-flash.min.js"></script>
+  <script>
+    videojs.options.flash.swf = 'https://unpkg.com/videojs-swf@5.4.0/dist/video-js.swf';
+  </script>
+
+
     <script src="js/evgfsn-local.js"></script>
 </html>

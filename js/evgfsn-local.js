@@ -41,23 +41,13 @@ Vue.component('videoitem', {
 	},
 	data: function () {
   	return {
-      serverconnect:false,
       auth:false,
     	isPlaying: false,
   	}
 	},
   computed:{
     fileurl:function(){
-      if(this.serverconnect){
-        if(this.auth){
-          return "http://34.213.66.163/movieportal?file_name="+this.fileitem.filename
-        }else{
-          return "http://34.213.66.163/movieportal?file_name="+this.fileitem.filename
-        }
-      }else {
-         return "../video/"+this.fileitem.filename.replace('mjpg','mp4')
-        //return "http://34.213.66.163/movieportal?file_name="+this.fileitem.filename
-      }
+      return "../video/"+this.fileitem.filename
     }
   },
   methods:{
@@ -67,20 +57,19 @@ Vue.component('videoitem', {
     playmjpeg: function() {
 
         this.isPlaying=true;
-        var token=$('meta[name=jwtoken]').attr('content');
-        if(this.auth){
+        var token="";
+        if(serverconnect){
+          if(this.auth){
             token = $('meta[name=jwtoken]').attr('content');}
           else{
             token="";
           }
-
+        }
         if($('#mjpegcontainer').children().length>0){
           $('#mjpegcontainer').empty()
         }
         $('#mjpegcontainer').append("<div id='mjpeg_wrapper'></div>");
     		var file=this.fileurl;
-        console.log("clicked"+token+" for "+file);
-
         $('#mjpeg_wrapper').clipchamp_mjpeg_player(
         file,
         24, // frames per second
@@ -116,7 +105,6 @@ Vue.component('item', {
 	data: function () {
   	return {
     	open: true,
-      serverconnect:false,
       starttime:'2017-09-23T21:41:19Z',
       endtime:moment().toISOString(),
       mjpeglist:mjpeglist
@@ -131,7 +119,7 @@ Vue.component('item', {
 		});
     eventBus.$on("overlayShow",function(obj){
       if(self.model.id==obj.id) {
-        overlayShow(self.serverconnect,obj.type,obj.id,
+        overlayShow(serverconnect,obj.type,obj.id,
           self.starttime,self.endtime);
       }
 		});
@@ -149,13 +137,13 @@ Vue.component('item', {
       	case 'vnode':
         	return cameradot;
       	case 'snode':
-        	if(this.model.alert>=4){
-          	return reddot;
-        	}else if(this.model.alert==3){
-          	return yellowdot;
-        	}else {
-            return greendot;
-          }
+        if(this.model.alert>=4){
+          return reddot;
+        }else if(this.model.alert==3){
+          return yellowdot;
+        }else {
+          return greendot;
+        }
       	default:
        		return '';
     	}
@@ -245,14 +233,12 @@ var demo = new Vue({
       servernodelist:[],
       servervnodelist:[],
       servergatewaylist:[],
-      serverconnect:true,
       starttime:"",
       endtime:"",
       libraryready:false,
       selectedTrace:'temp',
       mjpeglistModel:{list:mjpeglist},
       vformat:'mp4',
-      serverconnect:false,
       localurl:'http://localhost:8080',
       dserverurl:'',
       vserverurl:'',
@@ -262,16 +248,6 @@ var demo = new Vue({
 	},
 	created:function(){
 		var self=this;
-				// initMap();
-				// showMarkers();
-    $.getJSON('../json/config.json', function(data){
-      self.vformat=data.vformat;
-      self.serverconnect=data.serverconnect;
-      self.localurl=data.localurl;
-      self.dserverurl=data.dserverurl;
-      self.vserverurl=data.vserverurl;
-      self.videoserverauth = data.videoserverauth;
-    });
 		eventBus.$on("listhighlight",function(id){
 	  	$(".highlight").removeClass("highlight");
 			if(id!=null){
@@ -279,17 +255,21 @@ var demo = new Vue({
 			}
 		});
     eventBus.$on('videoselected', function(fn){
-      self.videofn=fn;
-      // test code
       self.videofn=fn.replace('../video','rtmp://34.213.66.163/movieportal')
+      var player=videojs('my-video');
+      player.dispose()
+      if($('#mp4container').children().length>0){
+        $('#mp4container').empty()
+      }
+      $('#mp4container').append('<video id="my-video" class="video-js" width="480" height="360" poster=""> <p class="vjs-no-js"> To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a> </p> </video>');
       var myPlayer =   videojs('my-video',{
           controls: true,
           autoplay: false,
-          preload: 'auto' });
-      console.log(self.videofn)
-      myPlayer.src({type: "rtmp/mp4", src: self.videofn
-      // "https://vjs.zencdn.net/v/oceans.mp4"
-    });
+          preload: 'auto',
+          techOrder: ['flash'],
+          sources:[{type: "rtmp/mp4", src: self.videofn}]
+        });
+      console.log(myPlayer.currentSrc())
     });
 		eventBus.$on("maphighlight",function(id){
 			for(var i=0;i<markers.length;i++){
@@ -343,7 +323,7 @@ var demo = new Vue({
 	function(){
 		// initMap();
 		// construct sensor node list from servernodelist
-    if(self.serverconnect){
+    if(serverconnect){
       self.servernodelist.forEach(function(e,index){
         if(self.snList.nodelist[index]){
           self.snList.nodelist[index].ID = e.hwid;
@@ -352,7 +332,7 @@ var demo = new Vue({
           self.snList.nodelist[index].Longitude = e.longitude;
         }
         else{
-          self.snList.nodelist.push({ID:e.hwid,Latitude:e.latitude,Longitude:e.longitude,"Timstamp":100,
+          self.snList.nodelist.push({ID:e.hwid,Latitude:e.latitude,Longitude:e.longitude,    "Timstamp":100,
               "Battery1":12,
               "Battery2":12,
               "Alert":0,
@@ -409,9 +389,6 @@ var demo = new Vue({
         }
       })
     }
-    console.log("SN:"+self.snList.length);
-    console.log("SN:"+self.snList.length);
-
 		var groups = {};
 		for (var i = 0; i < self.snList.nodelist.length; i++) {
   		var groupName = self.snList.nodelist[i].Group;
@@ -584,7 +561,7 @@ function overlayShow(serverconnect, type, id, start, end) {
     console.log("video list:");
     var fn = mjpeglist.length;
     mjpeglist.splice(0,fn);
-    if(false){
+    if(serverconnect){
       $.ajax({  // eslint-disable-line
         type: 'GET',
         url: 'http://52.36.202.215/videos',

@@ -14,7 +14,7 @@ var infowindow;
 var eventBus = new Vue();
 var arrDestinations = [];
 var mjpeglist=[];
-
+var serverconnect = true;
 function showPage() {
   document.getElementById("loader").style.opacity = 0;
   document.getElementById("myDiv").style.opacity = 1;
@@ -40,7 +40,6 @@ Vue.component('videoitem', {
 	},
 	data: function () {
   	return {
-      serverconnect:true,
       auth:false,
     	isPlaying: false,
   	}
@@ -55,10 +54,9 @@ Vue.component('videoitem', {
       eventBus.$emit('videoselected', this.fileurl)
     },
     playmjpeg: function() {
-
         this.isPlaying=true;
         var token="";
-        if(this.serverconnect){
+        if(serverconnect){
           if(this.auth){
             token = $('meta[name=jwtoken]').attr('content');}
           else{
@@ -105,7 +103,6 @@ Vue.component('item', {
 	data: function () {
   	return {
     	open: true,
-      serverconnect:true,
       starttime:'2017-09-23T21:41:19Z',
       endtime:moment().toISOString(),
       mjpeglist:mjpeglist
@@ -120,7 +117,7 @@ Vue.component('item', {
 		});
     eventBus.$on("overlayShow",function(obj){
       if(self.model.id==obj.id) {
-        overlayShow(self.serverconnect,obj.type,obj.id,
+        overlayShow(serverconnect,obj.type,obj.id,
           self.starttime,self.endtime);
       }
 		});
@@ -234,14 +231,12 @@ var demo = new Vue({
       servernodelist:[],
       servervnodelist:[],
       servergatewaylist:[],
-      serverconnect:true,
       starttime:"",
       endtime:"",
       libraryready:false,
       selectedTrace:'temp',
       mjpeglistModel:{list:mjpeglist},
       vformat:'mp4',
-      serverconnect:false,
       localurl:'http://localhost:8080',
       dserverurl:'',
       vserverurl:'',
@@ -251,16 +246,6 @@ var demo = new Vue({
 	},
 	created:function(){
 		var self=this;
-				// initMap();
-				// showMarkers();
-    $.getJSON('../json/config.json', function(data){
-      self.vformat=data.vformat;
-      self.serverconnect=data.serverconnect;
-      self.localurl=data.localurl;
-      self.dserverurl=data.dserverurl;
-      self.vserverurl=data.vserverurl;
-      self.videoserverauth = data.videoserverauth;
-    });
 		eventBus.$on("listhighlight",function(id){
 	  	$(".highlight").removeClass("highlight");
 			if(id!=null){
@@ -269,12 +254,20 @@ var demo = new Vue({
 		});
     eventBus.$on('videoselected', function(fn){
       self.videofn=fn.replace('../video','rtmp://34.213.66.163/movieportal')
+      var player=videojs('my-video');
+      player.dispose()
+      if($('#mp4container').children().length>0){
+        $('#mp4container').empty()
+      }
+      $('#mp4container').append('<video id="my-video" class="video-js" width="480" height="360" poster=""> <p class="vjs-no-js"> To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a> </p> </video>');
       var myPlayer =   videojs('my-video',{
           controls: true,
           autoplay: false,
-          preload: 'auto' });
-      console.log(self.videofn)
-      myPlayer.src({type: "rtmp/mp4", src: self.videofn});
+          preload: 'auto',
+          techOrder: ['flash'],
+          sources:[{type: "rtmp/mp4", src: self.videofn}]
+        });
+      console.log(myPlayer.currentSrc())
     });
 		eventBus.$on("maphighlight",function(id){
 			for(var i=0;i<markers.length;i++){
@@ -373,7 +366,7 @@ var demo = new Vue({
 	function(){
 		// initMap();
 		// construct sensor node list from servernodelist
-    if(self.serverconnect){
+    if(serverconnect){
       self.servernodelist.forEach(function(e,index){
         if(self.snList.nodelist[index]){
           self.snList.nodelist[index].ID = e.hwid;
@@ -611,7 +604,7 @@ function overlayShow(serverconnect, type, id, start, end) {
     console.log("video list:");
     var fn = mjpeglist.length;
     mjpeglist.splice(0,fn);
-    if(true){
+    if(serverconnect){
       $.ajax({  // eslint-disable-line
         type: 'GET',
         url: 'http://52.36.202.215/videos',
